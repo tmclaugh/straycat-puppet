@@ -55,3 +55,6 @@
 [submodule "modules/gitolite"]
 	path = modules/gitolite
 	url = git@github.com:tmclaugh/puppet-gitolite.git
+[submodule "modules/straycat"]
+	path = modules/straycat
+	url = ssh://gitolite@git.straycat.dhs.org/puppet-straycat.git
