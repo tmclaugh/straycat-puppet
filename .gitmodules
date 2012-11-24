@@ -55,3 +55,15 @@
 [submodule "modules/straycat"]
 	path = modules/straycat
 	url = ssh://gitolite@git.straycat.dhs.org/puppet-straycat.git
+[submodule "modules/apache"]
+	path = modules/apache
+	url = git@github.com:tmclaugh/puppetlabs-apache.git
+[submodule "modules/postgresql"]
+	path = modules/postgresql
+	url = git@github.com:tmclaugh/puppet-postgresql.git
+[submodule "modules/mysql"]
+	path = modules/mysql
+	url = git@github.com:tmclaugh/puppetlabs-mysql.git
+[submodule "modules/create_resources"]
+	path = modules/create_resources
+	url = git@github.com:tmclaugh/puppetlabs-create_resources.git
