@@ -1,9 +1,6 @@
 [submodule "modules/sudo"]
 	path = modules/sudo
 	url = git@github.com:tmclaugh/puppet-sudo.git
-[submodule "modules/apache"]
-	path = modules/apache
-	url = git@github.com:tmclaugh/puppet-apache.git
 [submodule "modules/krb5"]
 	path = modules/krb5
 	url = git@github.com:tmclaugh/puppet-krb5.git
