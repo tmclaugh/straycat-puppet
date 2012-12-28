@@ -67,3 +67,6 @@
 [submodule "modules/create_resources"]
 	path = modules/create_resources
 	url = git@github.com:tmclaugh/puppetlabs-create_resources.git
+[submodule "modules/rsync"]
+	path = modules/rsync
+	url = git@github.com:tmclaugh/puppetlabs-rsync.git
