@@ -73,3 +73,6 @@
 [submodule "modules/foreman"]
 	path = modules/foreman
 	url = git@github.com:tmclaugh/puppet-foreman.git
+[submodule "modules/nsswitch"]
+	path = modules/nsswitch
+	url = git@github.com:tmclaugh/puppet-nsswitch.git
