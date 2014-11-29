@@ -4,8 +4,7 @@ $exec_path = $::operatingsystem ? {
 	default => ["/bin", "/sbin", "/usr/bin", "/usr/sbin"],
 }
 
-Exec { path => $exec_path, logoutput => true}
-
-exec { "newaliases":
-	refreshonly => true
+Exec {
+  path => $exec_path,
+  logoutput => true
 }
