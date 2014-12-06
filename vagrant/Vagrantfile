@@ -1,0 +1,235 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+#
+
+$vg_role = ENV['VG_ROLE']                         || "straycat::roles::base"
+$vg_profile = ENV['VG_PROFILE']                   || ''
+$inst_home = ENV['VG_INST_HOME']                  || File.dirname(__FILE__)
+$inst_name = ENV['VG_INST_NAME']                  || $inst_home.split(File::SEPARATOR)[-1]
+$vm_box =  ENV['VG_VM_BOX']                       || "CentOS-6.6-x86_64-20141129190653"
+$vm_box_site = ENV['VG_VM_BOX_SITE']              || ''
+$hostname = ENV['VG_HOSTNAME']                    || "%s.straycat.local" % $inst_name
+$puppet_clone = ENV['VG_PUPPET_CLONE']            || $inst_home.split(File::SEPARATOR)[0..-2].join(File::SEPARATOR)
+$ssh_private_key = ENV['VG_SSH_PRIVATE_KEY']      || "%s/vagrant/straycat_vagrant_rsa" % $puppet_clone
+$vg_puppetmaster_dir = ENV['VG_PUPPETMASTER_DIR'] || "/etc/puppetmaster"
+$facter_vars = ENV['VG_FACTER_VARS']              || ''
+$vg_gui = ENV['VG_GUI']                           || false
+$inst_vols = ENV['VG_INST_VOLS']                  || '1'
+$ebs_vols = ENV['VG_EBS_VOLS']                    || '0'
+$debug = ENV['DEBUG']                             || false
+$cpu = ENV['VG_CPU']                              || '1'
+$ram = ENV['VG_RAM']                              || '1024'
+
+# Default puppet versions. Override from profiles if needed.
+$puppet_ver          = '3.7.3-1.el6'
+$facter_ver          = '2.3.0-1.el6'
+$hiera_ver           = '1.3.4-1.el6'
+$hiera_eyaml_ver     = '2.0.2'
+$hiera_eyaml_gpg_ver = '0.4'
+
+# Used for minor differences when provisioning local pupeptmaster.
+$centos_major = '6'
+
+$sata_name = 'SATA Controller'
+
+if $debug != false
+  debug_flag = '--debug'
+else
+  debug_flag = ''
+end
+
+USER = ENV['USER']
+VG_PUPPETMASTER_LOCAL = '/etc/puppet-local'
+PUPPET_MANIFEST_PATH = ["vm", "#{VG_PUPPETMASTER_LOCAL}/vagrant/manifests"]
+
+unless system('which r10k > /dev/null')
+  abort "r10k not available."
+end
+
+# Load our profiles so we get any variables defined in them
+$vg_profile.split(',').each do |p|
+  load "#{p}/vars.rb" if File.exists?("#{p}/vars.rb")
+end
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # All Vagrant configuration is done here. The most common configuration
+  # options are documented and commented below. For a complete reference,
+  # please see the online documentation at vagrantup.com.
+
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = $vm_box
+  # The url from where the 'config.vm.box' box will be fetched if it
+  # doesn't already exist on the user's system.
+  config.vm.box_url = "#{$vm_box_site}/#{$vm_box}.box"
+
+  # Hostname of new instance.
+  config.vm.hostname = $hostname
+
+  # Location of insecure private key.
+  config.ssh.private_key_path = $ssh_private_key
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  # config.vm.network :forwarded_port, guest: 80, host: 8080
+
+  # If true, then any SSH connections made will enable agent forwarding.
+  # Default value: false
+  config.ssh.forward_agent = true
+
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  # config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.synced_folder $puppet_clone, "/etc/puppet-local", owner: "root", group: "root"
+
+  # vagrant-hostmanager setup.  We have to circumvent /etc/hosts handling
+  # from puppet for this to work.
+  config.hostmanager.enabled = true
+
+  # This is necessary for vagrant-hostmanager to work when using
+  # :public_network
+  #
+  # ref. https://github.com/smdahlen/vagrant-hostmanager/issues/63
+  #config.hostmanager.ip_resolver = proc do |machine|
+  #  result = ""
+  #  machine.communicate.execute("ifconfig eth0") do |type, data|
+  #    result << data if type == :stdout
+  #  end
+  #  (ip = /inet addr:(\d+\.\d+\.\d+\.\d+)/.match(result)) && ip[1]
+  #end
+
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+  config.vm.provider :virtualbox do |vb|
+  #   # Don't boot with headless mode
+  #   vb.gui = true
+
+    # Enable GUI if VG_GUI is set in env.
+    if $vg_gui != false
+      vb.gui = true
+    end
+
+    # Add an additional proc.
+    vb.customize ["modifyvm", :id, "--cpus", "#{$cpu}"]
+
+    # Ensure virtio because Vagrant has issues munging other types of NICs
+    vb.customize ['modifyvm', :id, '--nictype1', 'virtio']
+    vb.customize ['modifyvm', :id, '--nictype2', 'virtio']
+
+    # Disable USB 2.0 which requires the VBox extensions pack.
+    vb.customize ["modifyvm", :id, "--usbehci", "off"]
+
+    # Remove floppy and IDE controllers
+    # FIXME: Commented out for CentOS 7 box which properly lacks a floppy
+    # and CD.  Next CentOS 6 image will lack a floppy.  Need to see how this
+    # effects the existing 6 build.
+    #
+    # Should also look at removeing the IDE controller too.
+    #vb.customize ["storagectl", :id, "--name", "Floppy", "--remove"]
+    #vb.customize ["storagectl", :id, "--name", "IDE", "--remove"]
+
+  #   # Use VBoxManage to customize the VM. For example to change memory:
+    vb.customize ["modifyvm", :id, "--memory", "#{$ram}"]
+
+    vb.customize ["modifyvm", :id, "--chipset", "ich9"]
+
+    # Ephemeral vols
+    if $inst_vols.to_i > 0
+      (1..$inst_vols.to_i).each do |n|
+        disk_path = "#{$inst_home}/data-0-#{n}-#{rand(36**12).to_s(36)}.vdi"
+        vb.customize ["createhd", "--filename", disk_path, "--size", "4096"]
+        vb.customize ["storageattach", :id,  "--storagectl", "#{$sata_name}", "--port", n, "--device", 0,  "--type", "hdd", "--medium", disk_path]
+      end
+    end
+
+    # Faux-EBS vols
+    if $ebs_vols.to_i > 0
+      vb.customize ["storagectl", :id, "--add", "sata", "--name", "SATA-1", "--portcount", $ebs_vols.to_i]
+      (1..$ebs_vols.to_i).each do |n|
+        disk_path = "#{$inst_home}/data-1-#{n}-#{rand(36**12).to_s(36)}.vdi"
+        vb.customize ["createhd", "--filename", disk_path, "--size", "4096"]
+        vb.customize ["storageattach", :id,  "--storagectl", "SATA-1", "--port", n, "--device", 0,  "--type", "hdd", "--medium", disk_path]
+      end
+    end
+  end
+  #
+  # View the documentation for the provider you're using for more
+  # information on available options.
+
+  # Enable provisioning with Puppet stand alone.  Puppet manifests
+  # are contained in a directory path relative to this Vagrantfile.
+  #
+  # An example Puppet manifest to provision the message of the day:
+  #
+  # # group { "puppet":
+  # #   ensure => "present",
+  # # }
+  # #
+  # # File { owner => 0, group => 0, mode => 0644 }
+  # #
+  # # file { '/etc/motd':
+  # #   content => "Welcome to your Vagrant-built virtual machine!
+  # #               Managed by Puppet.\n"
+  # # }
+  #
+  # FIXME: Do this till we have a better way of cleaning things up.  The
+  # Puppetmaster data is persistent but the agent is not so the agent gets
+  # an error
+
+  # Prevent breakage caused by updating the package during a run.
+  config.vm.provision :shell do |shell|
+    shell.inline = "yum -y install puppet-#{$puppet_ver} facter-#{$facter_ver}"
+  end
+
+  config.vm.provision :puppet, id: 'default_puppet' do |puppet|
+
+    puppet.facter = {
+      "sc_environment"         => "qa",
+      "environment"            => "production",
+      "data_center"            => "local",
+      "sc_puppetmaster_server" => "localhost",
+      "os"                     => "centos6",
+      "provider"               => "virtualbox",
+      "security_group"         => "default",
+      "vg_puppetmaster_dir"    => $vg_puppetmaster_dir,
+      "vg_puppetmaster_local"  => VG_PUPPETMASTER_LOCAL,
+      "default_role"           => $vg_role,
+      "creator"                => USER,
+      "description"            => "Test server for role " + $vg_role,
+      "puppet_ver"             => $puppet_ver,
+      "hiera_ver"              => $hiera_ver,
+      "hiera_eyaml_ver"        => $hiera_eyaml_ver,
+      "hiera_eyaml_gpg_ver"    => $hiera_eyaml_gpg_ver,
+      "centos_major"           => $centos_major
+    }
+
+    # This should be a string in the form:
+    # "key1=val1;key2=val2a,val2b;key3=val3"
+    if defined? $facter_vars
+      facter_extra = $facter_vars
+      puppet.facter['facter_extra'] = facter_extra
+    end
+
+    puppet.manifests_path = PUPPET_MANIFEST_PATH
+    puppet.manifest_file  = "puppetmaster.pp"
+    puppet.options        = "--templatedir #{VG_PUPPETMASTER_LOCAL}/vagrant/templates #{debug_flag}"
+  end
+
+  config.vm.provision :puppet_server, id: 'default_puppet_server' do |puppet|
+    puppet.puppet_server = "localhost"
+    puppet.options       = "--verbose --waitforcert 1 #{debug_flag}"
+  end
+end
+
+# Load our profiles so we override any configuration in the previous
+# configure block.
+$vg_profile.split(',').each do |p|
+  load "#{p}/config.rb" if File.exists?("#{p}/config.rb")
+end

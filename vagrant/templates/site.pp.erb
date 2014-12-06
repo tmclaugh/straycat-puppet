@@ -1,0 +1,37 @@
+$sc_environment         = '<%= @hs_environment %>'
+$data_center            = '<%= @data_center %>'
+$sc_puppetmaster_server = '<%= @hs_puppetmaster_server %>'
+$provider               = '<%= @provider %>'
+$security_group         = '<%= @security_group %>'
+$creator                = '<%= @creator %>'
+$description            = '<%= @description %>'
+
+<% if @facter_extra -%>
+# Extra facts from environment!
+# Separate pairs using ';' because some values may me a ',' delimited string
+<% @facter_extra.split(';').each do |fact| -%>
+<%= "\$#{fact.split('=')[0]} = '#{fact.split('=')[1]}'" %>
+<% end %>
+<% end %>
+
+node default {
+
+  if $::noop == undef {
+    if $::role {
+      # Hack to support hosts with two roles.
+      $role_list = split($::role, ',')
+      if "${role_list[0]}" != undef {
+        class { $role_list[0]: }
+      }
+      if "${role_list[1]}" != undef {
+        class { $role_list[1]: }
+      }
+    } else {
+    <% if @default_role -%>
+    <% @default_role.split(',').each do |role| %>
+      class { '<%= role %>': }
+    <% end %>
+    <% end %>
+    }
+  }
+}

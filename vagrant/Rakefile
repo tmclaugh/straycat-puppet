@@ -1,0 +1,399 @@
+# Rake wrapper around Vagrant.
+#
+# The intended usage is as follows
+# $ rake vagrant:init[<branch_name>]
+#
+# This will create a vagrant instance named <branch_name>.  It will also
+# ensure that the puppet tree is on the same branch and that modules have
+# been initialized.
+#
+# TODO
+# - daemon to check if puppet modules have changed branch and stop agent on
+#   the guest.
+# - `vagrant up` has the ability to instantiate a host without running
+#   provisioners which may be useful to us.
+#
+VG_ROOT       = File.dirname(__FILE__)
+PUPPET_CLONE  = VG_ROOT.split(File::SEPARATOR)[0..-2].join(File::SEPARATOR)
+VAGRANTFILE   = '%s/Vagrantfile' % VG_ROOT
+INSTANCE_ROOT = '%s/instance' % VG_ROOT
+DEFAULT_ROLE  = 'base'
+PLUGINS       = ['vagrant-vbguest', 'vagrant-hostmanager']
+ROLE_PREFIX   = 'straycat::roles'
+
+commands = {
+  :git              => 'git',
+  :vagrant          => 'vagrant',
+  :r10k             => 'r10k',
+  :librarian_puppet => 'librarian-puppet'
+}
+
+namespace :vagrant do
+  def vagrant_cmd(instance, action, host='', args='', env_args=nil, exit_true=false)
+    instance_dir = "#{INSTANCE_ROOT}/#{instance}"
+
+    if env_args
+      env_args.each do |arg|
+        k, v = arg.split('=')
+        ENV["#{k}"] = v
+      end
+    end
+
+    start_dir = Dir.pwd
+    Dir.chdir(instance_dir)
+    ENV['VG_PUPPET_CLONE'] = PUPPET_CLONE
+    if exit_true
+      exit_s = '; true'
+    else
+      exist_s = ''
+    end
+    sh %{vagrant #{action} #{host} #{args} #{exist_s}}
+    Dir.chdir(start_dir)
+  end
+
+
+  def vagrant_plugin_install(plugin)
+    puts "Checking for plugin: #{plugin}"
+    sh %{vagrant plugin list | grep #{plugin}} do |ok, res|
+      if ! ok
+        sh %{vagrant plugin install #{plugin}}
+      end
+    end
+  end
+
+
+  # Get command line, saved, or defaults values
+  def get_config(instance_dir)
+    role = nil
+    branch = nil
+    profile = nil
+
+    config = {}
+
+    # Let's get our state defaults if they exist
+    if File.exists?("#{instance_dir}/config.rb")
+      puts "Checking instance defaults"
+      require "#{instance_dir}/config.rb"
+    end
+
+    # Process command line environment arguments
+    if ENV['role']
+      role = ENV['role']
+    elsif defined? ROLE
+      role = ROLE
+    else
+      role = DEFAULT_ROLE
+    end
+    config['role'] = role
+
+    if ENV['branch']
+      branch = ENV['branch']
+    elsif defined? BRANCH
+      branch = BRANCH
+    else
+      branch = nil
+    end
+    config['branch'] = branch
+
+    if ENV['profile']
+      profile = ENV['profile']
+    elsif defined? PROFILE
+      profile = PROFILE
+    else
+      profile = nil
+    end
+    config['profile'] = profile
+
+    return config
+  end
+
+
+  def do_task(args, task, cmd_args='', exit_true=false)
+    instance = args[:instance]
+    host = args[:host]
+    instance_dir = "#{INSTANCE_ROOT}/#{instance}"
+
+    # Get command line, saved, or defaults values
+    config = get_config(instance_dir)
+    profile = config['profile']
+
+    # Turn our profiles into something that we can pass to Vagrantfile.
+    profile_list = []
+    if profile
+      profile.split(',').each do |p|
+        profile_list << "#{VG_ROOT}/profiles/#{p}"
+      end
+    end
+    profile_str = profile_list.join(',')
+
+    vagrant_cmd(instance, task, host, cmd_args, env_args=["VG_PROFILE=#{profile_str}"], exit_true)
+  end
+
+
+  desc "switch to correct branch"
+  task :change_branch, :branch do |t, args|
+    branch = args[:branch]
+    if branch
+      sh %{git checkout #{branch}}
+    end
+  end
+
+
+  desc "Download modules"
+  task :modules, [:branch] => ['change_branch'] do |t, args|
+    args.with_defaults(:branch => false)
+    branch = args[:branch]
+    if branch
+      if not File.exists?("#{PUPPET_CLONE}/Puppetfile.done.#{branch}")
+        start_dir = Dir.pwd
+        Dir.chdir(PUPPET_CLONE)
+        FileUtils.rm Dir.glob("#{PUPPET_CLONE}/Puppetfile.done.*")
+        sh %{#{commands[:librarian_puppet]} install --verbose}
+        FileUtils.touch "Puppetfile.done"
+        FileUtils.ln_s "Puppetfile.done", "#{PUPPET_CLONE}/Puppetfile.done.#{branch}"
+        Dir.chdir(start_dir)
+      end
+    else
+      if not File.exists?("#{PUPPET_CLONE}/Puppetfile.lock")
+        # We can't guarentee that Puppetfile.lock won't change so we'll
+        # remove the Puppetfile.lock for a branch.
+        FileUtils.rm Dir.glob("#{PUPPET_CLONE}/Puppetfile.done.*")
+        start_dir = Dir.pwd
+        Dir.chdir(PUPPET_CLONE)
+        sh %{#{commands[:librarian_puppet]} install --verbose}
+        FileUtils.touch "Puppetfile.done"
+        Dir.chdir(start_dir)
+      end
+    end
+  end
+
+
+  desc "initialize instance"
+  task :init, :instance do |t, args|
+    instance = args[:instance]
+    instance_dir = "#{INSTANCE_ROOT}/#{instance}"
+    instance_vgfile = "#{instance_dir}/Vagrantfile"
+
+    # Get command line, saved, or defaults values
+    config = get_config(instance_dir)
+    profile = config['profile']
+    role = config['role']
+    branch = config['branch']
+
+    PLUGINS.each do |plugin|
+      vagrant_plugin_install(plugin)
+    end
+    puts ""
+
+    Rake::Task['vagrant:modules'].invoke(branch)
+
+    if not File.exists?(instance_vgfile)
+      # Create home for all instances if it doesn't exist.
+      if not File.directory?(INSTANCE_ROOT)
+        Dir.mkdir(INSTANCE_ROOT)
+      end
+
+      # Create home for this instance if it doesn't exist.
+      if not File.directory?(instance_dir)
+        puts "Creating #{instance_dir}..."
+        Dir.mkdir(instance_dir)
+      end
+
+      start_dir = Dir.pwd
+      Dir.chdir(instance_dir)
+      vagrant_cmd(args[:instance], 'init')
+      FileUtils.cp(VAGRANTFILE, instance_vgfile)
+      Dir.chdir(start_dir)
+    end
+
+    #Write our defaults.  We only write this on first init.
+    if not File.exists?("#{instance_dir}/config.rb")
+      # write state information.
+      File.open("#{instance_dir}/config.rb", 'w') do |line|
+        if branch
+          line.write("BRANCH='#{branch}'\n")
+        else
+          line.write("BRANCH=false\n")
+        end
+
+        if role
+          line.write("ROLE='#{role}'\n")
+        else
+          line.write("ROLE=false\n")
+        end
+
+        if profile
+          line.write("PROFILE='#{profile}'\n")
+        else
+          line.write("PROFILE=''\n")
+        end
+      end
+    end
+  end
+
+
+  desc "Bring up instance"
+  task :up, :instance, :host do |t, args|
+    args.with_defaults(:host => nil)
+    instance = args[:instance]
+    host = args[:host]
+    instance_dir = "#{INSTANCE_ROOT}/#{instance}"
+
+    # Get command line, saved, or defaults values
+    config = get_config(instance_dir)
+    profile = config['profile']
+    role = config['role']
+    branch = config['branch']
+
+    # Initialize setup
+    Rake::Task['vagrant:init'].invoke(instance)
+
+    puts ""
+    puts "Starting instance with:"
+    puts "role:\t\t#{role}"
+    puts "branch:\t\t#{branch}"
+    puts "profile:\t#{profile}"
+    puts ""
+
+    # We take in a role name without a namespace prefix but need to pass in
+    # the full class name to Vagrantfile.
+    role_full_list = []
+    role.split(',').each do |r|
+      role_full_list << "#{ROLE_PREFIX}::#{r}"
+    end
+    role_full = role_full_list.join(',')
+
+    # Turn our profiles into something that we can pass to Vagrantfile.
+    profile_list = []
+    if profile
+      profile.split(',').each do |p|
+        profile_path = "#{VG_ROOT}/profiles/#{p}"
+        abort("ERROR: Profile does not exist: #{p}") if not Dir.exists?(profile_path)
+        profile_list << profile_path
+      end
+    end
+    profile_str = profile_list.join(',')
+
+    vagrant_cmd(instance, 'up', host, '', env_args=["VG_ROLE=#{role_full}", "VG_PROFILE=#{profile_str}"])
+  end
+
+
+  desc "Bring up instance and then destroy it."
+  task :compile, :instance, :host  do |t, args|
+    args.with_defaults(:host => nil)
+    if defined? ENV['once']
+      once = true
+    end
+
+    # Initialize setup
+    Rake::Task['vagrant:up'].invoke(args)
+
+    if once
+      Rake::Task['vagrant:remove'].invoke(args)
+    else
+      Rake::Task['vagrant:destroy'].invoke(args)
+    end
+  end
+
+
+  desc "Destroy instance"
+  task :destroy, :instance, :host do |t, args|
+    args.with_defaults(:host => nil)
+    do_task(args, 'destroy', '-f')
+  end
+
+  desc "Get status of all Vagrant environments"
+  task :global do |t, args|
+    sh %{vagrant global-status}
+  end
+
+  desc "Halt instance"
+  task :halt, :instance, :host do |t, args|
+    args.with_defaults(:host => nil)
+    do_task(args, 'halt')
+  end
+
+
+  desc "Run the provisioner again"
+  task :provision, :instance, :host, :provisioner do |t, args|
+    args.with_defaults(:host => nil, :provisioner => nil)
+    instance = args[:instance]
+    host = args[:host]
+    provisioner = args[:provisioner]
+    if provisioner
+      prov_arg = "--provision-with #{provisioner}"
+    end
+
+    # Get command line, saved, or defaults values
+    instance_dir = "#{INSTANCE_ROOT}/#{instance}"
+    config = get_config(instance_dir)
+    profile = config['profile']
+    role = config['role']
+    branch = config['branch']
+
+    # We take in a role name without ROLE_PREFIX but need to pass in
+    # the full class name to Vagrantfile.
+    role_full_list = []
+    role.split(',').each do |r|
+      role_full_list << "#{ROLE_PREFIX}::#{r}"
+    end
+    role_full = role_full_list.join(',')
+
+    # Turn our profiles into something that we can pass to Vagrantfile.
+    profile_list = []
+    if profile
+      profile.split(',').each do |p|
+        profile_list << "#{VG_ROOT}/profiles/#{p}"
+      end
+    end
+    profile_str = profile_list.join(',')
+
+    vagrant_cmd(instance, 'provision', host, "#{prov_arg}", env_args=["VG_ROLE=#{role_full}", "VG_PROFILE=#{profile_str}"])
+  end
+
+
+  desc "Reload instance"
+  task :reload, :instance, :host do |t, args|
+    args.with_defaults(:host => nil)
+    do_task(args, 'reload')
+  end
+
+
+  desc "Resume instance"
+  task :resume, :instance, :host do |t, args|
+    args.with_defaults(:host => nil)
+    do_task(args, 'resume')
+  end
+
+
+  desc "Remove instance entirely"
+  task :remove,:instance do |t, args|
+    instance = args[:instance]
+    instance_dir = "#{INSTANCE_ROOT}/#{instance}"
+
+    Rake::Task['vagrant:destroy'].invoke(instance)
+
+    FileUtils.rm_r(instance_dir)
+  end
+
+
+  desc "SSH into instance"
+  task :ssh, :instance, :host do |t, args|
+    args.with_defaults(:host => nil)
+    do_task(args, 'ssh', '', exit_true=true)
+  end
+
+
+  desc "Check instance status"
+  task :status, :instance, :host do |t, args|
+    args.with_defaults(:host => nil)
+    do_task(args, 'status')
+  end
+
+
+  desc "Suspend instance"
+  task :suspend, :instance, :host do |t, args|
+    args.with_defaults(:host => nil)
+    do_task(args, 'suspend')
+  end
+end
