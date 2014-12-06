@@ -1,0 +1,32 @@
+# Eclipse
+.README.md.html
+.externalToolBuilders/
+.settings/
+.checkstyle
+.project
+
+# Puppet misc.
+.tmp
+.librarian
+Puppetfile.done*
+Puppetfile.lock*
+
+# Vagrant
+vagrant/.vagrant
+vagrant/instance/
+vagrant/master/
+vagrant/*.vdi
+environments
+
+# Modules
+modules/apt
+modules/catalog_diff
+modules/concat
+modules/firewall
+modules/inifile
+modules/ntp
+modules/postgresql
+modules/puppet
+modules/puppetdb
+modules/puppetdbquery
+modules/stdlib
