@@ -12,7 +12,15 @@ mod 'huit/ipa',
 
 mod 'puppetlabs/ntp', '3.3.0'
 
-mod 'thias/puppet', '0.6.2'
+# FIXME: replace with my own fork at some point.
+mod 'puppetlabs/puppet',
+    :git => 'git://github.com/tmclaugh/puppetlabs-puppet',
+    :ref => 'scmaster'
+
+# FIXME: replace with my own fork at some point.
+mod 'puppetlabs/passenger',
+    :git => 'git://github.com/tmclaugh/puppetlabs-passenger',
+    :ref => 'hsmaster'
 
 mod 'puppetlabs/puppetdb', '4.1.0'
 

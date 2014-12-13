@@ -20,6 +20,7 @@ vagrant/*.vdi
 environments
 
 # Modules
+modules/apache
 modules/apt
 modules/catalog_diff
 modules/concat
@@ -27,8 +28,10 @@ modules/firewall
 modules/inifile
 modules/ipa
 modules/ntp
+modules/passenger
 modules/postgresql
 modules/puppet
 modules/puppetdb
 modules/puppetdbquery
+modules/ruby
 modules/stdlib
