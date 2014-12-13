@@ -24,6 +24,7 @@ modules/catalog_diff
 modules/concat
 modules/firewall
 modules/inifile
+modules/ipa
 modules/ntp
 modules/postgresql
 modules/puppet
