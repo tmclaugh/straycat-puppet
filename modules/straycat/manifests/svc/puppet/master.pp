@@ -42,7 +42,7 @@ class straycat::svc::puppet::master (
 
   $hiera_key      = "${puppet_keys_dir}/${hiera_key_name}.secret.key"
 
-  class { '::straycat::svc::passenger': }
+  ensure_resource('class', '::straycat::svc::passenger')
   contain '::straycat::svc::passenger'
 
   # Hiera related
@@ -157,7 +157,8 @@ class straycat::svc::puppet::master (
         hiera_config    => '$confdir/environments/$environment/hiera.yaml',
       },
     },
-    require                   => Exec['puppet-create-ca']
+    require                   => [Class['::straycat::svc::passenger'],
+                                  Exec['puppet-create-ca']]
   }
   contain '::puppet::master'
 
