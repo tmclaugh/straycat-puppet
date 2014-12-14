@@ -33,9 +33,7 @@ class straycat::roles::postgresql {
     stage => setup
   }
 
-  class { '::straycat::svc::postgresql':
-    pgsql_config_entries => $pgsql_config_hash
-  }
+  class { '::straycat::svc::postgresql': }
 
   ::straycat::svc::postgresql::db { 'puppetdb':
     db_user   => $pgsql_db_user,

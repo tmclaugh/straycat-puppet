@@ -24,18 +24,9 @@
 class straycat::svc::postgresql (
   $pgsql_datadir        = '/srv/postgresql',
   $pgsql_listen_address = '0.0.0.0',
-  $pgsql_extra_conf     = {},
   $pgsql_config_entries = {}
 ) {
 
-  $pgsql_conf_hash = {
-    datadir              => $pgsql_datadir,
-    pg_hba_conf_path     => "${pgsql_datadir}/pg_hba.conf",
-    postgresql_conf_path => "${pgsql_datadir}/postgresql.conf",
-    listen_addresses     => $pgsql_listen_address
-  }
-
-  $pgsql_conf = merge($pgsql_conf_hash, $pgsql_extra_conf)
 
   # These are our defaults
   $pgsql_config_entries_hash = {
@@ -45,7 +36,15 @@ class straycat::svc::postgresql (
 
   $pgsql_config_entries_merged = merge($pgsql_config_entries_hash, $pgsql_config_entries)
 
-  ensure_resource('class', '::postgresql::server', $pgsql_conf)
+  class { '::postgresql::server':
+    datadir              => $pgsql_datadir,
+    pg_hba_conf_path     => "${pgsql_datadir}/pg_hba.conf",
+    postgresql_conf_path => "${pgsql_datadir}/postgresql.conf",
+    listen_addresses     => $pgsql_listen_address
+  }
+
   create_resources('postgresql::server::config_entry', $pgsql_config_entries_merged)
+
+  contain ::postgresql::server
 
 }
