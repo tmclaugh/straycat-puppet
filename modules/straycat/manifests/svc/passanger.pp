@@ -23,6 +23,8 @@
 #
 class straycat::svc::passenger {
 
+  $passenger_version = '4.0.48'
+
   # Required for compilation.
   #
   ensure_resource('package', 'gcc-c++')
