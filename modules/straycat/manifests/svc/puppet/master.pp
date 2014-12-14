@@ -42,11 +42,6 @@ class straycat::svc::puppet::master (
 
   $hiera_key      = "${puppet_keys_dir}/${hiera_key_name}.secret.key"
 
-  # Passenger related.
-  #
-  ensure_resource('package', 'gcc-c++')
-
-
   class { '::straycat::svc::passenger': }
   contain '::straycat::svc::passenger'
 
