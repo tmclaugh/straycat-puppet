@@ -45,6 +45,6 @@ class straycat::svc::postgresql (
 
   create_resources('postgresql::server::config_entry', $pgsql_config_entries_merged)
 
-  contain ::postgresql::server
+  contain '::postgresql::server'
 
 }
