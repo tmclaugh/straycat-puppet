@@ -15,11 +15,11 @@
 #
 # === Authors
 #
-# tmclaughlin@hubspot.com
+# tmclaugh@sdf.lonestar.org
 #
 # === Copyright
 #
-# Copyright 2014 Hubspot
+# Copyright 2014 Tom McLaughlin
 #
 class straycat::roles::puppetmaster {
 
