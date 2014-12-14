@@ -1,17 +1,18 @@
-# == Class: class_name
+# == Class: straycat::svc::passenger
 #
-# Short description of class.
+# Installs Passenger
 #
 # === Parameters
 #
-# [*parameter*]
-#   Description of parameter and its usage.
+# NONE
 #
 # === Examples
 #
-#   class { 'class_name':
-#     parameter => 'value'
-#   }
+# class { '::straycat::svc::passenger': }
+#
+# === TODO
+#
+# * evaluate using SCL repo package and Ruby 193.
 #
 # === Authors
 #
