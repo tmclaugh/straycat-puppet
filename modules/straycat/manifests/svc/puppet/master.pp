@@ -157,8 +157,7 @@ class straycat::svc::puppet::master (
         hiera_config    => '$confdir/environments/$environment/hiera.yaml',
       },
     },
-    require                   => [Class['::straycat::svc::passenger'],
-                                  Exec['puppet-create-ca']]
+    require                   => Exec['puppet-create-ca']
   }
   contain '::puppet::master'
 
