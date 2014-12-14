@@ -23,10 +23,9 @@
 #
 class straycat::svc::passenger {
 
-  # Passenger related.
+  # Required for compilation.
   #
   ensure_resource('package', 'gcc-c++')
-
 
   class { '::passenger':
     package_ensure         => $passenger_version,
