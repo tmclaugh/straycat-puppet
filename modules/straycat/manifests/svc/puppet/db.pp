@@ -31,7 +31,7 @@ class straycat::svc::puppet::db (
   $puppetdb_node_purge_ttl     = '14d', # how long after being inactive before it purges
   $puppetdb_report_ttl         = '14d',
   $puppetdb_ssl_listen_address = '0.0.0.0',
-  $puppetdb_version            = '2.2.2-1.el6',
+  $puppetdb_version            = "2.2.2-1.${::centos_pkg_release}",
   $puppetdb_extra_conf         = {},
 ) {
 

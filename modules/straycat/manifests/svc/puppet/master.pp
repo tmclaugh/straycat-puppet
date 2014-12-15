@@ -23,10 +23,10 @@
 #
 class straycat::svc::puppet::master (
   $puppet_psk                = undef,
-  $puppet_version            = '3.7.3-1.el6',
-  $puppetdb_terminus_version = '2.2.2-1.el6',
+  $puppet_version            = "3.7.3-1.${::centos_pkg_release}",
+  $puppetdb_terminus_version = "2.2.2-1.${::centos_pkg_release}",
   $puppetdb_host             = undef,
-  $hiera_version             = '1.3.4-1.el6',
+  $hiera_version             = "1.3.4-1.${::centos_pkg_release}",
   $hiera_eyaml_version       = '2.0.2',
   $hiera_eyaml_gpg_version   = '0.4',
   $hiera_key_name            = "puppet.${::domain}"
