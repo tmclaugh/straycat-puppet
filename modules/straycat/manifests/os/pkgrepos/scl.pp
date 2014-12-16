@@ -37,13 +37,14 @@ class straycat::os::pkgrepos::scl (
     enabled         => $repo_enabled,
     gpgcheck        => '1',
     gpgkey          => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-${::centos_major}",
-    notify          => straycat::os::pkgrepos::Repo_clean['scl']
+    notify          => Straycat::Os::Pkgrepos::Repo_clean['scl']
   }
 
   straycat::os::pkgrepos::repo_clean{ 'scl': }
 
   anchor { 'straycat::os::pkgrepos::scl::end':
-    require => straycat::os::pkgrepos::Repo_clean['scl'],
+    require => [Anchor['straycat::os::pkgrepos::scl::start'],
+                Straycat::Os::Pkgrepos::Repo_clean['scl']]
   }
 
 }
