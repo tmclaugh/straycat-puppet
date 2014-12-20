@@ -24,22 +24,24 @@
 #
 class straycat::svc::passenger {
 
-  $passenger_version = '4.0.48'
+  $passenger_version = '4.0.18'
+  $passenger_pkg_release = "${passenger_version}-9.6.${::centos_pkg_release}"
 
-  # Required for compilation.
-  #
-  ensure_resource('package', 'gcc-c++')
+  # We need 4.0.x for Foreman but SCL was a pain.  Just use the Foreman pkgs
+  class { '::straycat::os::pkgrepos::foreman': }
 
   class { '::passenger':
-    package_ensure         => $passenger_version,
-    passenger_version      => $passenger_version,
-    package_provider       => 'gem',
-    compile_passenger      => true,
-    mod_passenger_location => "/usr/lib/ruby/gems/1.8/gems/passenger-${passenger_version}/buildout/apache2/mod_passenger.so",
+    package_name           => 'mod_passenger',
+    package_ensure         => $passenger_pkg_release,
+    passenger_version      => $passenger_version, # Used only to distinguish v3 v. v4
+    package_provider       => 'yum',
+    mod_passenger_location => '/usr/lib64/httpd/modules/mod_passenger.so',
     passenger_root         => "/usr/lib/ruby/gems/1.8/gems/passenger-${passenger_version}/",
     passenger_poolsize     => $::processorcount * 1.5,
-    require                => Package['gcc-c++']
+    passenger_ruby         => '/usr/bin/ruby',
+    require                => Class['::straycat::os::pkgrepos::foreman']
   }
+
   contain '::passenger'
 
 }
