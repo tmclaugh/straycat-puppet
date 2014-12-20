@@ -30,11 +30,15 @@
 # Copyright 2014 Tom McLaughlin
 #
 class straycat::svc::puppet::foreman (
-  $foreman_db_host     = undef,
-  $foreman_db_username = undef,
-  $foreman_db_password = undef
+  $foreman_admin_username = undef,
+  $foreman_admin_password = undef,
+  $foreman_db_host        = undef,
+  $foreman_db_username    = undef,
+  $foreman_db_password    = undef
 ) {
 
+  validate_string($foreman_admin_username)
+  validate_string($foreman_admin_password)
   validate_string($foreman_db_host)
   validate_string($foreman_db_username)
   validate_string($foreman_db_password)
@@ -61,6 +65,8 @@ class straycat::svc::puppet::foreman (
   class { '::foreman' :
     version             => $foreman_version,
     unattended          => false,
+    admin_username      => $foreman_admin_username,
+    admin_password      => $foreman_admin_password,
     db_type             => $foreman_db_type,
     db_manage           => false,
     db_host             => $foreman_db_host,
@@ -73,7 +79,20 @@ class straycat::svc::puppet::foreman (
     configure_scl_repo  => false,
     repo                => $foreman_repo,
     require             => [Class['::straycat::os::pkgrepos::foreman'],
-                            Class['::straycat::os::pkgrepos::scl']]
+                            Class['::straycat::os::pkgrepos::scl']],
+    notify              => [Exec['db-migrate'], Exec['db-seed']]
+  }
+
+  exec { 'db-migrate':
+    command     => '/usr/sbin/foreman-rake db:migrate',
+    refreshonly => true,
+    require     => Class['::foreman']
+  }
+
+  exec { 'db-seed':
+    command     => '/usr/sbin/foreman-rake db:seed',
+    refreshonly => true,
+    require     => [Class['::foreman'], Exec['db-migrate']]
   }
 
   cron { 'expire_reports':
