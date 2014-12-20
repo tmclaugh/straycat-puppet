@@ -39,7 +39,8 @@ class straycat::svc::puppet::foreman {
   $maintenance_user = 'rainmaker'
   $maintenance_pass = 'd9F6UR!pSRH&'
 
-  $ldap_hosts = hiera('hubspot::ldap::servers')
+  # FIXME: Hostname below
+  $ldap_hosts = ldap.straycat.local
   $ldap_host = $ldap_hosts[0]
   $ldap_user = 'puppet'
   $ldap_pass = 'MyevhowsOws4'
