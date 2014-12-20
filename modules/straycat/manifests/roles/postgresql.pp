@@ -29,15 +29,23 @@ class straycat::roles::postgresql {
   $pgsql_db_user        = 'puppetdb'
   $pgsql_db_passwd      = 'MyWeakPassword' # Move to Hiera when in place
 
+  $foreman_db_name        = 'foreman'
+  $foreman_db_user        = 'foreman'
+  $foreman_db_passwd      = 'MyWeakPassword' # Move to Hiera when in place
+
   class { 'straycat::os':
     stage => setup
   }
 
   class { '::straycat::svc::postgresql': }
 
-  ::straycat::svc::postgresql::db { 'puppetdb':
+  ::straycat::svc::postgresql::db { $pgsql_db_name:
     db_user   => $pgsql_db_user,
     db_passwd => $pgsql_db_passwd
   }
 
+  ::straycat::svc::postgresql::db { $foreman_db_name:
+    db_user   => $foreman_db_user,
+    db_passwd => $foreman_db_passwd
+  }
 }
