@@ -45,8 +45,7 @@ class straycat::svc::puppet::master (
 
   $hiera_key      = "${puppet_keys_dir}/${hiera_key_name}.secret.key"
 
-  ensure_resource('class', '::straycat::svc::passenger')
-  contain '::straycat::svc::passenger'
+  contain ::straycat::svc::passenger
 
   # Hiera related
   ensure_resource('package', 'ruby-devel')

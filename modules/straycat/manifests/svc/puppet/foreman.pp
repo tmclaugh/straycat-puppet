@@ -23,9 +23,7 @@
 #
 class straycat::svc::puppet::foreman {
 
-  ensure_resource('class', '::straycat::svc::passenger')
-  contain '::straycat::svc::passenger'
-
+  contain ::straycat::svc::passenger
 
   $foreman_repo    = 'releases/1.7'
   $foreman_version = '1.7.0-1.el6'
