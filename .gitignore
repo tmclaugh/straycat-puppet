@@ -20,10 +20,12 @@ vagrant/*.vdi
 environments
 
 # Modules
+modules/alternatives
 modules/apache
 modules/apt
 modules/catalog_diff
 modules/concat
+modules/concat_native
 modules/firewall
 modules/foreman
 modules/inifile
@@ -36,3 +38,5 @@ modules/puppetdb
 modules/puppetdbquery
 modules/ruby
 modules/stdlib
+modules/tftp
+modules/xinetd
