@@ -55,6 +55,4 @@ class straycat::roles::puppetmaster {
     require                    => Class['::straycat::svc::puppet::master']
   }
 
-  #class { '::straycat::svc::puppet::foreman': }
-
 }
