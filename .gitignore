@@ -25,6 +25,7 @@ modules/apt
 modules/catalog_diff
 modules/concat
 modules/firewall
+modules/foreman
 modules/inifile
 modules/ipa
 modules/ntp
