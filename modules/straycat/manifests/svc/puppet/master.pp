@@ -1,6 +1,6 @@
-# == Class: class_name
+# == Class: straycat::svc::puppet::master
 #
-# Short description of class.
+# Setup a puppetmaster
 #
 # === Parameters
 #
@@ -9,9 +9,12 @@
 #
 # === Examples
 #
-#   class { 'class_name':
-#     parameter => 'value'
-#   }
+#   class { '::straycat::svc::puppet::master': }
+#
+# === FIXME
+#
+# * We're not managing the Puppetlabs repo in Puppet which we should be
+#   doing.  Need to add a resource for that.
 #
 # === Authors
 #
