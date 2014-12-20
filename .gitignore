@@ -15,6 +15,7 @@ Puppetfile.lock*
 vagrant/.vagrant
 vagrant/instance/
 vagrant/master/
+# FIXME: remove this
 vagrant/profiles/
 vagrant/*.vdi
 environments
