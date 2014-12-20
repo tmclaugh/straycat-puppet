@@ -38,10 +38,15 @@ class straycat::os {
     notify  => Exec['nscd-flush-hosts']
   }
 
-  # FIXME: This breaks our Vagrant setup which uses eth1 for internal
-  # network communication.
+  # FIXME: We should have a datacenter fact for handling this.
+  if $::domain =='straycat.local' and $::ipaddress_eth1 != undef {
+    $hosts_addr = $::ipaddress_eth1
+  } else {
+    $hosts_addr = $::ipaddress_eth0
+  }
+
   host { $::fqdn:
-    ip           => $::ipaddress_eth0,
+    ip           => $::hosts_addr,
     host_aliases => $::hostname,
     require      => Exec['etc-hosts-localhost']
   }
