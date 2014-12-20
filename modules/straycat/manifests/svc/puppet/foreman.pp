@@ -43,14 +43,19 @@ class straycat::svc::puppet::foreman (
   #contain ::straycat::svc::passenger
 
   $foreman_repo    = 'releases/1.7'
-  $foreman_version = '1.7.0-1.el6'
+  $foreman_version = '1.7.1-1.el6'
 
   $foreman_db_type     = 'postgresql'
   $foreman_db_port     = '5432'
   $foreman_db_database = 'foreman'
 
   # Managing the repo on our own
-  class { '::straycat::os::pkgrepos::foreman': }
+  class { '::straycat::os::pkgrepos::foreman':
+    stage => setup
+  }
+  class { '::straycat::os::pkgrepos::scl':
+    stage => setup
+  }
 
 
   class { '::foreman' :
@@ -67,7 +72,8 @@ class straycat::svc::puppet::foreman (
     configure_epel_repo => false,
     configure_scl_repo  => false,
     repo                => $foreman_repo,
-    require             => Class['::straycat::os::pkgrepos::foreman']
+    require             => [Class['::straycat::os::pkgrepos::foreman'],
+                            Class['::straycat::os::pkgrepos::scl']]
   }
 
   cron { 'expire_reports':
