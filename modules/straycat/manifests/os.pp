@@ -52,6 +52,10 @@ class straycat::os {
   }
 
 
+  # repositories
+  class { '::straycat::os::pkgrepos::epel': }
+
+
   class { '::ntp':
     servers        => ['time.straycat.dhs.org'],
     service_enable => true,
