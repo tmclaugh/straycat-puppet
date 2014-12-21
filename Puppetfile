@@ -13,15 +13,15 @@ mod 'theforeman/concat_native', '1.3.1'
 
 mod 'puppetlabs/firewall', '1.3.0'
 
-mod 'theforeman/foreman',
-    :git => 'git://github.com/tmclaugh/puppet-foreman',
+mod 'foreman',
+    :git => 'https://github.com/tmclaugh/puppet-foreman.git',
     :ref => 'scmaster'
 
 mod 'puppetlabs/inifile', '1.2.0'
 
 # has shellquote fix
-mod 'huit/ipa',
-    :git => 'git://github.com/tmclaugh/puppet-ipa',
+mod 'ipa',
+    :git => 'https://github.com/tmclaugh/puppet-ipa.git',
     :ref => 'master'
 
 mod 'puppetlabs/ntp', '3.3.0'
@@ -29,13 +29,13 @@ mod 'puppetlabs/ntp', '3.3.0'
 mod 'puppetlabs/postgresql', '4.1.0'
 
 # FIXME: replace with my own fork at some point.
-mod 'puppetlabs/puppet',
-    :git => 'git://github.com/tmclaugh/puppetlabs-puppet',
+mod 'puppet',
+    :git => 'https://github.com/tmclaugh/puppetlabs-puppet.git',
     :ref => 'scmaster'
 
 # FIXME: replace with my own fork at some point.
-mod 'puppetlabs/passenger',
-    :git => 'git://github.com/tmclaugh/puppetlabs-passenger',
+mod 'passenger',
+    :git => 'https://github.com/tmclaugh/puppetlabs-passenger.git',
     :ref => 'hsmaster'
 
 mod 'puppetlabs/puppetdb', '4.1.0'
