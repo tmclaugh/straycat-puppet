@@ -41,6 +41,15 @@ class straycat::svc::puppet::master (
 
   validate_string($puppet_psk)
 
+  $puppet_autosign_script = '/usr/local/bin/puppet_autosign.py'
+  $puppet_act_as_ca       = true
+  $puppet_central_ca      = undef
+  $puppet_keys_dir        = '/etc/puppet/keys'
+  $puppet_master_package  = 'puppet-server'
+
+  $hiera_key      = "${puppet_keys_dir}/${hiera_key_name}.secret.key"
+
+
   if $enable_puppetdb {
     validate_string($puppetdb_host)
     $storeconfigs_dbadapter = 'puppetdb'
@@ -95,14 +104,6 @@ class straycat::svc::puppet::master (
       before  => Service['httpd']
     }
   }
-
-  $puppet_autosign_script = '/usr/local/bin/puppet_autosign.py'
-  $puppet_act_as_ca       = true
-  $puppet_central_ca      = undef
-  $puppet_keys_dir        = '/etc/puppet/keys'
-  $puppet_master_package  = 'puppet-server'
-
-  $hiera_key      = "${puppet_keys_dir}/${hiera_key_name}.secret.key"
 
   contain ::straycat::svc::passenger
 
