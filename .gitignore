@@ -37,6 +37,7 @@ modules/postgresql
 modules/puppet
 modules/puppetdb
 modules/puppetdbquery
+modules/r10k
 modules/ruby
 modules/stdlib
 modules/tftp
