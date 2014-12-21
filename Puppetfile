@@ -5,7 +5,9 @@ mod 'ripienaar/catalog_diff', '0.2.0'
 
 mod 'puppetlabs/concat', '1.1.2'
 
-mod 'theforeman/foreman', '2.3.1'
+mod 'theforeman/foreman',
+    :git => 'git://github.com/tmclaugh/puppet-foreman',
+    :ref => 'scmaster'
 
 # has shellquote fix
 mod 'huit/ipa',

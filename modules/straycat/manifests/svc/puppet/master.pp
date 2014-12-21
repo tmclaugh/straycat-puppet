@@ -25,6 +25,9 @@
 # Copyright 2014 Tom McLaughlin
 #
 class straycat::svc::puppet::master (
+  $enable_puppetdb           = true,
+  $enable_foreman            = true,
+  $foreman_url               = undef,
   $puppet_psk                = undef,
   $puppet_version            = "3.7.3-1.${::centos_pkg_release}",
   $puppetdb_terminus_version = "2.2.2-1.${::centos_pkg_release}",
@@ -36,7 +39,46 @@ class straycat::svc::puppet::master (
 ) {
 
   validate_string($puppet_psk)
-  validate_string($puppetdb_host)
+
+  if $enable_puppetdb {
+    validate_string($puppetdb_host)
+    $storeconfigs_dbadapter = 'puppetdb'
+    $puppetdb_report        = ['puppetdb']
+  } else {
+    $storeconfigs_dbadapter = undef
+    $puppetdb_report        = []
+  }
+
+  if $enable_foreman {
+    validate_string($foreman_url)
+    $foreman_report = ['foreman']
+
+    # FIXME: This is terrible.  We need a CA setup
+    # The Puppet user can't read the host's SSL key so we're going to copy it
+    # and make it avaible to the Puppet user.  This is a trade off that allows
+    # us to better secure Foreman.
+    file { '/etc/pki/tls/private/foreman.key':
+      ensure => present,
+      owner  => 'root',
+      group  => 'puppet',
+      mode   => '0640',
+      source => "file:///etc/pki/tls/private/localhost.key"
+    }
+
+    class { '::foreman::puppetmaster' :
+      foreman_url => $foreman_url,
+      enc         => true,
+      reports     => true,
+      #ssl_cert    => '/etc/pki/tls/certs/server.crt',
+      ssl_key     => '/etc/pki/tls/private/foreman.key',
+      ssl_ca      => '/etc/pki/tls/cert.pem',
+      before      => Class['::puppet::master'], # This has to be done before SSL info is overwritten.
+      require     => File['/etc/pki/tls/private/foreman.key']
+    }
+
+  } else {
+    $foreman_report = []
+  }
 
   $puppet_autosign_script = '/usr/local/bin/puppet_autosign.py'
   $puppet_act_as_ca       = true
@@ -145,9 +187,9 @@ class straycat::svc::puppet::master (
     modulepath                => '$confdir/environments/$environment/modules',
     manifest                  => '$confdir/environments/$environment/manifests/site.pp',
     proxy_allow_from          => [ 'all' ],
-    reports                   => [ 'puppetdb', 'foreman' ],
+    reports                   => concat($puppetdb_report, $foreman_report),
     storeconfigs              => true,
-    storeconfigs_dbadapter    => 'puppetdb',
+    storeconfigs_dbadapter    => $storeconfigs_dbadapter,
     storeconfigs_dbserver     => $puppetdb_host,
     puppetdb_terminus_version => $puppetdb_terminus_version,  # puppetdb-terminus package version.
     autosign                  => $puppet_autosign_script,

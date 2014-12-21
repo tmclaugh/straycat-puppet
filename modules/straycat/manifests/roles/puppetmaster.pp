@@ -25,6 +25,8 @@ class straycat::roles::puppetmaster {
 
   include stdlib
 
+  $foreman_url = 'http://foreman.straycat.local'
+
   $puppet_psk = 'FoiWssfp1wOfbdQ4'
   $puppet_puppetdb_host = 'localhost'
 
@@ -43,6 +45,7 @@ class straycat::roles::puppetmaster {
   }
 
   class { '::straycat::svc::puppet::master':
+    foreman_url   => $foreman_url,
     puppet_psk    => $puppet_psk,
     puppetdb_host => $puppet_puppetdb_host,
   }
