@@ -25,6 +25,7 @@
 # Copyright 2014 Tom McLaughlin
 #
 class straycat::svc::puppet::master (
+  $bootstrap                 = false,
   $enable_puppetdb           = true,
   $enable_foreman            = true,
   $foreman_url               = undef,
@@ -83,10 +84,23 @@ class straycat::svc::puppet::master (
     $foreman_report = []
   }
 
+  if $bootstrap {
+    file { '/etc/puppet/manifests/site.pp':
+      ensure  => present,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template('straycat/svc/puppet/bootstrap-site.pp'),
+      require => Package[$puppet_master_package],
+      before  => Service['httpd']
+    }
+  }
+
   $puppet_autosign_script = '/usr/local/bin/puppet_autosign.py'
   $puppet_act_as_ca       = true
   $puppet_central_ca      = undef
   $puppet_keys_dir        = '/etc/puppet/keys'
+  $puppet_master_package  = 'puppet-server'
 
   $hiera_key      = "${puppet_keys_dir}/${hiera_key_name}.secret.key"
 
@@ -185,7 +199,7 @@ class straycat::svc::puppet::master (
     puppet_passenger          => true,
     puppet_passenger_port     => '8140',
     package_provider          => 'yum',
-    puppet_master_package     => 'puppet-server',
+    puppet_master_package     => $puppet_master_package,
     manage_vardir             => false,
     modulepath                => '$confdir/environments/$environment/modules:$confdir/environments/$environment/modules-site',
     manifest                  => '$confdir/environments/$environment/manifests/site.pp',
