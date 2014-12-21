@@ -187,7 +187,7 @@ class straycat::svc::puppet::master (
     package_provider          => 'yum',
     puppet_master_package     => 'puppet-server',
     manage_vardir             => false,
-    modulepath                => '$confdir/environments/$environment/modules',
+    modulepath                => '$confdir/environments/$environment/modules:$confdir/environments/$environment/modules-site',
     manifest                  => '$confdir/environments/$environment/manifests/site.pp',
     proxy_allow_from          => [ 'all' ],
     reports                   => concat($puppetdb_report, $foreman_report),
