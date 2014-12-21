@@ -39,7 +39,7 @@ class straycat::os {
   }
 
   # FIXME: We should have a datacenter fact for handling this.
-  if $::domain =='straycat.local' and $::ipaddress_eth1 != undef {
+  if $::sc_datacenter =='local' and $::ipaddress_eth1 != undef {
     $hosts_addr = $::ipaddress_eth1
   } else {
     $hosts_addr = $::ipaddress_eth0
