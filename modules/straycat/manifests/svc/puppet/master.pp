@@ -75,6 +75,7 @@ class straycat::svc::puppet::master (
       before      => Class['::puppet::master'], # This has to be done before SSL info is overwritten.
       require     => File['/etc/pki/tls/private/foreman.key']
     }
+    contain '::foreman::puppetmaster'
 
   } else {
     $foreman_report = []
