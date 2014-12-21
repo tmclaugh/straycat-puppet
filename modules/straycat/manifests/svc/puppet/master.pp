@@ -44,9 +44,11 @@ class straycat::svc::puppet::master (
     validate_string($puppetdb_host)
     $storeconfigs_dbadapter = 'puppetdb'
     $puppetdb_report        = ['puppetdb']
+    $storeconfigs           = true
   } else {
     $storeconfigs_dbadapter = undef
     $puppetdb_report        = []
+    $storeconfigs           = false
   }
 
   if $enable_foreman {
@@ -189,7 +191,7 @@ class straycat::svc::puppet::master (
     manifest                  => '$confdir/environments/$environment/manifests/site.pp',
     proxy_allow_from          => [ 'all' ],
     reports                   => concat($puppetdb_report, $foreman_report),
-    storeconfigs              => true,
+    storeconfigs              => $storeconfigs,
     storeconfigs_dbadapter    => $storeconfigs_dbadapter,
     storeconfigs_dbserver     => $puppetdb_host,
     puppetdb_terminus_version => $puppetdb_terminus_version,  # puppetdb-terminus package version.
