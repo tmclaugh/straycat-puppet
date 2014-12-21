@@ -120,7 +120,7 @@ file { $::puppetmaster_conf:
     environment               = production
 
 [master]
-    modulepath                = ${master_local_dir}/modules
+    modulepath                = ${master_local_dir}/modules:${master_local_dir}/modules-site
     manifestdir               = ${master_conf_dir}/manifests
     hiera_config              = ${master_local_dir}/hiera.yaml
     environment               = production
