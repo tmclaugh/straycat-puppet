@@ -64,6 +64,7 @@ class straycat::svc::puppet::master (
   if $enable_foreman {
     validate_string($foreman_url)
     $foreman_report = ['foreman']
+    $external_nodes = '/etc/puppet/node.rb'
 
     # FIXME: This is terrible.  We need a CA setup
     # The Puppet user can't read the host's SSL key so we're going to copy it
@@ -90,6 +91,7 @@ class straycat::svc::puppet::master (
     contain '::foreman::puppetmaster'
 
   } else {
+    $external_nodes = undef
     $foreman_report = []
   }
 
@@ -219,6 +221,7 @@ class straycat::svc::puppet::master (
       master        => {
         ca              => $puppet_act_as_ca,
         node_terminus   => 'exec',
+        external_nodes  => $external_nodes,
         dns_alt_names   => "puppet.${::domain}",
         hiera_config    => '$confdir/environments/$environment/hiera.yaml',
       },
