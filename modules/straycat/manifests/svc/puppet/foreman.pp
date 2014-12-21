@@ -61,11 +61,16 @@ class straycat::svc::puppet::foreman (
     stage => setup
   }
 
-  # Does not support standalone ESXi yet.
+  # FIXME: Does not support standalone ESXi yet.
   # http://projects.theforeman.org/issues/8528
   # http://projects.theforeman.org/issues/1945
   #package { 'foreman-vmware':
   #  ensure => present
+  #}
+
+  # FIXME: package is currently broken
+  #package { 'ruby193-rubygem-puppetdb_foreman':
+  #  ensure => installed
   #}
 
   class { '::foreman' :
