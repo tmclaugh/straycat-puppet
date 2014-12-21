@@ -146,21 +146,21 @@ class straycat::svc::puppet::master (
 
 
   # PSK setup
-  #file { '/etc/puppet/puppet_psk':
-  #  ensure  => present,
-  #  owner   => 'root',
-  #  group   => 'puppet',
-  #  mode    => '0440',
-  #  content => template('straycat/puppet/puppet_psk')
-  #}
+  file { '/etc/puppet/puppet_psk':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'puppet',
+    mode    => '0440',
+    content => template('straycat/svc/puppet/puppet_psk')
+  }
 
-  #file { '/usr/local/bin/puppet_autosign.py':
-  #  ensure  => present,
-  #  owner   => 'puppet',
-  #  group   => 'puppet',
-  #  mode    => '0555',
-  #  content => template('straycat/puppet/puppet_autosign.py')
-  #}
+  file { '/usr/local/bin/puppet_autosign.py':
+    ensure  => present,
+    owner   => 'puppet',
+    group   => 'puppet',
+    mode    => '0555',
+    content => template('straycat/svc/puppet/puppet_autosign.py')
+  }
 
   # FIXME: This is here for Vagrant only.  Need to fix this later.
   exec { 'puppet-delete-temp-certs':
@@ -201,7 +201,9 @@ class straycat::svc::puppet::master (
         hiera_config    => '$confdir/environments/$environment/hiera.yaml',
       },
     },
-    require                   => Exec['puppet-create-ca']
+    require                   => [File['/etc/puppet/puppet_psk'],
+                                  File['/usr/local/bin/puppet_autosign.py'],
+                                  Exec['puppet-create-ca']]
   }
   contain '::puppet::master'
 
