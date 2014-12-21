@@ -97,6 +97,7 @@ class straycat::svc::puppet::master (
 
   if $bootstrap {
     $puppet_autosign = true
+    $manifest        = '/etc/puppet/manifests/site.pp'
 
     file { '/etc/puppet/manifests/site.pp':
       ensure  => present,
@@ -109,6 +110,7 @@ class straycat::svc::puppet::master (
     }
   } else {
     $puppet_autosign = $puppet_autosign_script
+    $manifest        = '$confdir/environments/$environment/manifests/site.pp'
   }
 
   contain ::straycat::svc::passenger
@@ -209,7 +211,7 @@ class straycat::svc::puppet::master (
     puppet_master_package     => $puppet_master_package,
     manage_vardir             => false,
     modulepath                => '$confdir/environments/$environment/modules:$confdir/environments/$environment/modules-site',
-    manifest                  => '$confdir/environments/$environment/manifests/site.pp',
+    manifest                  => $manifest,
     proxy_allow_from          => [ 'all' ],
     reports                   => concat($puppetdb_report, $foreman_report),
     storeconfigs              => $storeconfigs,
