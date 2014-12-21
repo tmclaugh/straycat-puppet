@@ -94,6 +94,8 @@ class straycat::svc::puppet::master (
   }
 
   if $bootstrap {
+    $puppet_autosign = true
+
     file { '/etc/puppet/manifests/site.pp':
       ensure  => present,
       owner   => 'root',
@@ -103,6 +105,8 @@ class straycat::svc::puppet::master (
       require => Package[$puppet_master_package],
       before  => Service['httpd']
     }
+  } else {
+    $puppet_autosign = $puppet_autosign_script
   }
 
   contain ::straycat::svc::passenger
@@ -172,7 +176,7 @@ class straycat::svc::puppet::master (
     content => template('straycat/svc/puppet/puppet_psk')
   }
 
-  file { '/usr/local/bin/puppet_autosign.py':
+  file { $puppet_autosign_script:
     ensure  => present,
     owner   => 'puppet',
     group   => 'puppet',
@@ -210,7 +214,7 @@ class straycat::svc::puppet::master (
     storeconfigs_dbadapter    => $storeconfigs_dbadapter,
     storeconfigs_dbserver     => $puppetdb_host,
     puppetdb_terminus_version => $puppetdb_terminus_version,  # puppetdb-terminus package version.
-    autosign                  => $puppet_autosign_script,
+    autosign                  => $puppet_autosign,
     puppet_extra_configs      => {
       master        => {
         ca              => $puppet_act_as_ca,
