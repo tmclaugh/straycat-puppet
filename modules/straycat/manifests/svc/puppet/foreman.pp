@@ -61,6 +61,12 @@ class straycat::svc::puppet::foreman (
     stage => setup
   }
 
+  # Does not support standalone ESXi yet.
+  # http://projects.theforeman.org/issues/8528
+  # http://projects.theforeman.org/issues/1945
+  #package { 'foreman-vmware':
+  #  ensure => present
+  #}
 
   class { '::foreman' :
     version             => $foreman_version,
