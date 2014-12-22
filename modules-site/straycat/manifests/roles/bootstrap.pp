@@ -25,9 +25,10 @@
 class straycat::roles::bootstrap {
   include stdlib
 
-  class { '::straycat::os':
-    stage => setup
-  }
+  # Not meant to be a fully functional host.
+  #class { '::straycat::os':
+  #  stage => setup
+  #}
 
   class { '::straycat::svc::puppet::master':
     bootstrap       => true,
