@@ -98,6 +98,7 @@ class straycat::svc::puppet::master (
   if $bootstrap {
     $puppet_autosign = true
     $manifest        = '/etc/puppet/manifests/site.pp'
+    $node_terminus   = undef
 
     file { '/etc/puppet/manifests/site.pp':
       ensure  => present,
@@ -111,6 +112,7 @@ class straycat::svc::puppet::master (
   } else {
     $puppet_autosign = $puppet_autosign_script
     $manifest        = '$confdir/environments/$environment/manifests/site.pp'
+    $node_terminus   = 'exec'
   }
 
   contain ::straycat::svc::passenger
@@ -222,7 +224,7 @@ class straycat::svc::puppet::master (
     puppet_extra_configs      => {
       master        => {
         ca              => $puppet_act_as_ca,
-        node_terminus   => 'exec',
+        node_terminus   => $node_terminus,
         external_nodes  => $external_nodes,
         dns_alt_names   => "puppet.${::domain}",
         hiera_config    => '$confdir/environments/$environment/hiera.yaml',
