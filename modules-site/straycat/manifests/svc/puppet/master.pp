@@ -234,12 +234,8 @@ class straycat::svc::puppet::master (
   }
   contain '::puppet::master'
 
-  file { '/etc/puppet/environments/production':
-    ensure  => directory,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-    require => Class['::puppet::master']
-  }
+
+  class { '::straycat::svc::puppet::r10k': }
+  contain '::straycat::svc::puppet::r10k'
 
 }
