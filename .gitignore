@@ -29,6 +29,7 @@ modules/concat
 modules/concat_native
 modules/firewall
 modules/foreman
+modules/git
 modules/inifile
 modules/ipa
 modules/ntp
@@ -41,4 +42,5 @@ modules/r10k
 modules/ruby
 modules/stdlib
 modules/tftp
+modules/vcsrepo
 modules/xinetd
