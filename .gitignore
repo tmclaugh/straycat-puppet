@@ -18,6 +18,8 @@ vagrant/master/
 # FIXME: remove this
 vagrant/profiles/
 vagrant/*.vdi
+
+# Environments directory
 environments
 
 # Modules
