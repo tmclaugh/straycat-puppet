@@ -116,7 +116,7 @@ class straycat::svc::puppet::master (
   contain ::straycat::svc::passenger
 
   # Hiera related
-  ensure_resource('package', 'ruby-devel')
+  #ensure_resource('package', 'ruby-devel')
   ensure_resource('package', 'gnupg2')
 
   package { 'hiera-eyaml':
