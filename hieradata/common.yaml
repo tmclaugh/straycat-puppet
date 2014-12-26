@@ -1,11 +1,11 @@
 ---
-straycat::infra::dns:
-  - 8.8.8.8
-  - 8.8.4.4
+# These values need to be reusable and hiera() lookups in here can't handle
+# arrays.
+straycat::infra::dns::ns1:        8.8.8.8
+straycat::infra::dns::ns2:        8.8.4.4
 # Used by DNS servers
-straycat::infra::dns::forwarders:
-  - 8.8.8.8
-  - 8.8.4.4
+straycat::infra::dns::forwarder1: 8.8.8.8
+straycat::infra::dns::forwarder2: 8.8.4.4
 
 straycat::infra::git:             UNSET
 
@@ -32,3 +32,7 @@ straycat::infra::puppet::master:  UNSET
 straycat::infra::puppet::db:      UNSET
 straycat::infra::time:
   - UNSET
+
+straycat::os::resolv::nameservers:
+  - "%{hiera('straycat::infra::dns::ns1')}"
+  - "%{hiera('straycat::infra::dns::ns2')}"
