@@ -28,4 +28,4 @@ straycat::infra::puppet::master:  localhost
 straycat::infra::time:
   - us.pool.ntp.org
 
-straycat::os::resolv::domain:       "%{hiera('straycat::infra::ipa::domain')}"
+straycat::os::resolv::domainname: "%{::domain}"
