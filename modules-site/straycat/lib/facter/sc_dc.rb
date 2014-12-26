@@ -8,8 +8,10 @@ Facter.add('sc_dc') do
   setcode do
     if Facter.value('domain') == 'straycat.local'
       'local'
-    else
-      'northend'
+    elsif Facter.value('domain') == 'straycat-net.lan'
+      'home'
+    elsif Facter.value('domain') =~ /.*\.straycat-net.dhs.org$/
+      Facter.value('domain').split('.')[0]
     end
   end
 end
