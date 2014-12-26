@@ -10,10 +10,13 @@ straycat::infra::dns::forwarders:
 straycat::infra::git:             UNSET
 
 straycat::infra::ipa::adminpw:    UNSET
+
+straycat::infra::ipa::domain:     UNSET
 straycat::infra::ipa::dspw:       UNSET
 straycat::infra::ipa::join_user:  UNSET
 straycat::infra::ipa::join_pass:  UNSET
 straycat::infra::ipa::master:     UNSET
+straycat::infra::ipa::realm:      UNSET
 straycat::infra::ipa::replica:
   - UNSET
   - UNSET
@@ -29,7 +32,3 @@ straycat::infra::puppet::master:  UNSET
 straycat::infra::puppet::db:      UNSET
 straycat::infra::time:
   - UNSET
-
-# Could probably use sc_domain appropriately for these values.
-straycat::infra::domain:          UNSET
-straycat::infra::realm:           UNSET
