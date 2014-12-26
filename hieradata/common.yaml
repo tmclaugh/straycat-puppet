@@ -1,7 +1,11 @@
 ---
 straycat::infra::dns:
-  - UNSET
-  - UNSET
+  - 8.8.8.8
+  - 8.8.4.4
+# Used by DNS servers
+straycat::infra::dns::forwarders:
+  - 8.8.8.8
+  - 8.8.4.4
 
 straycat::infra::git:             UNSET
 
