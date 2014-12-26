@@ -40,8 +40,7 @@ class straycat::os (
     notify  => Exec['nscd-flush-hosts']
   }
 
-  # FIXME: We should have a datacenter fact for handling this.
-  if $::sc_datacenter =='local' and $::ipaddress_eth1 != undef {
+  if $::sc_dc =='local' and $::ipaddress_eth1 != undef {
     $hosts_addr = $::ipaddress_eth1
   } else {
     $hosts_addr = $::ipaddress_eth0
