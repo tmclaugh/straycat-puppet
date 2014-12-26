@@ -1,7 +1,6 @@
 ---
 #straycat::infra::dns:
 #  - ipa-master.straycat.local
-straycat::infra::dns:domain:      "%{hiera('straycat::infra::ipa::domain')}"
 
 straycat::infra::git:             git.straycat.lan
 
@@ -28,3 +27,5 @@ straycat::infra::puppet::foreman: foreman.straycat.local
 straycat::infra::puppet::master:  localhost
 straycat::infra::time:
   - us.pool.ntp.org
+
+straycat::os::resolv::domain:       "%{hiera('straycat::infra::ipa::domain')}"
