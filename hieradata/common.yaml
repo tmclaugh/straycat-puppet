@@ -2,11 +2,22 @@
 straycat::infra::dns:
   - UNSET
   - UNSET
+
 straycat::infra::git:             UNSET
+
+straycat::infra::ipa::join_user:  UNSET
+straycat::infra::ipa::join_pass:  UNSET
+straycat::infra::ipa::master:     UNSET
+straycat::infra::ipa::replica:
+  - UNSET
+  - UNSET
+
 straycat::infra::ldap:
   - UNSET
   - UNSET
+
 straycat::infra::pgsql:           UNSET
+
 straycat::infra::puppet::foreman: UNSET
 straycat::infra::puppet::master:  UNSET
 straycat::infra::puppet::db:      UNSET
