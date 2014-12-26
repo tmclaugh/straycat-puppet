@@ -1,6 +1,7 @@
 ---
 #straycat::infra::dns:
 #  - ipa-master.straycat.local
+straycat::infra::dns:domain:      "%{hiera('straycat::infra::ipa::domain')}"
 
 straycat::infra::git:             git.straycat.lan
 
@@ -15,9 +16,10 @@ straycat::infra::ipa::replica:
   - ipa-slave-1.straycat.local
   - ipa-slave-2.straycat.local
 
-straycat::infra::ldap:
-  - ipa-slave-1.straycat.local
-  - ipa-slave-2.straycat.local
+straycat::infra::ldap: "%{hiera('straycat::infra::ipa::master')}"
+# We don't have any replicas but if we did we'd probably use them.
+#  - ipa-slave-1.straycat.local
+#  - ipa-slave-2.straycat.local
 
 straycat::infra::pgsql:           pgsql.straycat.local
 
