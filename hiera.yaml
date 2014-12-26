@@ -1,0 +1,20 @@
+---
+:backends:
+  - eyaml
+  - yaml
+
+:logger: console
+
+:hierarchy:
+  - fqdn/%{::fqdn}
+  - sc_dc/%{::sc_dc}
+  - sc_domain/%{::sc_domain}
+  - common
+
+:yaml:
+   :datadir: /etc/puppet/environments/%{environment}/live/hieradata/
+
+:eyaml:
+   :datadir: /etc/puppet/environments/%{environment}/live/hieradata/
+   :extension: 'yaml'
+   :gpg_gnupghome: /etc/puppet/keys

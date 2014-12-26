@@ -1,0 +1,15 @@
+---
+straycat::infra::dns:
+  - UNSET
+  - UNSET
+straycat::infra::foreman:       UNSET
+straycat::infra::git:           UNSET
+straycat::infra::ldap:
+  - UNSET
+  - UNSET
+straycat::infra::pupetmaster:   UNSET
+straycat::infra::time:
+  - UNSET
+
+straycat::infra::domain:        UNSET
+straycat::infra::realm:         UNSET
