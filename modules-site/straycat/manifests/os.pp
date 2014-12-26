@@ -27,6 +27,8 @@ class straycat::os (
 
   include stdlib
 
+  $ntp_hosts = hiera('straycat::infra::time')
+
 # Vagrant likes to set the hostname ot 127.0.0.1 so we need to fix this.
 # The resource below wwill not fix this.
 #  host { 'localhost':
@@ -64,7 +66,7 @@ class straycat::os (
   class { '::straycat::os::pkgrepos::epel': }
 
   class { '::ntp':
-    servers        => ['time.straycat.dhs.org'],
+    servers        => $ntp_hosts,
     service_enable => true,
     service_ensure => running,
     service_manage => true
