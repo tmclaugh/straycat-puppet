@@ -1,17 +1,17 @@
 # == Class: straycat::os
 #
-# Short description of class.
+# Basic OS setup
 #
 # === Parameters
 #
-# [*parameter*]
-#   Description of parameter and its usage.
+# [*ipa_setup*]
+#   If IPA client should be setup.  Useful for bypassing setup on IPA
+#   masters and replicas.
+#   Type: bool
 #
 # === Examples
 #
-#   class { 'class_name':
-#     parameter => 'value'
-#   }
+#   class { '::straycay::os': }
 #
 # === Authors
 #
