@@ -24,7 +24,7 @@
 class straycat::roles::dc::master {
   include stdlib
 
-  class { 'straycat::os':
+  class { '::straycat::os':
     ipa_setup => false,
     stage     => setup
   }
