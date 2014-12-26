@@ -1,10 +1,10 @@
-# === Fact: sc_datacenter
+# === Fact: sc_dc
 #
 # Name of datacenter host resides in.
 #
 require 'facter'
 
-Facter.add('sc_datacenter') do
+Facter.add('sc_dc') do
   setcode do
     if Facter.value('domain') == 'straycat.local'
       'local'
