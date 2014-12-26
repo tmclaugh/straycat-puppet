@@ -27,19 +27,13 @@ class straycat::os (
 
   include stdlib
 
-  $ntp_hosts = hiera('straycat::infra::time')
-
   class { '::straycat::os::resolv': }
 
   # repositories
   class { '::straycat::os::pkgrepos::epel': }
 
-  class { '::ntp':
-    servers        => $ntp_hosts,
-    service_enable => true,
-    service_ensure => running,
-    service_manage => true
-  }
+  class { '::straycat::os::time': }
+
 
   if $ipa_setup {
     class { '::straycat::os::ipa_client':

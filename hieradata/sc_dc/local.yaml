@@ -25,7 +25,11 @@ straycat::infra::pgsql:           pgsql.straycat.local
 straycat::infra::puppet::db:      puppetdb.straycat.local
 straycat::infra::puppet::foreman: foreman.straycat.local
 straycat::infra::puppet::master:  localhost
-straycat::infra::time:
-  - us.pool.ntp.org
+
+straycat::infra::ntp::server1:    us.pool.ntp.org
+
 
 straycat::os::resolv::domainname: "%{::domain}"
+
+straycat::os::time::ntp_servers:
+  - "%{hiera('straycat::infra::ntp::server1')}"

@@ -30,8 +30,7 @@ straycat::infra::pgsql:           UNSET
 straycat::infra::puppet::foreman: UNSET
 straycat::infra::puppet::master:  UNSET
 straycat::infra::puppet::db:      UNSET
-straycat::infra::time:
-  - UNSET
+straycat::infra::ntp::server1:    UNSET
 
 straycat::os::resolv::nameservers:
   - "%{hiera('straycat::infra::dns::ns1')}"
