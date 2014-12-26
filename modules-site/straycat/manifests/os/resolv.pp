@@ -65,6 +65,7 @@ class straycat::os::resolv (
     domainname  => $domainname,
     nameservers => $nameservers
   }
+  contain '::resolv_conf'
 
   ### cleanup
   exec { 'nscd-flush-hosts':
