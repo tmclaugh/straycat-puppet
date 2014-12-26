@@ -1,6 +1,6 @@
 ---
-straycat::infra::dns:
-  - ipa-master.straycat.local
+#straycat::infra::dns:
+#  - ipa-master.straycat.local
 
 straycat::infra::git:             git.straycat.lan
 
