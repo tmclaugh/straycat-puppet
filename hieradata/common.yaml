@@ -11,5 +11,6 @@ straycat::infra::pupetmaster:   UNSET
 straycat::infra::time:
   - UNSET
 
+# Could probably use sc_domain appropriately for these values.
 straycat::infra::domain:        UNSET
 straycat::infra::realm:         UNSET
