@@ -25,6 +25,6 @@ straycat::infra::pgsql:           pgsql.straycat.local
 
 straycat::infra::puppet::db:      puppetdb.straycat.local
 straycat::infra::puppet::foreman: foreman.straycat.local
-straycat::infra::puppet::master:  puppetmaster.straycat.local
+straycat::infra::puppet::master:  localhost
 straycat::infra::time:
   - us.pool.ntp.org
