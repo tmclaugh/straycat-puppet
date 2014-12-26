@@ -1,7 +1,4 @@
 ---
-#straycat::infra::dns:
-#  - ipa-master.straycat.local
-
 straycat::infra::git:             git.straycat.lan
 
 straycat::infra::ipa::adminpw:    InsecureAdminPW
@@ -11,14 +8,11 @@ straycat::infra::ipa::join_user:  ipa-join-user
 straycat::infra::ipa::join_pass:  InsureJoinUser
 straycat::infra::ipa::master:     ipa-master.straycat.local
 straycat::infra::ipa::realm:      STRAYCAT.LOCAL
-straycat::infra::ipa::replica:
-  - ipa-slave-1.straycat.local
-  - ipa-slave-2.straycat.local
+straycat::infra::ipa::replica1:   ipa-slave-1.straycat.local
+straycat::infra::ipa::replica2:   ipa-slave-2.straycat.local
 
-straycat::infra::ldap: "%{hiera('straycat::infra::ipa::master')}"
-# We don't have any replicas but if we did we'd probably use them.
-#  - ipa-slave-1.straycat.local
-#  - ipa-slave-2.straycat.local
+straycat::infra::ldap1: "%{hiera('straycat::infra::ipa::master')}"
+#straycat::infra::ldap2: "%{hiera('straycat::infra::ipa::replica1')}"
 
 straycat::infra::pgsql:           pgsql.straycat.local
 

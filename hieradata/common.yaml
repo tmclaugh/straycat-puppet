@@ -17,13 +17,11 @@ straycat::infra::ipa::join_user:  UNSET
 straycat::infra::ipa::join_pass:  UNSET
 straycat::infra::ipa::master:     UNSET
 straycat::infra::ipa::realm:      UNSET
-straycat::infra::ipa::replica:
-  - UNSET
-  - UNSET
+straycat::infra::ipa::replica1:   UNSET
+straycat::infra::ipa::replica2:   UNSET
 
-straycat::infra::ldap:
-  - UNSET
-  - UNSET
+straycat::infra::ldap1:           UNSET
+straycat::infra::ldap2:           UNSET
 
 straycat::infra::pgsql:           UNSET
 
