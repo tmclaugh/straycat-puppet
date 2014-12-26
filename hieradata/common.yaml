@@ -7,7 +7,9 @@ straycat::infra::git:           UNSET
 straycat::infra::ldap:
   - UNSET
   - UNSET
-straycat::infra::pupetmaster:   UNSET
+straycat::infra::pgsql:         UNSET
+straycat::infra::puppetmaster:  UNSET
+straycat::infra::puppetdb:      UNSET
 straycat::infra::time:
   - UNSET
 
