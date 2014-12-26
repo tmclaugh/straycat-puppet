@@ -21,7 +21,9 @@
 #
 # Copyright 2014 Tom McLaughlin
 #
-class straycat::os {
+class straycat::os (
+  $ipa_setup = true
+) {
 
   include stdlib
 
@@ -62,7 +64,6 @@ class straycat::os {
   # repositories
   class { '::straycat::os::pkgrepos::epel': }
 
-
   class { '::ntp':
     servers        => ['time.straycat.dhs.org'],
     service_enable => true,
@@ -70,4 +71,8 @@ class straycat::os {
     service_manage => true
   }
 
+  if $ipa_setup {
+    class { '::straycat::os::ipa_client': }
+    contain '::straycat::os::ipa_client'
+  }
 }
