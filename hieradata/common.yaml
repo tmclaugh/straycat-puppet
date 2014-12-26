@@ -2,17 +2,17 @@
 straycat::infra::dns:
   - UNSET
   - UNSET
-straycat::infra::foreman:       UNSET
-straycat::infra::git:           UNSET
+straycat::infra::git:             UNSET
 straycat::infra::ldap:
   - UNSET
   - UNSET
-straycat::infra::pgsql:         UNSET
-straycat::infra::puppetmaster:  UNSET
-straycat::infra::puppetdb:      UNSET
+straycat::infra::pgsql:           UNSET
+straycat::infra::puppet::foreman: UNSET
+straycat::infra::puppet::master:  UNSET
+straycat::infra::puppet::db:      UNSET
 straycat::infra::time:
   - UNSET
 
 # Could probably use sc_domain appropriately for these values.
-straycat::infra::domain:        UNSET
-straycat::infra::realm:         UNSET
+straycat::infra::domain:          UNSET
+straycat::infra::realm:           UNSET
