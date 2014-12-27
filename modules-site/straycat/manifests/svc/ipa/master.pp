@@ -30,6 +30,8 @@ class straycat::svc::ipa::master (
   $ipa_master_conf = {}
 ) {
 
+  validate_hash($ipa_master_conf)
+
   # FIXME: Need to add dependency ordering.
   package { 'bind':
     ensure => installed
