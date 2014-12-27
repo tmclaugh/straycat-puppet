@@ -1,21 +1,28 @@
-# == Class: class_name
+# == Class: straycat::svc::postgresql
 #
-# Short description of class.
+# Setup the PostgreSQL service
 #
 # === Parameters
 #
-# [*parameter*]
-#   Description of parameter and its usage.
+# [*pgsql_datadir*]
+#   Location of postgresql data.
+#   Type: string
+#
+# [*pgsql_listen_addressr*]
+#   Address Postgresql should listen on.
+#   Type: string
+#
+# [*pgsql_config_entries*]
+#   Additional configuration to pass to Class['::postgresql']
+#   Type: hash
 #
 # === Examples
 #
-#   class { 'class_name':
-#     parameter => 'value'
-#   }
+#   class { '::straycat::svc::postgresql': }
 #
 # === Authors
 #
-# tmclaugh@sdf.lonestar.org
+# Tom McLaughlin <tmclaugh@sdf.lonestar.org>
 #
 # === Copyright
 #
