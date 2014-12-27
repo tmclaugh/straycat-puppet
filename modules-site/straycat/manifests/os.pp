@@ -36,6 +36,7 @@ class straycat::os (
 
   class { '::straycat::os::time': }
 
+  class { '::straycat::os::puppet': }
 
   if $ipa_setup {
     class { '::straycat::os::ipa_client':
@@ -51,6 +52,7 @@ class straycat::os (
   Class['::straycat::os::resolv'] ->
   Class['::straycat::os::pkgrepos'] ->
   Class['::straycat::os::time'] ->
+  Class['::straycat::os::puppet'] ->
   Anchor['straycat::os::end']
 
 }
