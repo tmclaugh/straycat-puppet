@@ -23,6 +23,12 @@ straycat::infra::puppet::master:  localhost
 straycat::infra::ntp::server1:    us.pool.ntp.org
 
 
+straycat::os::ipa_client::ipa_domain:     "%{hiera('straycat::infra::ipa::domain')}"
+straycat::os::ipa_client::ipa_join_user:  "%{hiera('straycat::infra::ipa::join_user')}"
+straycat::os::ipa_client::ipa_join_pass:  "%{hiera('straycat::infra::ipa::join_pass')}"
+straycat::os::ipa_client::ipa_realm:      "%{hiera('straycat::infra::ipa::server')}"
+straycat::os::ipa_client::ipa_server:     "%{hiera('straycat::infra::ipa::master')}"
+
 straycat::os::resolv::domainname: "%{::domain}"
 
 straycat::os::time::ntp_servers:
