@@ -1,25 +1,52 @@
-# == Class: class_name
+# == Define: straycat::svc::postgresql::db
 #
-# Short description of class.
+# Create a DB on a pgsql host
 #
 # === Parameters
 #
-# [*parameter*]
-#   Description of parameter and its usage.
+# [*db_user*]
+#   Owner of database.
+#   Type: string
+#
+# [*db_passwd*]
+#   Password for database
+#   Type: string
+#
+# [*db_name*]
+#   Name of database; typically $name
+#   Type: string
+#
+# [*auth_method*]
+#   Auth method for owner.
+#   Type: string
+#
+# [*address*]
+#   Address oner access rule should be valid for
+#   Type: string
 #
 # === Examples
 #
-#   class { 'class_name':
-#     parameter => 'value'
-#   }
+# straycat::svc::postgresql::db { 'supercoolapp':
+#   db_user   => 'supercool',
+#   db_passwd => 'MyPasswordForThisDB'
+# }
+#
+# === BUGS
+#
+# * We have no good way of having a DB on the pgsql host being realized in
+#   time for an app on another host to work.  Right now just adding
+#   resources directly to pgsql role class but still need to make sure
+#   Puppet has run on there before new app host has been started up.
+#
+# * Authn/authz could be more robust.
 #
 # === Authors
 #
-# tmclaugh@sdf.lonestar.org
+# Tom McLaughlin <tmclaughlin@hubspot.com>
 #
 # === Copyright
 #
-# Copyright 2014 Tom McLaughlin
+# Copyright 2014 Hubspot
 #
 define straycat::svc::postgresql::db (
   $db_user,
