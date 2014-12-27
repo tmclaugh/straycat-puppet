@@ -27,6 +27,8 @@ class straycat::os (
 
   include stdlib
 
+  anchor { 'straycat::os::start': }
+
   class { '::straycat::os::resolv': }
 
   # repositories
@@ -41,4 +43,14 @@ class straycat::os (
     }
     contain '::straycat::os::ipa_client'
   }
+
+  anchor { 'straycat::os::end': }
+
+
+  Anchor['straycat::os::start'] ->
+  Class['::straycat::os::resolv'] ->
+  Class['::straycat::os::pkgrepos'] ->
+  Class['::straycat::os::time'] ->
+  Anchor['straycat::os::end']
+
 }
