@@ -38,7 +38,7 @@ Vagrant.configure('2') do |config|
       puppet.facter        = { 'noop' => 'yes' }
     end
 
-    # Normally hubspot::os would disable this but we're skipping that.
+    # Normally straycat::os would disable this but we're skipping that.
     pm.vm.provision :shell do |shell|
       shell.inline = 'service iptables stop'
     end

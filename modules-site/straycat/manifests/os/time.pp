@@ -14,11 +14,11 @@
 #
 # === Authors
 #
-# Tom McLaughlin <tmclaughlin@hubspot.com>
+# Tom McLaughlin <tmclaugh@sdf.lonestar.org>
 #
 # === Copyright
 #
-# Copyright 2014 Hubspot
+# Copyright 2014 Tom McLaughlin
 #
 class straycat::os::time (
   $ntp_servers = undef,

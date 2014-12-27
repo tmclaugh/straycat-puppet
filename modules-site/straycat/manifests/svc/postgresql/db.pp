@@ -42,11 +42,11 @@
 #
 # === Authors
 #
-# Tom McLaughlin <tmclaughlin@hubspot.com>
+# Tom McLaughlin <tmclaugh@sdf.lonestar.org>
 #
 # === Copyright
 #
-# Copyright 2014 Hubspot
+# Copyright 2014 Straycat
 #
 define straycat::svc::postgresql::db (
   $db_user     = undef,

@@ -166,7 +166,7 @@ class straycat::svc::puppet::master (
   #  refreshonly => true
   #}
 
-  #exec { "No Puppet Hiera keyring present. Retrieve key from https://ss.hubspotcentral.net/SecretView.aspx?secretid=${hiera_gpg_ss_id}":
+  #exec { "No Puppet Hiera keyring present. Retrieve key manually.":
   #  unless  => "/usr/bin/test -f ${puppet_keys_dir}/secring.gpg",
   #  command => '/bin/false',
   #  require => Exec['Import Hiera keyring']

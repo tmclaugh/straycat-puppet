@@ -49,7 +49,7 @@
 # local host so that name resolution will work.  Client's can access a
 # memcahced instance by connecting to:
 #
-# <instance_name>-<#>.hubspot.local:11211
+# <instance_name>-<#>.straycat.local:11211
 #
 Vagrant.configure('2') do |config|
   NODES = 3
