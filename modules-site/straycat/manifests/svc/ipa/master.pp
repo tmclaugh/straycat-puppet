@@ -1,21 +1,26 @@
-# == Class: class_name
+# == Class: straycat::svc::ipa::master
 #
-# Short description of class.
+# Setup a FreeIPA master host
 #
 # === Parameters
 #
-# [*parameter*]
-#   Description of parameter and its usage.
+# [*ipa_master_conf*]
+#   Hash of configuration values.
+#   Type: hash
 #
 # === Examples
 #
-#   class { 'class_name':
-#     parameter => 'value'
+#   class { '::straycat::svc::ipa::master':
+#     ipa_master_conf => { ... }
 #   }
+#
+# === BUGS
+#
+# * Get away from $ipa_master_conf and get configuration from Hiera.
 #
 # === Authors
 #
-# tmclaugh@sdf.lonestar.org
+# Tom McLaughlin <tmclaugh@sdf.lonestar.org>
 #
 # === Copyright
 #
@@ -24,7 +29,6 @@
 class straycat::svc::ipa::master (
   $ipa_master_conf = {}
 ) {
-
 
   # FIXME: Need to add dependency ordering.
   package { 'bind':
