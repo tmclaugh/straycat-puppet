@@ -1,35 +1,54 @@
 # == Class: straycat::os::ipa_client
 #
-# <One line description>
-#
-# <Expanded class description>
+# Setup IPA client
 #
 # === Parameters
 #
-# [*<paramater>*]
-#   <parameter description>
+# [*ipa_domain*]
+#   Name of IPA domain.
+#   Type: string
+#
+# [*ipa_join_user*]
+#   User to perform join operation as.
+#   Type: string
+#
+# [*ipa_join_pass*]
+#   Password of join user
+#   Type: string
+#
+# [*ipa_realm*]
+#   Nae of IPA realm.  (Typically just the domain capitalized.)
+#   Type: string
+#
+# [*ipa_server*]
+#   IPA server to perform operation against.
+#   Type: string
 #
 # === Examples
 #
-# class {'hubspot::classname':
-#   param1 => value
+# class { '::straycat::os::ipa_client':
+#   ipa_domain    => 'domain.lan'
+#   ipa_realm     => 'DOMAIN.LAN'
+#   ipa_join_user => 'join_user'
+#   ipa_join_pass => 'joinPasswd'
+#   ipa_server    => 'ipa.domain.local'
 # }
 #
 # === TODO
 #
-# * <things to do>
+# * Manage PAM, nsswitch, SSD config here?
 #
 # === BUGS
 #
-# * <known issues>
+# * Need to handle not joining to a domain.
 #
 # === Authors
 #
-# Tom McLaughlin <tmclaughlin@hubspot.com>
+# Tom McLaughlin <tmclaugh@gmail.com>
 #
 # === Copyright
 #
-# Copyright 2014 Hubspot
+# Copyright 2014 Tom McLaughlin
 #
 class straycat::os::ipa_client (
   $ipa_domain    = undef,
