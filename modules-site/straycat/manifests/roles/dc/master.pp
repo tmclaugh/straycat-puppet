@@ -1,21 +1,14 @@
-# == Class: class_name
+# == Class: straycat::roles::dc::master
 #
-# Short description of class.
-#
-# === Parameters
-#
-# [*parameter*]
-#   Description of parameter and its usage.
+# Create a FreeIPA master host.
 #
 # === Examples
 #
-#   class { 'class_name':
-#     parameter => 'value'
-#   }
+# This should be attached to a host via an ENC.
 #
 # === Authors
 #
-# tmclaugh@sdf.lonestar.org
+# Tom McLaughlin <tmclaugh@sdf.lonestar.org>
 #
 # === Copyright
 #
