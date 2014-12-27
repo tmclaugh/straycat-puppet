@@ -30,7 +30,7 @@ class straycat::os (
   class { '::straycat::os::resolv': }
 
   # repositories
-  class { '::straycat::os::pkgrepos::epel': }
+  class { '::straycat::os::pkgrepos': }
 
   class { '::straycat::os::time': }
 
