@@ -1,6 +1,6 @@
 # == Class: straycat::os::pkgrepos::centos
 #
-# Configure the upstream yum repo.
+# Configure the CentOS yum repo.
 #
 # === Parameters
 #
@@ -18,11 +18,11 @@
 #
 # === Authors
 #
-# Tom McLaughlin <tmclaughlin@hubspot.com>
+# Tom McLaughlin <tmclaugh@sdf.lonestar.org>
 #
 # === Copyright
 #
-# Copyright 2013 Hubspot
+# Copyright 2014 Tom McLaughlin
 #
 class straycat::os::pkgrepos::centos (
   $base_repo_enabled    = true,
