@@ -24,7 +24,6 @@
 #
 # Copyright 2013 Hubspot
 #
-
 class straycat::os::pkgrepos::centos (
   $base_repo_enabled    = true,
   $updates_repo_enabled = true,
