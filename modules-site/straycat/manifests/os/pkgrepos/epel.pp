@@ -1,3 +1,25 @@
+# == Class: straycat::os::pkgrepos::epel
+#
+# Configure the EPEL yum repo.
+#
+# === Parameters
+#
+# [*enabled*]
+#   If EPEL repo should be enabled.
+#   Type: bool
+#
+# === Examples
+#
+# class { '::straycat::os::pkgrepos::epel' }
+#
+# === Authors
+#
+# Tom McLaughlin <tmclaugh@sdf.lonestar.org>
+#
+# === Copyright
+#
+# Copyright 2014 Tom McLaughlin
+#
 class straycat::os::pkgrepos::epel (
   $enabled    = true,
 ) {
