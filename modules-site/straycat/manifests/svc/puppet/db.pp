@@ -1,21 +1,62 @@
-# == Class: class_name
+# == Class: straycat::svc::puppet::db
 #
-# Short description of class.
+# Setup PuppetDB
 #
 # === Parameters
 #
-# [*parameter*]
-#   Description of parameter and its usage.
+# [*puppetdb_database_host*]
+#   Hostname of SQL DB server.
+#   Type: string
+#
+# [*puppetdb_database_username*]
+#   Username to access SQL DB.
+#   Type: string
+#
+# [*puppetdb_database_password*]
+#   Password to access SQL DB.
+#   Type: string
+#
+# [*puppetdb_database_name*]
+#   Name of SQL DB.
+#   Type: string
+#
+# [*puppetdb_listen_address*]
+#   Address PuppetDB should listen on.
+#   Type: string
+#
+# [*puppetdb_node_ttl*]
+#   TTL of a node for which no report has been received.  This threshold
+#   will mark the host as inactive.
+#   Type: string
+#
+# [*puppetdb_node_purge_ttl*]
+#   TTL of a node after it's been marked as inactive and will then be
+#   purged.
+#   Type: string
+#
+# [*puppetdb_report_ttl*]
+#   TTL of reports
+#   Type: string
+#
+# [*puppetdb_ssl_listen_address*]
+#   Address PuppetDB should listen on for SSL connections
+#   Type: string
+#
+# [*puppetdb_version*]
+#   Version of PuppetDB
+#   Type: string
+#
+# [*puppetdb_extra_conf*]
+#   Extra configuration to pass to Class['::puppetdb']
+#   Type: hash
 #
 # === Examples
 #
-#   class { 'class_name':
-#     parameter => 'value'
-#   }
+#   class { '::straycat::svc::puppet::db': }
 #
 # === Authors
 #
-# tmclaugh@sdf.lonestar.org
+# Tom McLaughlin <tmclaugh@sdf.lonestar.org>
 #
 # === Copyright
 #
