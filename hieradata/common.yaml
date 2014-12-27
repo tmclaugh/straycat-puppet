@@ -1,6 +1,7 @@
 ---
-# These values need to be reusable and hiera() lookups in here can't handle
-# arrays.
+# This is infrastructure information.  Many of these values will be reused.
+# elsewhere.  The hiera looklup function in YAML files cannot handle arrays
+# so hosts should be listed individually.
 straycat::infra::dns::ns1:        8.8.8.8
 straycat::infra::dns::ns2:        8.8.4.4
 # Used by DNS servers
@@ -30,6 +31,8 @@ straycat::infra::puppet::master:  UNSET
 straycat::infra::puppet::db:      UNSET
 straycat::infra::ntp::server1:    UNSET
 
+
+# Namespaces below are classes used in the straycat module.
 straycat::os::resolv::nameservers:
   - "%{hiera('straycat::infra::dns::ns1')}"
   - "%{hiera('straycat::infra::dns::ns2')}"
