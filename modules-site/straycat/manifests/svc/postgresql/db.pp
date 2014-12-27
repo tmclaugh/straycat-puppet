@@ -49,12 +49,15 @@
 # Copyright 2014 Hubspot
 #
 define straycat::svc::postgresql::db (
-  $db_user,
-  $db_passwd,
+  $db_user     = undef,
+  $db_passwd   = undef,
   $db_name     = $name,
   $auth_method = 'md5',
   $address     = '0.0.0.0/0',
 ) {
+
+  validate_string($db_user)
+  validate_string($db_passwd)
 
   postgresql::server::db { $db_name:
     user     => $db_user,
