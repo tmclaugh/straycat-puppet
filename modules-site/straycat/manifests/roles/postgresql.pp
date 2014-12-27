@@ -1,21 +1,21 @@
-# == Class: class_name
+# == Class: straycat::roles::postgresql
 #
-# Short description of class.
-#
-# === Parameters
-#
-# [*parameter*]
-#   Description of parameter and its usage.
+# Setup a PostgreSQL server in the environment
 #
 # === Examples
 #
-#   class { 'class_name':
-#     parameter => 'value'
-#   }
+# This should be attached to a host via an ENC
+#
+# === BUGS
+#
+# * We have no good way of having a DB on the pgsql host being realized in
+#   time for an app on another host to work.  Right now just adding
+#   resources directly to pgsql role class but still need to make sure
+#   Puppet has run on there before new app host has been started up.
 #
 # === Authors
 #
-# tmclaugh@sdf.lonestar.org
+# Tom McLaughlin <tmclaugh@sdf.lonestar.org>
 #
 # === Copyright
 #
