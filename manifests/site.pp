@@ -1,5 +1,3 @@
-import "vars.pp"
-import "defines.pp"
 import "exec.pp"
 import "nodes/*.pp"
 
