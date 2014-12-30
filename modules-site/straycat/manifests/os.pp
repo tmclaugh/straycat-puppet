@@ -41,7 +41,7 @@ class straycat::os (
 
   if $ipa_setup {
     class { '::straycat::os::ipa_client':
-      require => Class['::ntp']
+      require => Class['::straycat::os::time']
     }
     contain '::straycat::os::ipa_client'
   }
