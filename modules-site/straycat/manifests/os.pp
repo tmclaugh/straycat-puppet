@@ -26,6 +26,7 @@ class straycat::os (
 ) {
 
   include stdlib
+  include concat::setup
 
   anchor { 'straycat::os::start': }
 
