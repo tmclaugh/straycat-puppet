@@ -9,6 +9,11 @@
 #   masters and replicas.
 #   Type: bool
 #
+# === Globals
+#
+# [*sc_ipa_setup*]
+#   Override $ipa_setup.  Useful for testing FreeIPA with Vagrant.
+#
 # === Examples
 #
 #   class { '::straycay::os': }
@@ -25,6 +30,8 @@ class straycat::os (
   $ipa_setup = true
 ) {
 
+  $real_ipa_setup = pick($::sc_ipa_setup, $ipa_setup)
+
   include stdlib
   include concat::setup
 
@@ -39,7 +46,7 @@ class straycat::os (
 
   class { '::straycat::os::puppet': }
 
-  if $ipa_setup {
+  if $real_ipa_setup {
     class { '::straycat::os::ipa_client':
       require => Class['::straycat::os::time']
     }
