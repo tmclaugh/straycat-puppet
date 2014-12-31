@@ -21,10 +21,9 @@ mod 'puppetlabs/git', '0.3.0'
 
 mod 'puppetlabs/inifile', '1.2.0'
 
-# has shellquote fix
 mod 'ipa',
     :git => 'https://github.com/tmclaugh/puppet-ipa.git',
-    :ref => 'master'
+    :ref => 'scmaster'
 
 mod 'puppetlabs/ntp', '3.3.0'
 
