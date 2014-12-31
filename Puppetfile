@@ -30,12 +30,10 @@ mod 'puppetlabs/ntp', '3.3.0'
 
 mod 'puppetlabs/postgresql', '4.1.0'
 
-# FIXME: replace with my own fork at some point.
 mod 'puppet',
     :git => 'https://github.com/tmclaugh/puppetlabs-puppet.git',
     :ref => 'scmaster'
 
-# FIXME: replace with my own fork at some point.
 mod 'passenger',
     :git => 'https://github.com/tmclaugh/puppetlabs-passenger.git',
     :ref => 'hsmaster'
