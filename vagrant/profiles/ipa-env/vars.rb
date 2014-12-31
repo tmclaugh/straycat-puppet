@@ -1,1 +1,0 @@
-$facter_vars = 'sc_ipa_setup=true'

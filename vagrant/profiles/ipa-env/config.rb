@@ -18,7 +18,8 @@ Vagrant.configure('2') do |config|
 
     base.vm.provision :puppet_server, id: 'default_puppet_server' do |puppet|
       puppet.options       = "--verbose --waitforcert 120"
-      puppet.facter        = { 'role' => 'straycat::roles::base'}
+      puppet.facter        = { 'role' => 'straycat::roles::base',
+                               'sc_ipa_setup' => true }
     end
   end
 end
