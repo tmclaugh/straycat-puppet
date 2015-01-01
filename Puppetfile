@@ -49,5 +49,7 @@ mod 'puppetlabs/ruby', '0.4.0'
 
 mod 'puppetlabs/stdlib', '4.4.0'
 
+mod 'saz/timezone', '3.1.1'
+
 mod 'puppetlabs/vcsrepo', '1.2.0'
 

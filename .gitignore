@@ -43,5 +43,6 @@ modules/resolv_conf
 modules/ruby
 modules/stdlib
 modules/tftp
+modules/timezone
 modules/vcsrepo
 modules/xinetd

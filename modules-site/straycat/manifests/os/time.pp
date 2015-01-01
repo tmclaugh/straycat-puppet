@@ -22,15 +22,22 @@
 #
 class straycat::os::time (
   $ntp_servers = undef,
+  $timezone    = UTC
 ) {
 
   validate_array($ntp_servers)
+
+  class { '::timezone':
+    timezone => $timezone,
+  }
+  contain '::timezone'
 
   class { '::ntp':
     servers        => $ntp_servers,
     service_enable => true,
     service_ensure => running,
-    service_manage => true
+    service_manage => true,
+    require        => Class['::timezone']
   }
   contain '::ntp'
 
