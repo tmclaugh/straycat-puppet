@@ -27,7 +27,7 @@ straycat::os::ipa_setup:                  false
 straycat::os::ipa_client::ipa_domain:     "%{hiera('straycat::infra::ipa::domain')}"
 straycat::os::ipa_client::ipa_join_user:  "%{hiera('straycat::infra::ipa::join_user')}"
 straycat::os::ipa_client::ipa_join_pass:  "%{hiera('straycat::infra::ipa::join_pass')}"
-straycat::os::ipa_client::ipa_realm:      "%{hiera('straycat::infra::ipa::server')}"
+straycat::os::ipa_client::ipa_realm:      "%{hiera('straycat::infra::ipa::realm')}"
 straycat::os::ipa_client::ipa_server:     "%{hiera('straycat::infra::ipa::master')}"
 
 straycat::os::puppet::puppet_server:  "%{hiera('straycat::infra::puppet::master')}"
