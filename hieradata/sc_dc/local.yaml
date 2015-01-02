@@ -5,8 +5,9 @@ straycat::infra::ipa::adminpw:    InsecureAdminPW
 straycat::infra::ipa::domain:     straycat.local
 straycat::infra::ipa::dspw:       InsecureDataStorePw
 straycat::infra::ipa::join_user:  ipa-join-user
-straycat::infra::ipa::join_pass:  InsureJoinUser
+straycat::infra::ipa::join_pass:  InsecureJoinUser
 straycat::infra::ipa::master:     ipa-master.straycat.local
+straycat::infra::ipa::otp:        InsecureOTP
 straycat::infra::ipa::realm:      STRAYCAT.LOCAL
 straycat::infra::ipa::replica1:   ipa-slave-1.straycat.local
 straycat::infra::ipa::replica2:   ipa-slave-2.straycat.local
@@ -27,6 +28,7 @@ straycat::os::ipa_setup:                  false
 straycat::os::ipa_client::ipa_domain:     "%{hiera('straycat::infra::ipa::domain')}"
 straycat::os::ipa_client::ipa_join_user:  "%{hiera('straycat::infra::ipa::join_user')}"
 straycat::os::ipa_client::ipa_join_pass:  "%{hiera('straycat::infra::ipa::join_pass')}"
+straycat::os::ipa_client::ipa_otp:        "%{hiera('straycat::infra::ipa::otp')}"
 straycat::os::ipa_client::ipa_realm:      "%{hiera('straycat::infra::ipa::realm')}"
 straycat::os::ipa_client::ipa_server:     "%{hiera('straycat::infra::ipa::master')}"
 
