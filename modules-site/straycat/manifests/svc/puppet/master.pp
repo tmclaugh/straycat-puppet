@@ -119,13 +119,13 @@ class straycat::svc::puppet::master (
 
   # Hiera related
   #ensure_resource('package', 'ruby-devel')
-  ensure_resource('package', 'curses-devel')
+  ensure_resource('package', 'ncurses-devel')
   ensure_resource('package', 'gnupg2')
 
   package { 'hiera-eyaml':
     ensure   => $hiera_eyaml_version,
     provider => gem,
-    require  => [Package['ruby-devel'], Package['curses-devel']],
+    require  => [Package['ruby-devel'], Package['ncurses-devel']],
     notify   => Class['::puppet::master'] # Make sure puppet service sees bumped version.
   }
 

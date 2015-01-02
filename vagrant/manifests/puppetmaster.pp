@@ -72,6 +72,10 @@ package { 'ruby-devel':
   ensure => present
 }
 
+package { 'ncurses-devel':
+  ensure => present
+}
+
 package { 'hiera':
   ensure => $real_hiera_ver,
 }
@@ -79,7 +83,7 @@ package { 'hiera':
 package { 'hiera-eyaml':
   ensure   => $real_hiera_eyaml_ver,
   provider => gem,
-  require  => [Package['hiera'], Package['ruby-devel']]
+  require  => [Package['hiera'], Package['ruby-devel'], Package['ncurses-devel']]
 }
 
 package { 'hiera-eyaml-gpg':

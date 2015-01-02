@@ -24,7 +24,7 @@ $ram = ENV['VG_RAM']                              || '1024'
 $puppet_ver          = '3.7.3-1.el6'
 $facter_ver          = '2.3.0-1.el6'
 $hiera_ver           = '1.3.4-1.el6'
-$hiera_eyaml_ver     = '2.0.2'
+$hiera_eyaml_ver     = '2.0.6'
 $hiera_eyaml_gpg_ver = '0.4'
 
 # Used for minor differences when provisioning local pupeptmaster.
