@@ -34,7 +34,7 @@ class straycat::svc::puppet::master (
   $puppetdb_terminus_version = "2.2.2-1.${::centos_pkg_release}",
   $puppetdb_host             = undef,
   $hiera_version             = "1.3.4-1.${::centos_pkg_release}",
-  $hiera_eyaml_version       = '2.0.2',
+  $hiera_eyaml_version       = '2.0.6',
   $hiera_eyaml_gpg_version   = '0.4',
   $hiera_key_name            = "puppet.${::domain}"
 ) {
@@ -119,12 +119,13 @@ class straycat::svc::puppet::master (
 
   # Hiera related
   #ensure_resource('package', 'ruby-devel')
+  ensure_resource('package', 'curses-devel')
   ensure_resource('package', 'gnupg2')
 
   package { 'hiera-eyaml':
     ensure   => $hiera_eyaml_version,
     provider => gem,
-    require  => Package['ruby-devel'],
+    require  => [Package['ruby-devel'], Package['curses-devel']],
     notify   => Class['::puppet::master'] # Make sure puppet service sees bumped version.
   }
 
