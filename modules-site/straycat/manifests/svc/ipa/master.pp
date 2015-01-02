@@ -27,10 +27,12 @@
 # Copyright 2014 Tom McLaughlin
 #
 class straycat::svc::ipa::master (
-  $ipa_master_conf = {}
+  $ipa_domain      = undef,
+  $ipa_realm       = undef,
+  $ipa_adminpw     = undef,
+  $ipa_dspw        = undef,
+  $ipa_forwarders  = [],
 ) {
-
-  validate_hash($ipa_master_conf)
 
   # FIXME: Need to add dependency ordering.
   package { 'bind':
@@ -41,6 +43,14 @@ class straycat::svc::ipa::master (
     require => Package['bind']
   }
 
-  ensure_resource('class', '::ipa', $ipa_master_conf)
+  class { '::ipa':
+    master     => true,
+    domain     => $ipa_domain,
+    realm      => $ipa_realm,
+    adminpw    => $ipa_adminpw,
+    dspw       => $ipa_dspw,
+    dns        => true,
+    forwarders => $ipa_forwarders
+  }
 
 }

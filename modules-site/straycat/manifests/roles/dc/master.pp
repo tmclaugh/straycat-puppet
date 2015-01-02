@@ -22,18 +22,8 @@ class straycat::roles::dc::master {
     stage     => setup
   }
 
-  $ipa_master_conf = {master     => true,
-                      domain     => 'straycat.local',
-                      realm      => 'STRAYCAT.LOCAL',
-                      adminpw    => 'ThisIsTheAdminPasswd',
-                      dspw       => 'NotSureWhatThisIs',
-                      dns        => true,
-                      forwarders => ['8.8.8.8', '8.8.4.4']}
-
   # FIXME: There's an error in service order.  Also an errent /etc/hosts
   # entry shows up.
-  class { '::straycat::svc::ipa::master':
-    ipa_master_conf => $ipa_master_conf,
-  }
+  class { '::straycat::svc::ipa::master': }
 
 }

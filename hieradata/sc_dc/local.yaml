@@ -38,3 +38,12 @@ straycat::os::resolv::domainname: "%{::domain}"
 
 straycat::os::time::ntp_servers:
   - "%{hiera('straycat::infra::ntp::server1')}"
+
+
+straycat::svc::ipa::master::ipa_adminpw:  "%{hiera('straycat::infra::ipa::adminpw')}"
+straycat::svc::ipa::master::ipa_domain:   "%{hiera('straycat::infra::ipa::domain')}"
+straycat::svc::ipa::master::ipa_dspw:     "%{hiera('straycat::infra::ipa::dspw')}"
+straycat::svc::ipa::master::ipa_forwarders:
+  - "%{hiera('straycat::infra::dns::forwarder1')}"
+  - "%{hiera('straycat::infra::dns::forwarder2')}"
+straycat::svc::ipa::master::ipa_realm:    "%{hiera('straycat::infra::ipa::realm')}"
