@@ -71,10 +71,10 @@ class straycat::os::ipa_client (
     loadbalance => false
   }
 
-    exec { 'ipa-join':
-      command => "ipa-client-install -U --preserve-sssd --no-ntp --enable-dns-updates --no-krb5-offline-passwords --domain=${ipa_domain} --realm=${ipa_realm} -p ${ipa_join_user} -w ${ipa_join_pass} -N --server=${ipa_server}",
-      path    => ['/usr/sbin'],
-      creates => '/etc/ipa/ca.crt',
-      before  => Service[sssd]
-    }
+  exec { 'ipa-join':
+    command => "ipa-client-install -U --preserve-sssd --no-ntp --enable-dns-updates --no-krb5-offline-passwords --domain=${ipa_domain} --realm=${ipa_realm} -p ${ipa_join_user} -w ${ipa_join_pass} -N --server=${ipa_server}",
+    path    => ['/usr/sbin'],
+    creates => '/etc/ipa/ca.crt',
+    before  => Service[sssd]
+  }
 }
