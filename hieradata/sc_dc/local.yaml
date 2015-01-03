@@ -15,7 +15,8 @@ straycat::infra::ipa::replica2:   ipa-slave-2.straycat.local
 straycat::infra::ldap1: "%{hiera('straycat::infra::ipa::master')}"
 #straycat::infra::ldap2: "%{hiera('straycat::infra::ipa::replica1')}"
 
-straycat::infra::pgsql:           pgsql.straycat.local
+straycat::infra::pgsql::host:     pgsql.straycat.local
+straycat::infra::pgsql::port:     5432
 
 straycat::infra::puppet::db:      puppetdb.straycat.local
 straycat::infra::puppet::foreman: foreman.straycat.local
@@ -47,3 +48,5 @@ straycat::svc::ipa::master::ipa_forwarders:
   - "%{hiera('straycat::infra::dns::forwarder1')}"
   - "%{hiera('straycat::infra::dns::forwarder2')}"
 straycat::svc::ipa::master::ipa_realm:    "%{hiera('straycat::infra::ipa::realm')}"
+
+straycat::svc::phppgadmin::pgsql_db_host: "%{hiera('straycat::infra::pgsql::host')}"

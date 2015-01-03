@@ -38,6 +38,9 @@ class straycat::roles::postgresql {
   }
 
   class { '::straycat::svc::postgresql': }
+  class { '::straycat::svc::phppgadmin':
+    require => Class['::straycat::svc::postgresql']
+  }
 
   ::straycat::svc::postgresql::db { $pgsql_db_name:
     db_user   => $pgsql_db_user,

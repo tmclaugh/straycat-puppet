@@ -37,6 +37,13 @@ mod 'passenger',
     :git => 'https://github.com/tmclaugh/puppetlabs-passenger.git',
     :ref => 'hsmaster'
 
+# Using apache::mod::php.
+#mod 'thias/php', '1.0.0'
+
+mod 'velaluqa/phppgadmin',
+    :git => 'https://github.com/tmclaugh/puppet-phppgadmin.git',
+    :ref => 'rhel_package'
+
 mod 'puppetlabs/puppetdb', '4.1.0'
 
 mod 'dalen/puppetdbquery', '1.5.3'

@@ -34,6 +34,8 @@ modules/inifile
 modules/ipa
 modules/ntp
 modules/passenger
+modules/php
+modules/phppgadmin
 modules/postgresql
 modules/puppet
 modules/puppetdb
