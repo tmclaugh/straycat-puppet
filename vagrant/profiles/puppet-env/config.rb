@@ -61,8 +61,8 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.define "puppetmaster" do |puppet|
-    puppet.vm.hostname = 'puppet.straycat.local'
-    puppet.hostmanager.aliases = 'puppet'
+    puppet.vm.hostname = 'puppetmaster.straycat.local'
+    puppet.hostmanager.aliases = 'puppetmaster'
     puppet.vm.network :private_network, ip: "192.168.4.12"
 
     puppet.vm.provision :puppet, id: 'default_puppet' do |p|
