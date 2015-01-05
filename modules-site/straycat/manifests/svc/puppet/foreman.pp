@@ -86,6 +86,7 @@ class straycat::svc::puppet::foreman (
     admin_password      => $foreman_admin_password,
     db_type             => $foreman_db_type,
     db_manage           => false,
+    db_setup            => true,
     db_host             => $foreman_db_host,
     db_port             => $foreman_db_port,
     db_database         => $foreman_db_database,
@@ -97,19 +98,6 @@ class straycat::svc::puppet::foreman (
     repo                => $foreman_repo,
     require             => [Class['::straycat::os::pkgrepos::foreman'],
                             Class['::straycat::os::pkgrepos::scl']],
-    notify              => [Exec['db-migrate'], Exec['db-seed']]
-  }
-
-  exec { 'db-migrate':
-    command     => '/usr/sbin/foreman-rake db:migrate',
-    refreshonly => true,
-    require     => Class['::foreman']
-  }
-
-  exec { 'db-seed':
-    command     => '/usr/sbin/foreman-rake db:seed',
-    refreshonly => true,
-    require     => [Class['::foreman'], Exec['db-migrate']]
   }
 
   cron { 'expire_reports':
