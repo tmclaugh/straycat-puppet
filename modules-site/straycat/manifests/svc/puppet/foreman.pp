@@ -54,11 +54,17 @@ class straycat::svc::puppet::foreman (
   $foreman_db_database = 'foreman'
 
   # Managing the repo on our own
+  #
+  # FIXME: Class[passenger] has float issues but anchoring broke other
+  # resource ordering.  Good times.
   class { '::straycat::os::pkgrepos::foreman':
-    stage => setup
+    stage   => setup,
+    require => Class['::straycat::os::pkgrepos']
   }
+
   class { '::straycat::os::pkgrepos::scl':
-    stage => setup
+    stage => setup,
+    require => Class['::straycat::os::pkgrepos']
   }
 
   # FIXME: Does not support standalone ESXi yet.
