@@ -9,6 +9,13 @@
 #   masters and replicas.
 #   Type: bool
 #
+# [*puppet_setup*]
+#    If the puppet agent should not be setup here.  Useful when puppet
+#    cannot be contained in tghis class without creating a circular
+#    dependency.  In those cases another class has to realize this class.
+#    ex. puppetmasters.
+#    Type: bool
+#
 # === Globals
 #
 # [*sc_ipa_setup*]
@@ -27,7 +34,8 @@
 # Copyright 2014 Tom McLaughlin
 #
 class straycat::os (
-  $ipa_setup = true
+  $ipa_setup    = true,
+  $puppet_setup = true
 ) {
 
   $real_ipa_setup = pick($::sc_ipa_setup, $ipa_setup)
@@ -44,7 +52,12 @@ class straycat::os (
 
   class { '::straycat::os::time': }
 
-  class { '::straycat::os::puppet': }
+  if $puppet_setup {
+    class { '::straycat::os::puppet':
+      require => Class['::straycat::os::time']
+    }
+    contain '::straycat::os::puppet'
+  }
 
   if $real_ipa_setup {
     class { '::straycat::os::ipa_client':
@@ -60,7 +73,6 @@ class straycat::os (
   Class['::straycat::os::resolv'] ->
   Class['::straycat::os::pkgrepos'] ->
   Class['::straycat::os::time'] ->
-  Class['::straycat::os::puppet'] ->
   Anchor['straycat::os::end']
 
 }
