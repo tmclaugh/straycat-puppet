@@ -10,7 +10,7 @@
 #
 # === Examples
 #
-# class { 'puppet_server': }
+# class { 'straycat::os::puppet': }
 #
 # === Authors
 #
@@ -21,7 +21,7 @@
 # Copyright 2014 Tom McLaughlin
 #
 class straycat::os::puppet (
-  $puppet_server  = undef,
+  $puppet_server = undef,
 ) {
 
   validate_string($puppet_server)
