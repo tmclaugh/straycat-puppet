@@ -41,6 +41,12 @@ straycat::os::time::ntp_servers:
   - "%{hiera('straycat::infra::ntp::server1')}"
 
 
+straycat::svc::puppet::foreman::foreman_admin_username: admin
+straycat::svc::puppet::foreman::foreman_admin_password: changeme
+straycat::svc::puppet::foreman::foreman_db_host:        "%{hiera('straycat::infra::pgsql::host')}"
+straycat::svc::puppet::foreman::foreman_db_username:    foreman
+straycat::svc::puppet::foreman::foreman_db_password:    MyWeakPassword
+
 straycat::svc::ipa::master::ipa_adminpw:  "%{hiera('straycat::infra::ipa::adminpw')}"
 straycat::svc::ipa::master::ipa_domain:   "%{hiera('straycat::infra::ipa::domain')}"
 straycat::svc::ipa::master::ipa_dspw:     "%{hiera('straycat::infra::ipa::dspw')}"
