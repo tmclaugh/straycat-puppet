@@ -12,9 +12,9 @@
   - common
 
 :yaml:
-   :datadir: /etc/puppet/environments/%{environment}/live/hieradata/
+   :datadir: /etc/puppet/environments/%{environment}/hieradata/
 
 :eyaml:
-   :datadir: /etc/puppet/environments/%{environment}/live/hieradata/
+   :datadir: /etc/puppet/environments/%{environment}/hieradata/
    :extension: 'yaml'
    :gpg_gnupghome: /etc/puppet/keys
