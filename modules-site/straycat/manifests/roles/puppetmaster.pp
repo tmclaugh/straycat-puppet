@@ -35,8 +35,11 @@ class straycat::roles::puppetmaster {
   }
 
   class { 'straycat::os':
-    stage => setup
+    puppet_setup => false, # Causes resource order issue due to puppetmaster
+    stage        => setup
   }
+
+  class { '::straycat::os::puppet': }
 
   class { '::straycat::svc::puppet::master':
     foreman_url   => $foreman_url,
