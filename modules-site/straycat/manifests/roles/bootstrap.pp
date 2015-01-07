@@ -32,6 +32,7 @@ class straycat::roles::bootstrap {
 
   class { '::straycat::svc::puppet::master':
     bootstrap       => true,
+    generate_ca     => true,
     puppet_psk      => '',
     enable_puppetdb => false,
     enable_foreman  => false
