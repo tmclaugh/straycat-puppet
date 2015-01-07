@@ -51,6 +51,9 @@ $vg_profile.split(',').each do |p|
   load "#{p}/vars.rb" if File.exists?("#{p}/vars.rb")
 end
 
+# Changes in namied provisioners
+Vagrant.require_version ">= 1.7.1"
+
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
@@ -188,7 +191,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     shell.inline = "yum -y install puppet-#{$puppet_ver} facter-#{$facter_ver}"
   end
 
-  config.vm.provision :puppet, id: 'default_puppet' do |puppet|
+  config.vm.provision 'default_puppet', type: 'puppet' do |puppet|
 
     puppet.facter = {
       "sc_environment"         => "qa",
@@ -222,7 +225,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     puppet.options        = "--templatedir #{VG_PUPPETMASTER_LOCAL}/vagrant/templates #{debug_flag}"
   end
 
-  config.vm.provision :puppet_server, id: 'default_puppet_server' do |puppet|
+  config.vm.provision 'default_puppet_server', type: 'puppet_server' do |puppet|
     puppet.puppet_server = "localhost"
     puppet.options       = "--verbose --waitforcert 1 #{debug_flag}"
   end

@@ -7,7 +7,7 @@ Vagrant.configure('2') do |config|
     pm.hostmanager.aliases = 'bootstrap'
     pm.vm.network :private_network, ip: "192.168.4.10"
 
-    pm.vm.provision :puppet, id: 'default_puppet' do |puppet|
+    pm.vm.provision 'default_puppet', type: 'puppet' do |puppet|
       puppet.manifest_file  = "puppetmaster.pp"
       puppet.manifests_path = PUPPET_MANIFEST_PATH
       puppet.options        = "--templatedir #{VG_PUPPETMASTER_LOCAL}/vagrant/templates"
@@ -31,7 +31,7 @@ Vagrant.configure('2') do |config|
       }
     end
 
-    pm.vm.provision :puppet_server, id: 'default_puppet_server' do |puppet|
+    pm.vm.provision 'default_puppet_server', type: 'puppet_server' do |puppet|
       puppet.puppet_server = "localhost"
       puppet.options       = "--verbose"
       puppet.facter        = { 'noop' => 'yes' }
@@ -48,12 +48,12 @@ Vagrant.configure('2') do |config|
     pgsql.hostmanager.aliases = 'pgsql'
     pgsql.vm.network :private_network, ip: "192.168.4.11"
 
-    pgsql.vm.provision :puppet, id: 'default_puppet' do |p|
+    pgsql.vm.provision 'default_puppet', type: 'puppet' do |p|
       p.manifests_path = PUPPET_MANIFEST_PATH
       p.manifest_file  = "noop.pp"
     end
 
-    pgsql.vm.provision :puppet_server, id: 'default_puppet_server' do |p|
+    pgsql.vm.provision 'default_puppet_server', type: 'puppet_server' do |p|
       p.puppet_server = "bootstrap.straycat.local"
       p.options       = "--verbose --waitforcert 1"
       p.facter        = { 'role' => 'straycat::roles::postgresql' }
@@ -65,12 +65,12 @@ Vagrant.configure('2') do |config|
     puppet.hostmanager.aliases = 'puppetmaster'
     puppet.vm.network :private_network, ip: "192.168.4.12"
 
-    puppet.vm.provision :puppet, id: 'default_puppet' do |p|
+    puppet.vm.provision 'default_puppet', type: 'puppet' do |p|
       p.manifests_path = PUPPET_MANIFEST_PATH
       p.manifest_file  = "noop.pp"
     end
 
-    puppet.vm.provision :puppet_server, id: 'default_puppet_server' do |p|
+    puppet.vm.provision 'default_puppet_server', type: 'puppet_server' do |p|
       p.puppet_server = "bootstrap.straycat.local"
       p.options       = "--verbose --waitforcert 1"
       p.facter        = { 'role'                => 'straycat::roles::puppetmaster',
@@ -86,12 +86,12 @@ Vagrant.configure('2') do |config|
     foreman.hostmanager.aliases = 'foreman'
     foreman.vm.network :private_network, ip: "192.168.4.13"
 
-    foreman.vm.provision :puppet, id: 'default_puppet' do |p|
+    foreman.vm.provision 'default_puppet', type: 'puppet' do |p|
       p.manifests_path = PUPPET_MANIFEST_PATH
       p.manifest_file  = "noop.pp"
     end
 
-    foreman.vm.provision :puppet_server, id: 'default_puppet_server' do |p|
+    foreman.vm.provision 'default_puppet_server', type: 'puppet_server' do |p|
       p.puppet_server = "bootstrap.straycat.local"
       p.options       = "--verbose --waitforcert 1"
       p.facter        = { 'role' => 'straycat::roles::foreman' }

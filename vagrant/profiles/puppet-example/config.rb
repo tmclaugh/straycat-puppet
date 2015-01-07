@@ -8,7 +8,7 @@ Vagrant.configure('2') do |config|
       shell.inline = "yum -y update $puppet_ver"
     end
 
-    pm.vm.provision :puppet, id: 'default_puppet' do |puppet|
+    pm.vm.provision 'default_puppet', type: 'puppet' do |puppet|
       puppet.manifest_file  = "puppetmaster.pp"
       puppet.manifests_path = PUPPET_MANIFEST_PATH
       puppet.options        = "--templatedir #{VG_PUPPETMASTER_LOCAL}/vagrant/templates"
@@ -32,7 +32,7 @@ Vagrant.configure('2') do |config|
       }
     end
 
-    pm.vm.provision :puppet_server, id: 'default_puppet_server' do |puppet|
+    pm.vm.provision 'default_puppet_server', type: 'puppet_server' do |puppet|
       puppet.puppet_server = "localhost"
       puppet.options       = "--verbose"
       puppet.facter        = { 'noop' => 'yes' }
@@ -48,12 +48,12 @@ Vagrant.configure('2') do |config|
     base.vm.hostname = 'base.straycat.local'
     base.vm.network :private_network, ip: "192.168.4.11"
 
-    base.vm.provision :puppet, id: 'default_puppet' do |puppet|
+    base.vm.provision 'default_puppet', type: 'puppet' do |puppet|
       puppet.manifests_path = PUPPET_MANIFEST_PATH
       puppet.manifest_file  = "noop.pp"
     end
 
-    base.vm.provision :puppet_server, id: 'default_puppet_server' do |puppet|
+    base.vm.provision 'default_puppet_server', type: 'puppet_server' do |puppet|
       puppet.puppet_server = "puppet.straycat.local"
       puppet.options       = "--verbose --waitforcert 120"
       puppet.facter        = { 'role' => 'straycat::roles::base'}

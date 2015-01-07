@@ -7,12 +7,12 @@ Vagrant.configure('2') do |config|
     puppet.hostmanager.aliases = 'puppetmaster'
     puppet.vm.network :private_network, ip: "192.168.4.11"
 
-    puppet.vm.provision :puppet, id: 'default_puppet' do |p|
+    puppet.vm.provision 'default_puppet', type: 'puppet' do |p|
       p.manifests_path = PUPPET_MANIFEST_PATH
       p.manifest_file  = "noop.pp"
     end
 
-    puppet.vm.provision :puppet_server, id: 'default_puppet_server' do |p|
+    puppet.vm.provision 'default_puppet_server', type: 'puppet_server' do |p|
     end
 
     # FIXME: Can't find git host ffrom vagrant.  Requires adding to
