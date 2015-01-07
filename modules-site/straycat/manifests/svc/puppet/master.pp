@@ -115,6 +115,7 @@ class straycat::svc::puppet::master (
     $node_terminus   = 'exec'
   }
 
+  class { '::straycat::svc::passenger': }
   contain ::straycat::svc::passenger
 
   # Hiera related
