@@ -1,4 +1,4 @@
 
 node 'default' {
-	include ::straycat::roles::basenode
+	include ::straycat::roles::base
 }
