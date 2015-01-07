@@ -22,7 +22,7 @@ class straycat::roles::puppetmaster {
   $foreman_url = 'http://foreman.straycat.local'
 
   $puppet_psk = 'FoiWssfp1wOfbdQ4'
-  $puppet_puppetdb_host = 'localhost'
+  $puppet_puppetdb_host = 'puppetmaster.straycat.local'
 
   $puppetdb_database_host     = 'pgsql.straycat.local'
   $puppetdb_database_name     = 'puppetdb'
