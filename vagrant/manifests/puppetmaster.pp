@@ -5,6 +5,7 @@
 $master_conf_dir   = $vg_puppetmaster_dir
 $master_local_dir  = $vg_puppetmaster_local
 $puppetmaster_conf = "${master_conf_dir}/puppet-vagrant.conf"
+$fileserver_conf   = "${master_conf_dir}/fileserver.conf"
 
 $real_puppet_ver          = $puppet_ver
 $real_hiera_ver           = $hiera_ver
@@ -141,6 +142,15 @@ file { $::puppetmaster_conf:
   before  => Service['puppetmaster'],
 }
 
+file { $fileserver_conf:
+  ensure  => present,
+  content => "Serve out CA to all.
+[ca]
+  path ${master_conf_dir}/ssl/ca
+  allow *
+"
+}
+
 file { [$master_conf_dir,
         "${master_conf_dir}/manifests" ]:
   ensure => directory,
@@ -166,8 +176,7 @@ file { "${master_conf_dir}/manifests/site.pp":
 }
 
 # The next two resources handle hieradata without altering hiera.yaml.
-file { ['/etc/puppet/environments',
-        "/etc/puppet/environments/${environment}"] :
+file { '/etc/puppet/environments':
   ensure => directory,
   owner  => 'root',
   group  => 'root',
@@ -175,10 +184,10 @@ file { ['/etc/puppet/environments',
   before => Service['puppetmaster']
 }
 
-file  { '/etc/puppet/environments/production/live':
+file  { '/etc/puppet/environments/production':
   ensure  => link,
   target  => '/etc/puppet-local',
-  require => File["/etc/puppet/environments/${environment}"],
+  require => File['/etc/puppet/environments'],
   before  => Service['puppetmaster']
 }
 
