@@ -144,7 +144,7 @@ file { $::puppetmaster_conf:
 
 file { $fileserver_conf:
   ensure  => present,
-  content => "Serve out CA to all.
+  content => "#Serve out CA to all.
 [ca]
   path ${master_conf_dir}/ssl/ca
   allow *
