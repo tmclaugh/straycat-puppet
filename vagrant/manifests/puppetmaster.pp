@@ -148,7 +148,9 @@ file { $fileserver_conf:
 [ca]
   path ${master_conf_dir}/ssl/ca
   allow *
-"
+",
+  require => Package['puppet-server'],
+  before  => Service['puppetmaster'],
 }
 
 file { [$master_conf_dir,
