@@ -29,6 +29,8 @@ class straycat::svc::puppet::master (
   $enable_puppetdb           = true,
   $enable_foreman            = true,
   $foreman_url               = undef,
+  $generate_ca               = false,
+  $puppet_ca_allow           = undef,
   $puppet_psk                = undef,
   $puppet_version            = "3.7.3-1.${::centos_pkg_release}",
   $puppetdb_terminus_version = "2.2.2-1.${::centos_pkg_release}",
@@ -192,19 +194,46 @@ class straycat::svc::puppet::master (
     content => template('straycat/svc/puppet/puppet_autosign.py')
   }
 
-  # FIXME: This is here for Vagrant only.  Need to fix this later.
-  exec { 'puppet-delete-temp-certs':
-    command => 'find /var/lib/puppet/ssl -type f -delete',
-    creates => '/var/lib/puppet/ssl/ca/inventory.txt',
-    path    => ['/usr/bin'],
+  if $generate_ca {
+    # FIXME: This will break things like file downloads
+    exec { 'puppet-delete-temp-certs':
+      command => 'find /var/lib/puppet/ssl -type f -delete',
+      creates => '/var/lib/puppet/ssl/ca/inventory.txt',
+      path    => ['/usr/bin'],
+    }
+
+    # FIXME: Need to handle CNAMEs below.  Fine for now.
+    exec { 'puppet-create-ca':
+      command => "puppet cert generate ${::fqdn} --dns_alt_names=${::hostname}",
+      path    => ['/usr/bin'],
+      creates => '/var/lib/puppet/ssl/ca/ca_pub.pem',
+      require => Exec['puppet-delete-temp-certs'],
+      before  => Class['::puppet::master']
+    }
+  } else {
+    # FIXME: Need to handle serving out CA directory to clients both here
+    # and in Vagrant.
+
+    # puppetmasters, including bootstrap, should allow puppetmaster.${::domain}
+    # download /var/lib/puppet/ssl
+    #
+    # Need to handle dns_alt_names while here too.
+
+    file { '/var/lib/puppet/ssl/ca':
+      ensure  => directory,
+      owner   => 'puppet',
+      group   => 'puppet',
+      mode    => '0770',
+      recurse => true,
+      source  => 'puppet:///ca',
+      before  => Class['::puppet::master']
+    }
   }
 
-  exec { 'puppet-create-ca':
-    command => 'puppet master --onetime',
-    path    => ['/usr/bin'],
-    creates => '/var/lib/puppet/ssl/ca/inventory.txt',
-    returns => [0, 1],
-    require => Exec['puppet-delete-temp-certs']
+  ::puppet::fileserver::section{ 'ca':
+    path  => '/var/lib/puppet/ssl/ca',
+    allow => $puppet_ca_allow,
+    deny  => '*'
   }
 
   class { '::puppet::master':
@@ -234,10 +263,9 @@ class straycat::svc::puppet::master (
     },
     require                   => [File['/etc/puppet/puppet_psk'],
                                   File['/usr/local/bin/puppet_autosign.py'],
-                                  Exec['puppet-create-ca']]
+                                  Puppet::Fileserver::Section['ca']]
   }
   contain '::puppet::master'
-
 
   class { '::straycat::svc::puppet::r10k': }
   contain '::straycat::svc::puppet::r10k'

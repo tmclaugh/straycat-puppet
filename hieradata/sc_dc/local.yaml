@@ -56,3 +56,6 @@ straycat::svc::ipa::master::ipa_forwarders:
 straycat::svc::ipa::master::ipa_realm:    "%{hiera('straycat::infra::ipa::realm')}"
 
 straycat::svc::phppgadmin::pgsql_db_host: "%{hiera('straycat::infra::pgsql::host')}"
+
+# This should be a lookup for the puppetmaster except in a Vagrant env.
+straycat::svc::puppet::master::puppet_ca_allow: 'puppetmaster.straycat.local'
