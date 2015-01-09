@@ -29,6 +29,7 @@ modules/concat
 modules/concat_native
 modules/firewall
 modules/foreman
+modules/foreman_proxy
 modules/git
 modules/inifile
 modules/ipa

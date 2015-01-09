@@ -17,6 +17,8 @@ mod 'foreman',
     :git => 'https://github.com/tmclaugh/puppet-foreman.git',
     :ref => 'scmaster'
 
+mod 'theforeman/foreman_proxy', '2.1.0'
+
 mod 'puppetlabs/git', '0.3.0'
 
 mod 'puppetlabs/inifile', '1.2.0'
@@ -55,6 +57,9 @@ mod 'saz/resolv_conf', '3.0.3'
 mod 'puppetlabs/ruby', '0.4.0'
 
 mod 'puppetlabs/stdlib', '4.4.0'
+
+# Needed to avoid foreman error.
+mod 'theforeman/tftp', '1.4.3'
 
 mod 'saz/timezone', '3.1.1'
 

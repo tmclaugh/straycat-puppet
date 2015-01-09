@@ -19,7 +19,7 @@ class straycat::roles::puppetmaster {
 
   include stdlib
 
-  $foreman_url = 'http://foreman.straycat.local'
+  $foreman_url = 'https://foreman.straycat.local'
 
   $puppet_psk = 'FoiWssfp1wOfbdQ4'
   $puppet_puppetdb_host = 'puppetmaster.straycat.local'
@@ -53,6 +53,12 @@ class straycat::roles::puppetmaster {
     puppetdb_database_username => $puppetdb_database_username,
     puppetdb_database_password => $puppetdb_database_password,
     require                    => Class['::straycat::svc::puppet::master']
+  }
+
+  # Don't setup until service is operational.
+  class { '::straycat::svc::puppet::foreman_proxy':
+    require => [Class['::straycat::svc::puppet::master'],
+                Class['::straycat::svc::puppet::db']]
   }
 
 }
