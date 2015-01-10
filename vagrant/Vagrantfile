@@ -30,8 +30,6 @@ $hiera_eyaml_gpg_ver = '0.4'
 # Used for minor differences when provisioning local pupeptmaster.
 $centos_major = '6'
 
-$sata_name = 'SATA Controller'
-
 if $debug != false
   debug_flag = '--debug'
 else
@@ -148,7 +146,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       (1..$inst_vols.to_i).each do |n|
         disk_path = "#{$inst_home}/data-0-#{n}-#{rand(36**12).to_s(36)}.vdi"
         vb.customize ["createhd", "--filename", disk_path, "--size", "4096"]
-        vb.customize ["storageattach", :id,  "--storagectl", "#{$sata_name}", "--port", n, "--device", 0,  "--type", "hdd", "--medium", disk_path]
+        vb.customize ["storageattach", :id,  "--storagectl", "SATA Controller", "--port", n, "--device", 0,  "--type", "hdd", "--medium", disk_path]
       end
     end
 
