@@ -151,6 +151,33 @@ vagrant up
 Bringing machine 'default' up with 'virtualbox' provider...
 </pre>
 
+### Profiles
+Some situations are more complex than the standard setup.  These include multi-machine setups, requirements to override default values, roles that require values from an ENC, etc.  For those situations profiles can be added to the _profiles_ directory.  Create a subdirectory and add either or both of the following depending on what you are trying to achieve.
+
+* config.rb
+  * Define machines
+  * Override provisioners
+* vars.rb
+  * Overrides global variables in [_Vagrantfile_](https://github.com/tmclaugh/straycat-puppet/blob/production/vagrant/Vagrantfile)
+
+<pre>
+[tmclaughlin@tomcat vagrant]$ rake vagrant:up[ipa] profile=ipa-env
+Checking instance defaults
+Checking instance defaults
+Checking for plugin: vagrant-vbguest
+vagrant plugin list | grep vagrant-vbguest
+vagrant-vbguest (0.10.0)
+Checking for plugin: vagrant-hostmanager
+vagrant plugin list | grep vagrant-hostmanager
+vagrant-hostmanager (1.5.0)
+
+
+Starting instance with:
+role:           base
+branch:         false
+profile:        ipa-env
+</pre>
+
 ## Interacting with an instance
 
 After the host has finished provisioning SSH into the host
