@@ -33,6 +33,7 @@ modules/foreman_proxy
 modules/git
 modules/inifile
 modules/ipa
+modules/java
 modules/ntp
 modules/passenger
 modules/php

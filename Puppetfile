@@ -27,6 +27,8 @@ mod 'ipa',
     :git => 'https://github.com/tmclaugh/puppet-ipa.git',
     :ref => 'scmaster'
 
+mod 'puppetlabs/java', '1.2.0'
+
 mod 'puppetlabs/ntp', '3.3.0'
 
 mod 'puppetlabs/postgresql', '4.1.0'
