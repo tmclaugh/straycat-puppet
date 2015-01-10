@@ -12,7 +12,7 @@ $hostname = ENV['VG_HOSTNAME']                    || "%s.straycat.local" % $inst
 $puppet_clone = ENV['VG_PUPPET_CLONE']            || $inst_home.split(File::SEPARATOR)[0..-2].join(File::SEPARATOR)
 $ssh_private_key = ENV['VG_SSH_PRIVATE_KEY']      || "%s/vagrant/straycat_vagrant_rsa" % $puppet_clone
 $vg_puppetmaster_dir = ENV['VG_PUPPETMASTER_DIR'] || "/etc/puppetmaster"
-$facter_vars = ENV['VG_FACTER_VARS']              || ''
+$facter_vars = ENV['VG_FACTER_VARS']              || '' # "key1=val1;key2=val2a,val2b;key3=val3"
 $vg_gui = ENV['VG_GUI']                           || false
 $inst_vols = ENV['VG_INST_VOLS']                  || '1'
 $ebs_vols = ENV['VG_EBS_VOLS']                    || '0'
@@ -211,8 +211,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       "centos_major"           => $centos_major
     }
 
-    # This should be a string in the form:
-    # "key1=val1;key2=val2a,val2b;key3=val3"
     if defined? $facter_vars
       facter_extra = $facter_vars
       puppet.facter['facter_extra'] = facter_extra
