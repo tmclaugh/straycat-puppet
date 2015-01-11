@@ -106,8 +106,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
   #
+  # Virtualbox
   config.vm.provider :virtualbox do |vb|
   #   # Don't boot with headless mode
   #   vb.gui = true
@@ -126,15 +126,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # Disable USB 2.0 which requires the VBox extensions pack.
     vb.customize ["modifyvm", :id, "--usbehci", "off"]
-
-    # Remove floppy and IDE controllers
-    # FIXME: Commented out for CentOS 7 box which properly lacks a floppy
-    # and CD.  Next CentOS 6 image will lack a floppy.  Need to see how this
-    # effects the existing 6 build.
-    #
-    # Should also look at removeing the IDE controller too.
-    #vb.customize ["storagectl", :id, "--name", "Floppy", "--remove"]
-    #vb.customize ["storagectl", :id, "--name", "IDE", "--remove"]
 
   #   # Use VBoxManage to customize the VM. For example to change memory:
     vb.customize ["modifyvm", :id, "--memory", "#{$ram}"]
