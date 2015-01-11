@@ -1,8 +1,6 @@
 ---
 straycat::infra::git:             git.straycat.lan
 
-straycat::infra::cassandra::seed::1:  127.0.0.1
-
 straycat::infra::ipa::adminpw:    InsecureAdminPW
 straycat::infra::ipa::domain:     straycat.local
 straycat::infra::ipa::dspw:       InsecureDataStorePw
@@ -43,8 +41,6 @@ straycat::os::time::ntp_servers:
   - "%{hiera('straycat::infra::ntp::server1')}"
 
 
-straycat::svc::cassandra::cassandra_seeds:
-  - "%{hiera('straycat::infra::cassandra::seed::1')}"
 straycat::svc::cassandra::cluster_name:                 'localTest'
 
 straycat::svc::puppet::foreman::foreman_admin_username: admin

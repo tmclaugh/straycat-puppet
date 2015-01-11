@@ -50,7 +50,7 @@
 class straycat::svc::cassandra (
   $cluster_name           = undef,
   $cassandra_package_name = 'dsc21',
-  $cassandra_seeds        = undef,
+  $cassandra_seeds        = [$::ipaddress_eth0],
   $cassandra_version      = '2.1.2-1',
 ) {
 
