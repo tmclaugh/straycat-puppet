@@ -1,0 +1,7 @@
+# An example Hiera based setup for Cassandra.
+---
+straycat::infra::cassandra::seed::1:  "%{::ipaddress_eth0}"
+
+straycat::svc::cassandra::cassandra_seeds:
+  - "%{hiera('straycat::infra::cassandra::seed::1')}"
+

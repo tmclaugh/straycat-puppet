@@ -41,6 +41,8 @@ straycat::os::time::ntp_servers:
   - "%{hiera('straycat::infra::ntp::server1')}"
 
 
+straycat::svc::cassandra::cluster_name:                 'localTest'
+
 straycat::svc::puppet::foreman::foreman_admin_username: admin
 straycat::svc::puppet::foreman::foreman_admin_password: changeme
 straycat::svc::puppet::foreman::foreman_db_host:        "%{hiera('straycat::infra::pgsql::host')}"
