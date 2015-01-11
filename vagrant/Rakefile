@@ -18,7 +18,7 @@ PUPPET_CLONE  = VG_ROOT.split(File::SEPARATOR)[0..-2].join(File::SEPARATOR)
 VAGRANTFILE   = '%s/Vagrantfile' % VG_ROOT
 INSTANCE_ROOT = '%s/instance' % VG_ROOT
 DEFAULT_ROLE  = 'base'
-PLUGINS       = ['vagrant-vbguest', 'vagrant-hostmanager']
+PLUGINS       = ['vagrant-vbguest', 'vagrant-hostmanager', 'vagrant-aws']
 ROLE_PREFIX   = 'straycat::roles'
 
 commands = {

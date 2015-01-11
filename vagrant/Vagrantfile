@@ -6,8 +6,6 @@ $vg_role = ENV['VG_ROLE']                         || "straycat::roles::base"
 $vg_profile = ENV['VG_PROFILE']                   || ''
 $inst_home = ENV['VG_INST_HOME']                  || File.dirname(__FILE__)
 $inst_name = ENV['VG_INST_NAME']                  || $inst_home.split(File::SEPARATOR)[-1]
-$vm_box =  ENV['VG_VM_BOX']                       || 'CentOS-6.6-x86_64-20150110134049'
-$vm_box_site = ENV['VG_VM_BOX_SITE']              || 'https://s3.amazonaws.com/straycat.dhs.org/os-images/vagrant'
 $hostname = ENV['VG_HOSTNAME']                    || "%s.straycat.local" % $inst_name
 $puppet_clone = ENV['VG_PUPPET_CLONE']            || $inst_home.split(File::SEPARATOR)[0..-2].join(File::SEPARATOR)
 $ssh_private_key = ENV['VG_SSH_PRIVATE_KEY']      || "%s/vagrant/straycat_vagrant_rsa" % $puppet_clone
@@ -19,6 +17,17 @@ $ebs_vols = ENV['VG_EBS_VOLS']                    || '0'
 $debug = ENV['DEBUG']                             || false
 $cpu = ENV['VG_CPU']                              || '1'
 $ram = ENV['VG_RAM']                              || '1024'
+
+$vm_box =  ENV['VG_VM_BOX']                       || 'CentOS-6.6-x86_64-20150110134049'
+$vm_box_site = ENV['VG_VM_BOX_SITE']              || 'https://s3.amazonaws.com/straycat.dhs.org/os-images/vagrant'
+
+$aws_access_key = ENV['AWS_ACCESS_KEY']
+$aws_secret_key = ENV['AWS_SECRET_KEY']
+$aws_keypair_name = 'straycat'
+$aws_region = 'us-east-1'
+$aws_ami = 'ami-3270035a'
+$aws_user = 'root'
+$aws_private_key = "#{ENV['HOME']}/.ssh/straycat.pem"
 
 # Default puppet versions. Override from profiles if needed.
 $puppet_ver          = '3.7.3-1.el6'
@@ -151,6 +160,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
     end
   end
+
+
+  # AWS provider
+  config.vm.provider :aws do |aws, override|
+    aws.access_key_id = $aws_access_key
+    aws.secret_access_key = $aws_secret_key
+    aws.keypair_name = $aws_keypair_name
+    aws.ami = $aws_ami
+
+    override.ssh.username = $aws_user
+    override.ssh.private_key_path = $aws_private_key
+
+    override.vm.box = "#{$vm_box}-aws"
+    override.vm.box_url = "#{$inst_home}/../../aws_box/#{$vm_box}-aws.box"
+  end
+
+
   #
   # View the documentation for the provider you're using for more
   # information on available options.
