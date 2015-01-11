@@ -52,12 +52,20 @@ class straycat::svc::cassandra (
   validate_string($cluster_name, $cassandra_version)
   validate_array($cassandra_seeds)
 
+  # Class[::cassandra] defaults to 0.0.0.0 but service start fails because
+  # broadcast_rpc_address cannot be a broadcast.  Class does not provide the
+  # ability to alter that value.  Rather than fork module set the
+  # rpc_address to eth0 for now till there's a reason to handle multiple
+  # interfaces.
+  $rpc_address = $::ipaddress_eth0
+
   class { '::straycat::os::java': }
   contain ::straycat::os::java
 
   class { '::cassandra':
     cluster_name => $cluster_name,
     package_name => $cassandra_package_name,
+    rpc_address  => $rpc_address,
     seeds        => $cassandra_seeds,
     version      => $cassandra_version
   }
