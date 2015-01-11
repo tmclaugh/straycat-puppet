@@ -64,14 +64,39 @@ class straycat::svc::cassandra (
   # interfaces.
   $rpc_address = $::ipaddress_eth0
 
+  # Prevent OOM in low memory situations.
+  #
+  # Cassandra environment script does its own calculations but in low memory
+  # situation was still OOMing.  Eventually we should tune for larger systems
+  # but for now let's get working.
+  #
+  if $::memorysize_mb < 2500 {
+    # Still very close to limit especially when Puppet runs.
+    $max_heap_size_val   = $::memorysize_mb / 2.5
+    # Next two lines are a poor man's int()
+    $max_heap_size_array = split("${max_heap_size_val}", '\.')
+    $max_heap_size_int   = $max_heap_size_array[0]
+    $max_heap_size       = "${max_heap_size_int}M"
+
+    # Must be set if $max_heap_size is set.  Below is how Cassandra
+    # calculates the value.
+    $heap_newsize_val  = 100 * $::processorcount
+    $heap_newsize      = "${heap_newsize_val}M"
+  } else {
+    $max_heap_size = undef
+    $heap_new_size = undef
+  }
+
   ensure_resource('class', '::straycat::os::java')
 
   class { '::cassandra':
-    cluster_name => $cluster_name,
-    package_name => $cassandra_package_name,
-    rpc_address  => $rpc_address,
-    seeds        => $cassandra_seeds,
-    version      => $cassandra_version,
-    require      => Class['::straycat::os::java']
+    cluster_name  => $cluster_name,
+    max_heap_size => $max_heap_size,
+    heap_newsize  => $heap_newsize,
+    package_name  => $cassandra_package_name,
+    rpc_address   => $rpc_address,
+    seeds         => $cassandra_seeds,
+    version       => $cassandra_version,
+    require       => Class['::straycat::os::java']
   }
 }
