@@ -13,6 +13,14 @@
 #   which must correspond with the value of $cassandra_version.
 #   Type: string
 #
+# [*cassandra_rpc_address*]
+#   Class[::cassandra] defaults to 0.0.0.0 but service start fails because
+#   broadcast_rpc_address cannot be a broadcast.  Class does not provide the
+#   ability to alter that value.  Rather than fork module set the
+#   rpc_address to eth0 for now till there's a reason to handle multiple
+#   interfaces.
+#   Type: string
+#
 # [*cassandra_seeds*]
 #   Array of IPs that are cluster seeds.
 #   NOTE: This must be IPs, not hostnames.
@@ -54,21 +62,16 @@
 # Copyright 2015 Tom McLaughlin
 #
 class straycat::svc::cassandra (
-  $cluster_name           = undef,
-  $cassandra_package_name = 'dsc21',
-  $cassandra_seeds        = [$::ipaddress_eth0],
-  $cassandra_version      = '2.1.2-1',
+  $cluster_name             = undef,
+  $cassandra_listen_address = $::ipaddress_eth0,
+  $cassandra_package_name   = 'dsc21',
+  $cassandra_rpc_address    = $::ipaddress_eth0,
+  $cassandra_seeds          = [$::ipaddress_eth0],
+  $cassandra_version        = '2.1.2-1',
 ) {
 
   validate_string($cluster_name, $cassandra_version)
   validate_array($cassandra_seeds)
-
-  # Class[::cassandra] defaults to 0.0.0.0 but service start fails because
-  # broadcast_rpc_address cannot be a broadcast.  Class does not provide the
-  # ability to alter that value.  Rather than fork module set the
-  # rpc_address to eth0 for now till there's a reason to handle multiple
-  # interfaces.
-  $rpc_address = $::ipaddress_eth0
 
   # Prevent OOM in low memory situations.
   #
@@ -96,13 +99,14 @@ class straycat::svc::cassandra (
   ensure_resource('class', '::straycat::os::java')
 
   class { '::cassandra':
-    cluster_name  => $cluster_name,
-    max_heap_size => $max_heap_size,
-    heap_newsize  => $heap_newsize,
-    package_name  => $cassandra_package_name,
-    rpc_address   => $rpc_address,
-    seeds         => $cassandra_seeds,
-    version       => $cassandra_version,
-    require       => Class['::straycat::os::java']
+    cluster_name   => $cluster_name,
+    max_heap_size  => $max_heap_size,
+    heap_newsize   => $heap_newsize,
+    listen_address => $cassandra_listen_address,
+    package_name   => $cassandra_package_name,
+    rpc_address    => $cassandra_rpc_address,
+    seeds          => $cassandra_seeds,
+    version        => $cassandra_version,
+    require        => Class['::straycat::os::java']
   }
 }
