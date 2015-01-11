@@ -34,6 +34,11 @@
 # * Figure out how to do overrides for cluster name and seeds.  Hiera? ENC?
 #   both?
 #
+# === FIXME:
+#
+# * Cassandra wants Oracle Java but we only have OpenJDK.  With a mirror in
+#   place we'd be able to provide that package.
+#
 # === Authors
 #
 # Tom McLaughlin <tmclaugh@sdf.lonestar.org>
