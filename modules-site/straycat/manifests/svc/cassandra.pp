@@ -34,6 +34,12 @@
 # * Figure out how to do overrides for cluster name and seeds.  Hiera? ENC?
 #   both?
 #
+# * Come up with a better way of handling multi interface hosts.  This
+#   is an issue with Vagrant clusters which communicate over eth1.  Right
+#   now using a cluster name in Hiera to handle this.
+#
+# * Add monitoring and metrics reporting.
+#
 # === FIXME:
 #
 # * Cassandra wants Oracle Java but we only have OpenJDK.  With a mirror in
