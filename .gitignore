@@ -24,6 +24,7 @@ environments
 modules/alternatives
 modules/apache
 modules/apt
+modules/cassandra
 modules/catalog_diff
 modules/concat
 modules/concat_native

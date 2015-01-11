@@ -5,6 +5,8 @@ mod 'puppetlabs/apache', '1.2.0'
 
 mod 'puppetlabs/apt', '1.7.0'
 
+mod 'msimonin/cassandra', '0.7.2'
+
 mod 'ripienaar/catalog_diff', '0.2.0'
 
 mod 'puppetlabs/concat', '1.1.2'
