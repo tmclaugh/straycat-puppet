@@ -64,14 +64,14 @@ class straycat::svc::cassandra (
   # interfaces.
   $rpc_address = $::ipaddress_eth0
 
-  class { '::straycat::os::java': }
-  contain ::straycat::os::java
+  ensure_resource('class', '::straycat::os::java')
 
   class { '::cassandra':
     cluster_name => $cluster_name,
     package_name => $cassandra_package_name,
     rpc_address  => $rpc_address,
     seeds        => $cassandra_seeds,
-    version      => $cassandra_version
+    version      => $cassandra_version,
+    require      => Class['::straycat::os::java']
   }
 }
