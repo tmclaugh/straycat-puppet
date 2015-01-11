@@ -4,22 +4,17 @@
 #
 # === Parameters
 #
-# [*<paramater>*]
-#   <parameter description>
+# [*java_vendor*]
+#   Vendor package to use.
+#   Type: string
 #
 # === Examples
 #
-# class { 'hubspot::classname':
-#   param1 => value
-# }
+# class { '::straycat::os::java': }
 #
-# === TODO
+# === FIXME
 #
-# * <things to do>
-#
-# === BUGS
-#
-# * <known issues>
+# * need to host our own Oracle JDK package at some point to make that work.
 #
 # === Authors
 #
@@ -29,10 +24,27 @@
 #
 # Copyright 2015 Tom McLaughlin
 #
-class straycat::os::java {
+class straycat::os::java (
+  $java_vendor = 'openjdk'
+){
+
+  validate_re($java_vendor, '^(openjdk|oracle)$')
+
+  if $java_vendor == 'openjdk' {
+    $java_package = 'java-1.7.0-openjdk'
+    # I don't want to get into games with upstream regarding package
+    # revisions.  If this becomes an issue we can host our own and peg the
+    # version.
+    $java_version = undef
+  } else {
+    #Oracle
+    $java_package = 'jdk'
+    $java_version = '1.7.0_71-fcs'
+  }
 
   class { '::java':
-    distribution => 'jre'
+    package => $java_package,
+    version => $java_version
   }
 
 }
