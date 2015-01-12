@@ -28,8 +28,7 @@ $aws_secret_key = ENV['AWS_SECRET_KEY']
 $aws_keypair_name = 'straycat'
 $aws_region = 'us-east-1'
 $aws_ami = 'ami-3270035a'
-$aws_user = 'root'  # vagrant user caused failure because I believe the
-                    # SSH connection succeeded before cloud-init.
+$aws_user = 'root'
 $aws_private_key = "#{ENV['HOME']}/.ssh/straycat.pem"
 $aws_user_data_file = "#{$inst_home}/../../aws_box/user_data.txt.erb"
 
