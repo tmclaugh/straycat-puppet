@@ -31,7 +31,7 @@ $aws_ami = 'ami-3270035a'
 $aws_user = 'root'  # vagrant user caused failure because I believe the
                     # SSH connection succeeded before cloud-init.
 $aws_private_key = "#{ENV['HOME']}/.ssh/straycat.pem"
-$aws_user_data_file = "#{$inst_home}/../../aws_box/user_data.txt"
+$aws_user_data_file = "#{$inst_home}/../../aws_box/user_data.txt.erb"
 
 # Default puppet versions. Override from profiles if needed.
 $puppet_ver          = '3.7.3-1.el6'
