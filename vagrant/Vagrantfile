@@ -28,6 +28,7 @@ $aws_region = 'us-east-1'
 $aws_ami = 'ami-3270035a'
 $aws_user = 'root'
 $aws_private_key = "#{ENV['HOME']}/.ssh/straycat.pem"
+$aws_user_data_file = "#{$inst_home}/../../aws_box/user_data.txt"
 
 # Default puppet versions. Override from profiles if needed.
 $puppet_ver          = '3.7.3-1.el6'
@@ -171,9 +172,24 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     override.ssh.username = $aws_user
     override.ssh.private_key_path = $aws_private_key
+    # Needed or else sudo fails.
+    #
+    # NOTE: Fails when rsyncing files from shared folder.
+    #override.ssh.pty = true
 
     override.vm.box = "#{$vm_box}-aws"
     override.vm.box_url = "#{$inst_home}/../../aws_box/#{$vm_box}-aws.box"
+
+
+    # See below for ideas on using aws.user_data
+    # https://github.com/mitchellh/vagrant/issues/1482
+    #
+    # We'll handle sudo' tty issues this way.
+
+    # File.read() is run everytime but user_data_file path is not correct
+    # until the instance is created.
+
+    aws.user_data = File.read($aws_user_data_file) if File.exists?($aws_user_data_file)
   end
 
 

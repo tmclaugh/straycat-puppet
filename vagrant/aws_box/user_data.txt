@@ -1,0 +1,11 @@
+#cloud-config
+#
+# Disable tty requirement so remote commands work.
+#
+write_files:
+-   path: /etc/sudoers.d/999-vagrant-cloud-init-requiretty
+    permissions: 440
+    content: |+
+        # Disable requiretty so remote commands work
+        Defaults: root !requiretty
+        # Must preserver a newline after this for sudo fails.
