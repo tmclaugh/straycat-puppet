@@ -2,6 +2,8 @@
 # vi: set ft=ruby :
 #
 
+require 'erb'
+
 $vg_role = ENV['VG_ROLE']                         || "straycat::roles::base"
 $vg_profile = ENV['VG_PROFILE']                   || ''
 $inst_home = ENV['VG_INST_HOME']                  || File.dirname(__FILE__)
@@ -26,7 +28,8 @@ $aws_secret_key = ENV['AWS_SECRET_KEY']
 $aws_keypair_name = 'straycat'
 $aws_region = 'us-east-1'
 $aws_ami = 'ami-3270035a'
-$aws_user = 'root'
+$aws_user = 'root'  # vagrant user caused failure because I believe the
+                    # SSH connection succeeded before cloud-init.
 $aws_private_key = "#{ENV['HOME']}/.ssh/straycat.pem"
 $aws_user_data_file = "#{$inst_home}/../../aws_box/user_data.txt"
 
@@ -189,7 +192,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # File.read() is run everytime but user_data_file path is not correct
     # until the instance is created.
 
-    aws.user_data = File.read($aws_user_data_file) if File.exists?($aws_user_data_file)
+    aws.user_data = ERB.new(File.read($aws_user_data_file)).result if File.exists?($aws_user_data_file)
   end
 
 

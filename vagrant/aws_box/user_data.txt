@@ -1,8 +1,9 @@
+#
 #cloud-config
 #
 # Disable tty requirement so remote commands work.
 #
 runcmd:
-    - echo 'Defaults: root !requiretty' > /etc/sudoers.d/999-vagrant-cloud-init-requiretty
+    - echo 'Defaults: <%= $aws_user %> !requiretty' > /etc/sudoers.d/999-vagrant-cloud-init-requiretty
     - chmod 0440 /etc/sudoers.d/999-vagrant-cloud-init-requiretty
     - chown root:root /etc/sudoers.d/999-vagrant-cloud-init-requiretty
