@@ -1,6 +1,6 @@
 #cloud-config
 #
-# "cloud-init" has to be the first line in the file or this fails to run.
+# "cloud-config" has to be the first line in the file or this fails to run.
 #
 runcmd:
     - [sh, -xc, "echo 'Defaults: <%= $aws_user %> !requiretty' > /etc/sudoers.d/999-vagrant-cloud-init-requiretty"]
