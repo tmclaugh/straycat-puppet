@@ -14,7 +14,6 @@ Puppetfile.lock*
 # Vagrant
 vagrant/.vagrant
 vagrant/instance/
-vagrant/master/
 vagrant/*.vdi
 
 # Environments directory
