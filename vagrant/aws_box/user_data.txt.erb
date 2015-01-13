@@ -1,0 +1,18 @@
+#cloud-config
+#
+# "cloud-config" has to be the first line in the file or this fails to run.
+#
+runcmd:
+    - [sh, -xc, "echo 'Defaults: <%= $aws_user %> !requiretty' > /etc/sudoers.d/999-vagrant-cloud-init-requiretty"]
+    - chmod 0440 /etc/sudoers.d/999-vagrant-cloud-init-requiretty
+    - chown root:root /etc/sudoers.d/999-vagrant-cloud-init-requiretty
+hostname: <%= $hostname %>
+fqdn:     <%= $hostname %>
+
+users:
+    - name: <%= $aws_user %>
+      gecos: Vagrant User
+      lock-passwd: true
+      sudo: ALL=(ALL) NOPASSWD:ALL
+      ssh-authorized-keys:
+        - <%= $aws_authorized_key_data %>

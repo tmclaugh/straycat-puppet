@@ -38,6 +38,16 @@ The Rakefile wrapper provides:
 * The ability to use multiple instances at once.
   * NOTE: instances do not yet know when the host's Puppet tree has changed branches.
 
+### Arguments
+Rake tasks can take arguments in the form of _'arg=value'_.  The Vagrant wrapper supports the following arguments:
+
+* role:     Name of role class under _straycat::roles_.
+* branch:   Branch Puppet should be on. Providing this will ensure that the clone id on the correct branch and that the correct modules are installed.
+* profile:  Name of profile to use.  Profiles are under [_profile/_](https://github.com/tmclaugh/straycat-puppet/vagrant/profiles)
+* provider: Name of provider.  Currently _virtualbox_ (default) and _aws_ are supported.
+
+_Ex. $ rake vagrant:init[test-foobar] branch=fix_foobar_ordering profile=foobar_
+
 ## Starting an instance
 The following command will setup a new instance of the given name (_test-instance_).  It will only setup the instance and not start a guest.  By default every time the instance is spun up it will have "straycat::role::base" and the wrapper will not perform any Git branch checking.
 

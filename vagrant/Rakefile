@@ -1,11 +1,18 @@
 # Rake wrapper around Vagrant.
 #
 # The intended usage is as follows
-# $ rake vagrant:init[<branch_name>]
+# $ rake vagrant:init[<instance_name>]
 #
-# This will create a vagrant instance named <branch_name>.  It will also
-# ensure that the puppet tree is on the same branch and that modules have
-# been initialized.
+# Arguments:
+# - role:     Name of role class under straycat::roles
+# - branch:   Branch Puppet should be on. Providing this will ensure that
+#             the clone id on the correct branch and that the correct
+#             modules are installed.
+# - profile:  Name of profile to use.  Profiles are under profile/
+# - provider: Name of provider.  Currently virtualbox (default) and aws are
+#             supported
+#
+# $ rake vagrant:init[<instance_name>] branch=fix_foo role=bar
 #
 # TODO
 # - daemon to check if puppet modules have changed branch and stop agent on
@@ -13,13 +20,14 @@
 # - `vagrant up` has the ability to instantiate a host without running
 #   provisioners which may be useful to us.
 #
-VG_ROOT       = File.dirname(__FILE__)
-PUPPET_CLONE  = VG_ROOT.split(File::SEPARATOR)[0..-2].join(File::SEPARATOR)
-VAGRANTFILE   = '%s/Vagrantfile' % VG_ROOT
-INSTANCE_ROOT = '%s/instance' % VG_ROOT
-DEFAULT_ROLE  = 'base'
-PLUGINS       = ['vagrant-vbguest', 'vagrant-hostmanager']
-ROLE_PREFIX   = 'straycat::roles'
+VG_ROOT          = File.dirname(__FILE__)
+PUPPET_CLONE     = VG_ROOT.split(File::SEPARATOR)[0..-2].join(File::SEPARATOR)
+VAGRANTFILE      = '%s/Vagrantfile' % VG_ROOT
+INSTANCE_ROOT    = '%s/instance' % VG_ROOT
+DEFAULT_ROLE     = 'base'
+PLUGINS          = ['vagrant-vbguest', 'vagrant-hostmanager', 'vagrant-aws']
+ROLE_PREFIX      = 'straycat::roles'
+DEFAULT_PROVIDER = 'virtualbox'
 
 commands = {
   :git              => 'git',
@@ -104,6 +112,15 @@ namespace :vagrant do
     end
     config['profile'] = profile
 
+    if ENV['provider']
+      provider = ENV['provider']
+    elsif defined? PROVIDER
+      provider = PROVIDER
+    else
+      provider = DEFAULT_PROVIDER
+    end
+    config['provider'] = provider
+
     return config
   end
 
@@ -116,6 +133,7 @@ namespace :vagrant do
     # Get command line, saved, or defaults values
     config = get_config(instance_dir)
     profile = config['profile']
+    provider = config['provider']
 
     # Turn our profiles into something that we can pass to Vagrantfile.
     profile_list = []
@@ -126,7 +144,7 @@ namespace :vagrant do
     end
     profile_str = profile_list.join(',')
 
-    vagrant_cmd(instance, task, host, cmd_args, env_args=["VG_PROFILE=#{profile_str}"], exit_true)
+    vagrant_cmd(instance, task, host, cmd_args, env_args=["VG_PROFILE=#{profile_str}", "VAGRANT_DEFAULT_PROVIDER=#{provider}"], exit_true)
   end
 
 
@@ -179,6 +197,7 @@ namespace :vagrant do
     profile = config['profile']
     role = config['role']
     branch = config['branch']
+    provider = config['provider']
 
     PLUGINS.each do |plugin|
       vagrant_plugin_install(plugin)
@@ -227,6 +246,12 @@ namespace :vagrant do
         else
           line.write("PROFILE=''\n")
         end
+
+        if provider
+          line.write("PROVIDER='#{provider}'\n")
+        else
+          line.write("PROVIDER=''\n")
+        end
       end
     end
   end
@@ -244,6 +269,7 @@ namespace :vagrant do
     profile = config['profile']
     role = config['role']
     branch = config['branch']
+    provider = config['provider']
 
     # Initialize setup
     Rake::Task['vagrant:init'].invoke(instance)
@@ -253,6 +279,7 @@ namespace :vagrant do
     puts "role:\t\t#{role}"
     puts "branch:\t\t#{branch}"
     puts "profile:\t#{profile}"
+    puts "provider:\t#{provider}"
     puts ""
 
     # We take in a role name without a namespace prefix but need to pass in
@@ -274,7 +301,7 @@ namespace :vagrant do
     end
     profile_str = profile_list.join(',')
 
-    vagrant_cmd(instance, 'up', host, '', env_args=["VG_ROLE=#{role_full}", "VG_PROFILE=#{profile_str}"])
+    vagrant_cmd(instance, 'up', host, '', env_args=["VG_ROLE=#{role_full}", "VG_PROFILE=#{profile_str}", "VAGRANT_DEFAULT_PROVIDER=#{provider}"])
   end
 
 
@@ -330,6 +357,7 @@ namespace :vagrant do
     profile = config['profile']
     role = config['role']
     branch = config['branch']
+    provider = config['provider']
 
     # We take in a role name without ROLE_PREFIX but need to pass in
     # the full class name to Vagrantfile.
@@ -348,7 +376,7 @@ namespace :vagrant do
     end
     profile_str = profile_list.join(',')
 
-    vagrant_cmd(instance, 'provision', host, "#{prov_arg}", env_args=["VG_ROLE=#{role_full}", "VG_PROFILE=#{profile_str}"])
+    vagrant_cmd(instance, 'provision', host, "#{prov_arg}", env_args=["VG_ROLE=#{role_full}", "VG_PROFILE=#{profile_str}", "VAGRANT_DEFAULT_PROVIDER=#{provider}"])
   end
 
 
