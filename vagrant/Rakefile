@@ -1,11 +1,18 @@
 # Rake wrapper around Vagrant.
 #
 # The intended usage is as follows
-# $ rake vagrant:init[<branch_name>]
+# $ rake vagrant:init[<instance_name>]
 #
-# This will create a vagrant instance named <branch_name>.  It will also
-# ensure that the puppet tree is on the same branch and that modules have
-# been initialized.
+# Arguments:
+# - role:     Name of role class under straycat::roles
+# - branch:   Branch Puppet should be on. Providing this will ensure that
+#             the clone id on the correct branch and that the correct
+#             modules are installed.
+# - profile:  Name of profile to use.  Profiles are under profile/
+# - provider: Name of provider.  Currently virtualbox (default) and aws are
+#             supported
+#
+# $ rake vagrant:init[<instance_name>] branch=fix_foo role=bar
 #
 # TODO
 # - daemon to check if puppet modules have changed branch and stop agent on
