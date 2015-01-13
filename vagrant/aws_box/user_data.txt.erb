@@ -8,3 +8,11 @@ runcmd:
     - chown root:root /etc/sudoers.d/999-vagrant-cloud-init-requiretty
 hostname: <%= $hostname %>
 fqdn:     <%= $hostname %>
+
+users:
+    - name: <%= $aws_user %>
+      gecos: Vagrant User
+      lock-passwd: true
+      sudo: ALL=(ALL) NOPASSWD:ALL
+      ssh-authorized-keys:
+        - <%= $aws_authorized_key_data %>

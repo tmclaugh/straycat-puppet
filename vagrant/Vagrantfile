@@ -28,8 +28,9 @@ $aws_secret_key = ENV['AWS_SECRET_KEY']
 $aws_keypair_name = 'straycat'
 $aws_region = 'us-east-1'
 $aws_ami = 'ami-3270035a'
-$aws_user = 'root'
-$aws_private_key = "#{ENV['HOME']}/.ssh/straycat.pem"
+$aws_user = 'vagrant'
+$aws_authorized_key = "#{ENV['HOME']}/.ssh/id_rsa.pub"
+$aws_private_key = "#{ENV['HOME']}/.ssh/id_rsa"
 $aws_user_data_file = "#{$inst_home}/../../aws_box/user_data.txt.erb"
 
 # Default puppet versions. Override from profiles if needed.
@@ -182,15 +183,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     override.vm.box = "#{$vm_box}-aws"
     override.vm.box_url = "#{$inst_home}/../../aws_box/#{$vm_box}-aws.box"
 
-
     # See below for ideas on using aws.user_data
     # https://github.com/mitchellh/vagrant/issues/1482
-    #
-    # We'll handle sudo' tty issues this way.
+
+    if File.exist?($aws_authorized_key)
+      $aws_authorized_key_data = File.read($aws_authorized_key)
+    else
+      abort "#{$aws_authorized_key} must exist for remote access."
+    end
 
     # File.read() is run everytime but user_data_file path is not correct
     # until the instance is created.
-
     aws.user_data = ERB.new(File.read($aws_user_data_file)).result if File.exists?($aws_user_data_file)
   end
 
