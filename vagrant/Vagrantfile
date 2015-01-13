@@ -82,6 +82,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = $vm_box
+
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
   config.vm.box_url = "#{$vm_box_site}/#{$vm_box}.box"
@@ -92,42 +93,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Location of insecure private key.
   config.ssh.private_key_path = $ssh_private_key
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network :forwarded_port, guest: 80, host: 8080
-
   # If true, then any SSH connections made will enable agent forwarding.
   # Default value: false
   config.ssh.forward_agent = true
-
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
-  config.vm.synced_folder $puppet_clone, "/etc/puppet-local", owner: "root", group: "root"
 
   # vagrant-hostmanager setup.  We have to circumvent /etc/hosts handling
   # from puppet for this to work.
   config.hostmanager.enabled = true
 
-  # This is necessary for vagrant-hostmanager to work when using
-  # :public_network
-  #
-  # ref. https://github.com/smdahlen/vagrant-hostmanager/issues/63
-  #config.hostmanager.ip_resolver = proc do |machine|
-  #  result = ""
-  #  machine.communicate.execute("ifconfig eth0") do |type, data|
-  #    result << data if type == :stdout
-  #  end
-  #  (ip = /inet addr:(\d+\.\d+\.\d+\.\d+)/.match(result)) && ip[1]
-  #end
 
+  ### Providers
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
-  #
-  # Virtualbox
+
+  ## Virtualbox
   config.vm.provider :virtualbox do |vb|
   #   # Don't boot with headless mode
   #   vb.gui = true
@@ -173,7 +152,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
 
-  # AWS provider
+  ## AWS
   config.vm.provider :aws do |aws, override|
     aws.access_key_id = $aws_access_key
     aws.secret_access_key = $aws_secret_key
@@ -182,10 +161,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     override.ssh.username = $aws_user
     override.ssh.private_key_path = $aws_private_key
-    # Needed or else sudo fails.
-    #
-    # NOTE: Fails when rsyncing files from shared folder.
-    #override.ssh.pty = true
 
     override.vm.box = "#{$vm_box}-aws"
     override.vm.box_url = "#{$inst_home}/../../aws_box/#{$vm_box}-aws.box"
@@ -200,36 +175,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     aws.user_data = ERB.new(File.read($aws_user_data_file)).result if File.exists?($aws_user_data_file)
   end
 
-
+  ## Provisioners
   #
-  # View the documentation for the provider you're using for more
-  # information on available options.
-
-  # Enable provisioning with Puppet stand alone.  Puppet manifests
-  # are contained in a directory path relative to this Vagrantfile.
-  #
-  # An example Puppet manifest to provision the message of the day:
-  #
-  # # group { "puppet":
-  # #   ensure => "present",
-  # # }
-  # #
-  # # File { owner => 0, group => 0, mode => 0644 }
-  # #
-  # # file { '/etc/motd':
-  # #   content => "Welcome to your Vagrant-built virtual machine!
-  # #               Managed by Puppet.\n"
-  # # }
-  #
-  # FIXME: Do this till we have a better way of cleaning things up.  The
-  # Puppetmaster data is persistent but the agent is not so the agent gets
-  # an error
-
   # Prevent breakage caused by updating the package during a run.
   config.vm.provision :shell do |shell|
     shell.inline = "yum -y install puppet-#{$puppet_ver} facter-#{$facter_ver}"
   end
 
+  # Share local Puppet tree to host.
+  config.vm.synced_folder $puppet_clone, "/etc/puppet-local", owner: "root", group: "root"
+
+  # Provision Puppet master inside host that will serve up local Puppet
+  # tree.  A separate provisioner will handle talking to this Puppet master.
   config.vm.provision 'default_puppet', type: 'puppet' do |puppet|
 
     puppet.facter = {
@@ -262,6 +219,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     puppet.options        = "--templatedir #{VG_PUPPETMASTER_LOCAL}/vagrant/templates #{debug_flag}"
   end
 
+  # Run Puppet against local Puppet master.
   config.vm.provision 'default_puppet_server', type: 'puppet_server' do |puppet|
     puppet.puppet_server = "localhost"
     puppet.options       = "--verbose --waitforcert 1 #{debug_flag}"
