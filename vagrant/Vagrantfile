@@ -33,6 +33,13 @@ $aws_authorized_key = "#{ENV['HOME']}/.ssh/id_rsa.pub"
 $aws_private_key = "#{ENV['HOME']}/.ssh/id_rsa"
 $aws_user_data_file = "#{$inst_home}/../../aws_box/user_data.txt.erb"
 
+if ENV['VAGRANT_DEFAULT_PROVIDER']
+  abort "Must set $AWS_ACCESS_KEY in environment." unless ENV['AWS_ACCESS_KEY']
+  abort "Must set $AWS_SECRET_KEY in environment." unless ENV['AWS_SECRET_KEY']
+  abort "Missing SSH public key #{$aws_authorized_key}" unless File.exist?($aws_authorized_key)
+  abort "Missing SSH private key #{$aws_authorized_key}" unless File.exist?($aws_private_key)
+end
+
 # Default puppet versions. Override from profiles if needed.
 $puppet_ver          = '3.7.3-1.el6'
 $facter_ver          = '2.3.0-1.el6'
@@ -186,11 +193,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # See below for ideas on using aws.user_data
     # https://github.com/mitchellh/vagrant/issues/1482
 
-    if File.exist?($aws_authorized_key)
-      $aws_authorized_key_data = File.read($aws_authorized_key)
-    else
-      abort "#{$aws_authorized_key} must exist for remote access."
-    end
+    $aws_authorized_key_data = File.read($aws_authorized_key)
 
     # File.read() is run everytime but user_data_file path is not correct
     # until the instance is created.
