@@ -126,9 +126,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Disable USB 2.0 which requires the VBox extensions pack.
     vb.customize ["modifyvm", :id, "--usbehci", "off"]
 
-  #   # Use VBoxManage to customize the VM. For example to change memory:
+   # Use VBoxManage to customize the VM. For example to change memory:
     vb.customize ["modifyvm", :id, "--memory", "#{$ram}"]
 
+    # Was required to get more support for more disk volumes.
     vb.customize ["modifyvm", :id, "--chipset", "ich9"]
 
     # Ephemeral vols
