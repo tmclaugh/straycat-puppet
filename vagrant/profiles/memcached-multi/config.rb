@@ -55,7 +55,7 @@ Vagrant.configure('2') do |config|
   NODES = 3
 
   # Manage entries for instances on local host.
-  config.hostmanager.manage_host = true
+  config.hostmanager.manage_host = $hosmanager_manage_host
 
   (1..NODES).each do |i|
     config.vm.define "#{$inst_name}-#{i}" do |mc|

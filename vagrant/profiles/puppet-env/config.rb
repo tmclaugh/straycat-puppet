@@ -1,6 +1,6 @@
 Vagrant.configure('2') do |config|
 
-  config.hostmanager.manage_host = true
+  config.hostmanager.manage_host = $hosmanager_manage_host
 
   config.vm.define "bootstrap", primary: true do |pm|
     pm.vm.hostname = 'bootstrap.straycat.local'

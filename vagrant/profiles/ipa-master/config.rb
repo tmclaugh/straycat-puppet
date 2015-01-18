@@ -13,7 +13,7 @@
 Vagrant.configure('2') do |config|
 
   # Manage entries for instances on local host.
-  config.hostmanager.manage_host = true
+  config.hostmanager.manage_host = $hosmanager_manage_host
 
   config.vm.define "ipa-master", primary: true do |ipa|
     ipa.vm.network :private_network, ip: "192.168.3.10"

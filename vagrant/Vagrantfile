@@ -40,6 +40,18 @@ if ENV['VAGRANT_DEFAULT_PROVIDER']
   abort "Missing SSH private key #{$aws_authorized_key}" unless File.exist?($aws_private_key)
 end
 
+# Toggle local hostname setup from CLI.
+#
+# FIXME: Really need tyo get resolution working with dhcp setups.  Should
+# look at the following ideas.
+# * https://github.com/smdahlen/vagrant-hostmanager/issues/63
+# * https://github.com/smdahlen/vagrant-hostmanager/issues/121
+if ENV['VG_HM_LOCAL'] =~ /(1|true)/
+  $hosmanager_manage_host = true
+else
+  $hosmanager_manage_host = false
+end
+
 # Default puppet versions. Override from profiles if needed.
 $puppet_ver          = '3.7.3-1.el6'
 $facter_ver          = '2.3.0-1.el6'
@@ -50,6 +62,7 @@ $hiera_eyaml_gpg_ver = '0.4'
 # Used for minor differences when provisioning local pupeptmaster.
 $centos_major = '6'
 
+# Enable Puppet debugging
 if $debug != false
   debug_flag = '--debug'
 else
@@ -100,6 +113,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # vagrant-hostmanager setup.  We have to circumvent /etc/hosts handling
   # from puppet for this to work.
   config.hostmanager.enabled = true
+  config.hostmanager.manage_host = $hosmanager_manage_host
 
 
   ### Providers

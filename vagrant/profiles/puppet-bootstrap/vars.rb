@@ -1,0 +1,1 @@
+$hosmanager_manage_host = true
