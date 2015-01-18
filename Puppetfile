@@ -13,6 +13,8 @@ mod 'puppetlabs/concat', '1.1.2'
 
 mod 'theforeman/concat_native', '1.3.1'
 
+mod 'KyleAnderson/consul', '0.4.5'
+
 mod 'puppetlabs/firewall', '1.3.0'
 
 mod 'foreman',
@@ -59,6 +61,8 @@ mod 'zack/r10k', '2.5.1'
 mod 'saz/resolv_conf', '3.0.3'
 
 mod 'puppetlabs/ruby', '0.4.0'
+
+mod 'nanliu/staging', '1.0.3'
 
 mod 'puppetlabs/stdlib', '4.4.0'
 

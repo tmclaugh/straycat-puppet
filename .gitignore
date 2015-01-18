@@ -28,6 +28,7 @@ modules/cassandra
 modules/catalog_diff
 modules/concat
 modules/concat_native
+modules/consul
 modules/firewall
 modules/foreman
 modules/foreman_proxy
@@ -46,6 +47,7 @@ modules/puppetdbquery
 modules/r10k
 modules/resolv_conf
 modules/ruby
+modules/staging
 modules/stdlib
 modules/tftp
 modules/timezone
