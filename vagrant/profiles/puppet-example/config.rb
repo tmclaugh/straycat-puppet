@@ -1,7 +1,7 @@
 Vagrant.configure('2') do |config|
   config.vm.define "puppetmaster", primary: true do |pm|
     pm.vm.hostname = 'puppet.straycat.local'
-    pm.vm.network :private_network, ip: "192.168.4.10"
+    pm.vm.network :private_network, type: "dhcp"
 
     # Prevent breakage caused by updating the package during a run.
     pm.vm.provision :shell do |shell|
@@ -46,7 +46,7 @@ Vagrant.configure('2') do |config|
 
   config.vm.define "base" do |base|
     base.vm.hostname = 'base.straycat.local'
-    base.vm.network :private_network, ip: "192.168.4.11"
+    base.vm.network :private_network, type: "dhcp"
 
     base.vm.provision 'default_puppet', type: 'puppet' do |puppet|
       puppet.manifests_path = PUPPET_MANIFEST_PATH

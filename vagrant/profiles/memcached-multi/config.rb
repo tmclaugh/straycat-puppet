@@ -65,7 +65,7 @@ Vagrant.configure('2') do |config|
 
       # This is an ugly hack until I figure out how to make VirtualBox DHCP
       # reliably work on any person's machine.
-      mc.vm.network "private_network", ip: "192.168.3.1#{i}"
+      mc.vm.network "private_network", type: "dhcp"
 
     end
   end

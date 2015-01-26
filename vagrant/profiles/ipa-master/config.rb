@@ -16,7 +16,7 @@ Vagrant.configure('2') do |config|
   config.hostmanager.manage_host = true
 
   config.vm.define "ipa-master", primary: true do |ipa|
-    ipa.vm.network :private_network, ip: "192.168.3.10"
+    ipa.vm.network :private_network, type: "dhcp"
   end
 
 end

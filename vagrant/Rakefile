@@ -411,6 +411,12 @@ namespace :vagrant do
     do_task(args, 'ssh', '', exit_true=true)
   end
 
+  desc "SSH into instance"
+  task :ssh_config, :instance, :host do |t, args|
+    args.with_defaults(:host => nil)
+    do_task(args, 'ssh-config', '', exit_true=true)
+  end
+
 
   desc "Check instance status"
   task :status, :instance, :host do |t, args|

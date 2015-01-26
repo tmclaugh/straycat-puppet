@@ -5,7 +5,7 @@ Vagrant.configure('2') do |config|
   config.vm.define "bootstrap", primary: true do |pm|
     pm.vm.hostname = 'bootstrap.straycat.local'
     pm.hostmanager.aliases = 'bootstrap'
-    pm.vm.network :private_network, ip: "192.168.4.10"
+    pm.vm.network :private_network, type: "dhcp"
 
     pm.vm.provision 'default_puppet', type: 'puppet' do |puppet|
       puppet.manifest_file  = "puppetmaster.pp"
@@ -46,7 +46,7 @@ Vagrant.configure('2') do |config|
   config.vm.define "pgsql" do |pgsql|
     pgsql.vm.hostname = 'pgsql.straycat.local'
     pgsql.hostmanager.aliases = 'pgsql'
-    pgsql.vm.network :private_network, ip: "192.168.4.11"
+    pgsql.vm.network :private_network, type: "dhcp"
 
     pgsql.vm.provision 'default_puppet', type: 'puppet' do |p|
       p.manifests_path = PUPPET_MANIFEST_PATH
@@ -63,7 +63,7 @@ Vagrant.configure('2') do |config|
   config.vm.define "foreman" do |foreman|
     foreman.vm.hostname = 'foreman.straycat.local'
     foreman.hostmanager.aliases = 'foreman'
-    foreman.vm.network :private_network, ip: "192.168.4.13"
+    foreman.vm.network :private_network, type: "dhcp"
 
     foreman.vm.provision 'default_puppet', type: 'puppet' do |p|
       p.manifests_path = PUPPET_MANIFEST_PATH
@@ -80,7 +80,7 @@ Vagrant.configure('2') do |config|
   config.vm.define "puppetmaster" do |puppet|
     puppet.vm.hostname = 'puppetmaster.straycat.local'
     puppet.hostmanager.aliases = 'puppetmaster'
-    puppet.vm.network :private_network, ip: "192.168.4.12"
+    puppet.vm.network :private_network, type: "dhcp"
 
     puppet.vm.provision 'default_puppet', type: 'puppet' do |p|
       p.manifests_path = PUPPET_MANIFEST_PATH

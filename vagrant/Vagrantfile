@@ -101,6 +101,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # from puppet for this to work.
   config.hostmanager.enabled = true
 
+  # Fixes hostmanager to work when inter-host comminication is setup in a
+  # multi-machine environment and eth1 uses DHCP.
+  config.hostmanager.ip_resolver = proc do |machine|
+    result = ""
+    begin
+      machine.communicate.execute("ifconfig eth1") do |type, data|
+        result << data if type == :stdout
+      end
+    rescue
+      # hosts has only a single NIC; no inter-host.
+      machine.communicate.execute("ifconfig eth0") do |type, data|
+        result << data if type == :stdout
+      end
+    end
+    (ip = /inet addr:(\d+\.\d+\.\d+\.\d+)/.match(result)) && ip[1]
+  end
+
 
   ### Providers
   # Provider-specific configuration so you can fine-tune various

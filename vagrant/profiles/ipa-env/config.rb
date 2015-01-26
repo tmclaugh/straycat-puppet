@@ -4,7 +4,7 @@ Vagrant.configure('2') do |config|
 
   config.vm.define "ipa" do |ipa|
     ipa.vm.hostname = 'ipa-master.straycat.local'
-    ipa.vm.network :private_network, ip: "192.168.4.10"
+    ipa.vm.network :private_network, type: "dhcp"
 
     ipa.vm.provision 'default_puppet_server', type: 'puppet_server' do |puppet|
       puppet.options       = "--verbose --waitforcert 120"
@@ -14,7 +14,7 @@ Vagrant.configure('2') do |config|
 
   config.vm.define "base" do |base|
     base.vm.hostname = 'base.straycat.local'
-    base.vm.network :private_network, ip: "192.168.4.11"
+    base.vm.network :private_network, type: "dhcp"
 
     base.vm.provision 'default_puppet_server', type: 'puppet_server' do |puppet|
       puppet.options       = "--verbose --waitforcert 120"
