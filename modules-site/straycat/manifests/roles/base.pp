@@ -1,17 +1,6 @@
 # == Class: straycat::roles::base
 #
-# Short description of class.
-#
-# === Parameters
-#
-# [*parameter*]
-#   Description of parameter and its usage.
-#
-# === Examples
-#
-#   class { 'class_name':
-#     parameter => 'value'
-#   }
+# Setup a host with basic configuration.
 #
 # === Authors
 #
