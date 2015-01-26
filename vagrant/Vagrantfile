@@ -41,11 +41,6 @@ if ENV['VAGRANT_DEFAULT_PROVIDER']
 end
 
 # Toggle local hostname setup from CLI.
-#
-# FIXME: Really need tyo get resolution working with dhcp setups.  Should
-# look at the following ideas.
-# * https://github.com/smdahlen/vagrant-hostmanager/issues/63
-# * https://github.com/smdahlen/vagrant-hostmanager/issues/121
 if ENV['VG_HM_LOCAL'] =~ /(1|true)/
   $hosmanager_manage_host = true
 else
