@@ -17,7 +17,7 @@ Vagrant.configure('2') do |config|
       seed.vm.hostname = "cassandra-seed-#{i}.straycat.local"
       seed.hostmanager.aliases = "cassandra-seed-#{i}"
 
-      seed.vm.network "private_network", ip: "192.168.3.1#{i}"
+      seed.vm.network "private_network", type: "dhcp"
     end
   end
 
@@ -26,7 +26,7 @@ Vagrant.configure('2') do |config|
       node.vm.hostname = "cassandra-node-#{i}.straycat.local"
       node.hostmanager.aliases = "cassandra-node-#{i}"
 
-      node.vm.network "private_network", ip: "192.168.3.2#{i}"
+      node.vm.network "private_network", type: "dhcp"
     end
   end
 end

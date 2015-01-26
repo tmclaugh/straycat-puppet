@@ -5,7 +5,7 @@ Vagrant.configure('2') do |config|
   config.vm.define "puppetmaster" do |puppet|
     puppet.vm.hostname = 'puppetmaster.straycat.local'
     puppet.hostmanager.aliases = 'puppetmaster'
-    puppet.vm.network :private_network, ip: "192.168.4.11"
+    puppet.vm.network :private_network, type: "dhcp"
 
     puppet.vm.provision 'default_puppet', type: 'puppet' do |p|
       p.manifests_path = PUPPET_MANIFEST_PATH
