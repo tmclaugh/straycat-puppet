@@ -3,6 +3,6 @@
 
 Vagrant.configure("2") do |config|
   config.vm.provider :aws do |aws|
-    aws.ami = "ami-3270035a"
+    aws.ami = "ami-30df9858"
   end
 end
