@@ -20,14 +20,14 @@ $debug = ENV['DEBUG']                             || false
 $cpu = ENV['VG_CPU']                              || '1'
 $ram = ENV['VG_RAM']                              || '1024'
 
-$vm_box =  ENV['VG_VM_BOX']                       || 'CentOS-6.6-x86_64-20150110134049'
+$vm_box =  ENV['VG_VM_BOX']                       || 'CentOS-6.6-x86_64-20150127173448'
 $vm_box_site = ENV['VG_VM_BOX_SITE']              || 'https://s3.amazonaws.com/straycat.dhs.org/os-images/vagrant'
 
 $aws_access_key = ENV['AWS_ACCESS_KEY']
 $aws_secret_key = ENV['AWS_SECRET_KEY']
 $aws_keypair_name = 'straycat'
 $aws_region = 'us-east-1'
-$aws_ami = 'ami-3270035a'
+$aws_ami = 'ami-30df9858'
 $aws_user = 'vagrant'
 $aws_authorized_key = "#{ENV['HOME']}/.ssh/id_rsa.pub"
 $aws_private_key = "#{ENV['HOME']}/.ssh/id_rsa"
