@@ -172,7 +172,7 @@ namespace :vagrant do
         Dir.chdir(start_dir)
       end
     else
-      if not File.exists?("#{PUPPET_CLONE}/Puppetfile.lock")
+      if not File.exists?("#{PUPPET_CLONE}/Puppetfile.done")
         # We can't guarentee that Puppetfile.lock won't change so we'll
         # remove the Puppetfile.lock for a branch.
         FileUtils.rm Dir.glob("#{PUPPET_CLONE}/Puppetfile.done.*")
