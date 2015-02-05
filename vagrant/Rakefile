@@ -166,7 +166,7 @@ namespace :vagrant do
         start_dir = Dir.pwd
         Dir.chdir(PUPPET_CLONE)
         FileUtils.rm Dir.glob("#{PUPPET_CLONE}/Puppetfile.done.*")
-        sh %{#{commands[:librarian_puppet]} install --verbose}
+        sh %{#{commands[:r10k]} puppetfile install --verbose}
         FileUtils.touch "Puppetfile.done"
         FileUtils.ln_s "Puppetfile.done", "#{PUPPET_CLONE}/Puppetfile.done.#{branch}"
         Dir.chdir(start_dir)
@@ -178,7 +178,7 @@ namespace :vagrant do
         FileUtils.rm Dir.glob("#{PUPPET_CLONE}/Puppetfile.done.*")
         start_dir = Dir.pwd
         Dir.chdir(PUPPET_CLONE)
-        sh %{#{commands[:librarian_puppet]} install --verbose}
+        sh %{#{commands[:r10k]} puppetfile install --verbose}
         FileUtils.touch "Puppetfile.done"
         Dir.chdir(start_dir)
       end
