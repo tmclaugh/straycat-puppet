@@ -33,7 +33,7 @@ $aws_authorized_key = "#{ENV['HOME']}/.ssh/id_rsa.pub"
 $aws_private_key = "#{ENV['HOME']}/.ssh/id_rsa"
 $aws_user_data_file = "#{$inst_home}/../../aws_box/user_data.txt.erb"
 
-if ENV['VAGRANT_DEFAULT_PROVIDER']
+if ENV['VAGRANT_DEFAULT_PROVIDER'] == 'aws'
   abort "Must set $AWS_ACCESS_KEY in environment." unless ENV['AWS_ACCESS_KEY']
   abort "Must set $AWS_SECRET_KEY in environment." unless ENV['AWS_SECRET_KEY']
   abort "Missing SSH public key #{$aws_authorized_key}" unless File.exist?($aws_authorized_key)
