@@ -45,6 +45,7 @@ modules/puppetdbquery
 modules/r10k
 modules/resolv_conf
 modules/ruby
+modules/salt
 modules/stdlib
 modules/tftp
 modules/timezone

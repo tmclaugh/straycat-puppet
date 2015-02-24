@@ -24,6 +24,8 @@ straycat::infra::puppet::master:  localhost
 
 straycat::infra::ntp::server1:    us.pool.ntp.org
 
+straycat::infra::salt:master:     salt-master.straycat.local
+
 
 straycat::os::ipa_setup:                  false
 straycat::os::ipa_client::ipa_domain:     "%{hiera('straycat::infra::ipa::domain')}"
@@ -63,3 +65,6 @@ straycat::svc::puppet::foreman_proxy::foreman_host: "%{hiera('straycat::infra::p
 
 # This should be a lookup for the puppetmaster except in a Vagrant env.
 straycat::svc::puppet::master::puppet_ca_allow: 'puppetmaster.straycat.local'
+
+straycat::svc::salt::minion::salt_minion_master:    "%{hiera('straycat::infra::salt:master')}"
+
