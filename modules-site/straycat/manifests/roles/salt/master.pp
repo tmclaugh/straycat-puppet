@@ -1,3 +1,15 @@
+# == Class: straycat::roles::salt::master
+#
+# Setup a Salt master host.
+#
+# === Authors
+#
+# tmclaugh@sdf.lonestar.org
+#
+# === Copyright
+#
+# Copyright 2014 Tom McLaughlin
+#
 class straycat::roles::salt::master {
 
   include stdlib
