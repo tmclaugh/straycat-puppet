@@ -11,6 +11,8 @@ $real_puppet_ver          = $puppet_ver
 $real_hiera_ver           = $hiera_ver
 $real_hiera_eyaml_ver     = $hiera_eyaml_ver
 $real_hiera_eyaml_gpg_ver = $hiera_eyaml_gpg_ver
+$highline_ver             = '1.6.21'  # Newest version does not work on CentOS
+                                      # 6 with older ruby.
 
 $systemd_file = '/usr/lib/systemd/system/puppetmaster.service'
 
@@ -81,10 +83,18 @@ package { 'hiera':
   ensure => $real_hiera_ver,
 }
 
+package { 'highline':
+  ensure   => $highline_ver,
+  provider => gem
+}
+
 package { 'hiera-eyaml':
   ensure   => $real_hiera_eyaml_ver,
   provider => gem,
-  require  => [Package['hiera'], Package['ruby-devel'], Package['ncurses-devel']]
+  require  => [ Package['hiera'],
+                Package['ruby-devel'],
+                Package['ncurses-devel'],
+                Package['highline'] ]
 }
 
 package { 'hiera-eyaml-gpg':
