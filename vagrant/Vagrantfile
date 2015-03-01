@@ -4,13 +4,13 @@
 
 require 'erb'
 
-$vg_role = ENV['VG_ROLE']                         || "straycat::roles::base"
+$vg_role = ENV['VG_ROLE']                         || "jana::roles::base"
 $vg_profile = ENV['VG_PROFILE']                   || ''
 $inst_home = ENV['VG_INST_HOME']                  || File.dirname(__FILE__)
 $inst_name = ENV['VG_INST_NAME']                  || $inst_home.split(File::SEPARATOR)[-1]
-$hostname = ENV['VG_HOSTNAME']                    || "%s.straycat.local" % $inst_name
+$hostname = ENV['VG_HOSTNAME']                    || "%s.jana.local" % $inst_name
 $puppet_clone = ENV['VG_PUPPET_CLONE']            || $inst_home.split(File::SEPARATOR)[0..-2].join(File::SEPARATOR)
-$ssh_private_key = ENV['VG_SSH_PRIVATE_KEY']      || "%s/vagrant/straycat_vagrant_rsa" % $puppet_clone
+$ssh_private_key = ENV['VG_SSH_PRIVATE_KEY']      || "%s/vagrant/jana_vagrant_rsa" % $puppet_clone
 $vg_puppetmaster_dir = ENV['VG_PUPPETMASTER_DIR'] || "/etc/puppetmaster"
 $facter_vars = ENV['VG_FACTER_VARS']              || '' # "key1=val1;key2=val2a,val2b;key3=val3"
 $vg_gui = ENV['VG_GUI']                           || false
@@ -21,11 +21,11 @@ $cpu = ENV['VG_CPU']                              || '1'
 $ram = ENV['VG_RAM']                              || '1024'
 
 $vm_box =  ENV['VG_VM_BOX']                       || 'CentOS-6.6-x86_64-20150127173448'
-$vm_box_site = ENV['VG_VM_BOX_SITE']              || 'https://s3.amazonaws.com/straycat.dhs.org/os-images/vagrant'
+$vm_box_site = ENV['VG_VM_BOX_SITE']              || 'https://s3.amazonaws.com/jana-ami-bundles/vagrant'
 
 $aws_access_key = ENV['AWS_ACCESS_KEY']
 $aws_secret_key = ENV['AWS_SECRET_KEY']
-$aws_keypair_name = 'straycat'
+$aws_keypair_name = 'jana'
 $aws_region = 'us-east-1'
 $aws_ami = 'ami-30df9858'
 $aws_user = 'vagrant'
@@ -217,10 +217,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision 'default_puppet', type: 'puppet' do |puppet|
 
     puppet.facter = {
-      "sc_environment"         => "qa",
+      "jm_environment"         => "qa",
       "environment"            => "production",
       "data_center"            => "local",
-      "sc_puppetmaster_server" => "localhost",
+      "jm_puppetmaster_server" => "localhost",
       "os"                     => "centos6",
       "provider"               => "virtualbox",
       "security_group"         => "default",

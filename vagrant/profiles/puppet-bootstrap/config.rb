@@ -3,7 +3,7 @@ Vagrant.configure('2') do |config|
   config.hostmanager.manage_host = $hosmanager_manage_host
 
   config.vm.define "puppetmaster" do |puppet|
-    puppet.vm.hostname = 'puppetmaster.straycat.local'
+    puppet.vm.hostname = 'puppetmaster.jana.local'
     puppet.hostmanager.aliases = 'puppetmaster'
     puppet.vm.network :private_network, type: "dhcp"
 

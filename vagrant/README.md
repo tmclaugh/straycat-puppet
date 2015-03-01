@@ -2,11 +2,11 @@ Vagrant
 ===
 [Vagrant](http://www.vagrantup.com/) provides a wrapper around [VirtualBox](https://www.virtualbox.org/) to quickly spin up and destroy VMs (guests) on the desktop (host).  It includes several provisioner plugins including Puppet provisioners that will apply Puppet manifests to the VM or have it talked to a puppetmaster.  The TechOps team provides a Vagrant _.box_ for use that is in line with the latest stable AWS image.  It varies slightly but not by much and provides useful platform for quickly testing changes.  There is no need to retrieve the guest image beforehand as Vagrant will retrieve it if it does not exist.
 
-Our standard Vagrant box image will setup a puppetmaster under _/etc/puppetmaster_ and will mount the local puppet repository from the host to _/etc/puppet-local_ in the Vagrant instance.  Once the Puppetmaster is setup Vagrant will have the instance run `puppet agent` against its newly setup puppetmaster and apply by default _straycat::roles::base_.  The whole process (provided the Vagrant box has already been downloaded takes only a few minutes.  Once the role class has finished applying the image can be SSHed into.  Changes can then be made from host development environment and tested immediately in the Vagrant instance by running _sudo puppet agent -t_
+Our standard Vagrant box image will setup a puppetmaster under _/etc/puppetmaster_ and will mount the local puppet repository from the host to _/etc/puppet-local_ in the Vagrant instance.  Once the Puppetmaster is setup Vagrant will have the instance run `puppet agent` against its newly setup puppetmaster and apply by default _jana::roles::base_.  The whole process (provided the Vagrant box has already been downloaded takes only a few minutes.  Once the role class has finished applying the image can be SSHed into.  Changes can then be made from host development environment and tested immediately in the Vagrant instance by running _sudo puppet agent -t_
 
 Rakefile usage
 ---
-Our Vagrant setup is meant to be driven by Rakefile in the [_vagrant/_](https://github.com/tmclaugh/straycat-puppet/new/blob/production/vagrant/Vagrantfile) directory.  The wrapper was created to help mimic a deployment from Rainmaker and to provide greater flexibility in usage.  The Rakefile method wraps most standard Vagrant commands.
+Our Vagrant setup is meant to be driven by Rakefile in the [_vagrant/_](https://github.com/tmclaugh-jana/jana-puppet/new/blob/production/vagrant/Vagrantfile) directory.  The wrapper was created to help mimic a deployment from Rainmaker and to provide greater flexibility in usage.  The Rakefile method wraps most standard Vagrant commands.
 
 <pre>
 [tmclaughlin@tomcat vagrant]$ rake --tasks
@@ -41,15 +41,15 @@ The Rakefile wrapper provides:
 ### Arguments
 Rake tasks can take arguments in the form of _'arg=value'_.  The Vagrant wrapper supports the following arguments:
 
-* role:     Name of role class under _straycat::roles_.
+* role:     Name of role class under _jana::roles_.
 * branch:   Branch Puppet should be on. Providing this will ensure that the clone id on the correct branch and that the correct modules are installed.
-* profile:  Name of profile to use.  Profiles are under [_profile/_](https://github.com/tmclaugh/straycat-puppet/vagrant/profiles)
+* profile:  Name of profile to use.  Profiles are under [_profile/_](https://github.com/tmclaugh-jana/jana-puppet/vagrant/profiles)
 * provider: Name of provider.  Currently _virtualbox_ (default) and _aws_ are supported.
 
 _Ex. $ rake vagrant:init[test-foobar] branch=fix_foobar_ordering profile=foobar_
 
 ## Starting an instance
-The following command will setup a new instance of the given name (_test-instance_).  It will only setup the instance and not start a guest.  By default every time the instance is spun up it will have "straycat::role::base" and the wrapper will not perform any Git branch checking.
+The following command will setup a new instance of the given name (_test-instance_).  It will only setup the instance and not start a guest.  By default every time the instance is spun up it will have "jana::role::base" and the wrapper will not perform any Git branch checking.
 
 <pre>
 [tmclaughlin@tomcat vagrant]$ rake vagrant:init[test-instance]
@@ -119,7 +119,7 @@ Notice: Finished catalog run in 26.20 seconds
 </pre>
 
 
-If the defaults are not suitable pass the branch and/or role arguments.  (The role argument should not have the leading _straycat::roles::_ portion of the class name.)
+If the defaults are not suitable pass the branch and/or role arguments.  (The role argument should not have the leading _jana::roles::_ portion of the class name.)
 
 <pre>
 [tmclaughlin@tomcat vagrant]$ rake vagrant:init[test-instance] branch=pgsql_ver role=postgresql.
@@ -168,7 +168,7 @@ Some situations are more complex than the standard setup.  These include multi-m
   * Define machines
   * Override provisioners
 * vars.rb
-  * Overrides global variables in [_Vagrantfile_](https://github.com/tmclaugh/straycat-puppet/blob/production/vagrant/Vagrantfile)
+  * Overrides global variables in [_Vagrantfile_](https://github.com/tmclaugh/jana-puppet/blob/production/vagrant/Vagrantfile)
 
 <pre>
 [tmclaughlin@tomcat vagrant]$ rake vagrant:up[ipa] profile=ipa-env
@@ -194,7 +194,7 @@ After the host has finished provisioning SSH into the host
 
 <pre>
 [tmclaughlin@tomcat vagrant]$ rake vagrant:ssh[test-instance]
-Welcome to vagrant.straycat.local.
+Welcome to vagrant.jana.local.
 
 [vagrant@vagrant ~]$
 </pre>

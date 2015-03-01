@@ -1,0 +1,70 @@
+---
+jana::infra::git:             git.jana.lan
+
+jana::infra::ipa::adminpw:    InsecureAdminPW
+jana::infra::ipa::domain:     jana-net.local
+jana::infra::ipa::dspw:       InsecureDataStorePw
+jana::infra::ipa::join_user:  ipa-join-user
+jana::infra::ipa::join_pass:  InsecureJoinUser
+jana::infra::ipa::master:     ipa-master.jana-net.local
+jana::infra::ipa::otp:        InsecureOTP
+jana::infra::ipa::realm:      JANA.LOCAL
+jana::infra::ipa::replica1:   ipa-slave-1.jana-net.local
+jana::infra::ipa::replica2:   ipa-slave-2.jana-net.local
+
+jana::infra::ldap1: "%{hiera('jana::infra::ipa::master')}"
+#jana::infra::ldap2: "%{hiera('jana::infra::ipa::replica1')}"
+
+jana::infra::pgsql::host:     pgsql.jana-net.local
+jana::infra::pgsql::port:     5432
+
+jana::infra::puppet::db:      puppetdb.jana-net.local
+jana::infra::puppet::foreman: foreman.jana-net.local
+jana::infra::puppet::master:  localhost
+
+jana::infra::ntp::server1:    us.pool.ntp.org
+
+jana::infra::salt:master:     salt-master.jana-net.local
+
+
+jana::os::ipa_setup:                  false
+jana::os::ipa_client::ipa_domain:     "%{hiera('jana::infra::ipa::domain')}"
+jana::os::ipa_client::ipa_join_user:  "%{hiera('jana::infra::ipa::join_user')}"
+jana::os::ipa_client::ipa_join_pass:  "%{hiera('jana::infra::ipa::join_pass')}"
+jana::os::ipa_client::ipa_otp:        "%{hiera('jana::infra::ipa::otp')}"
+jana::os::ipa_client::ipa_realm:      "%{hiera('jana::infra::ipa::realm')}"
+jana::os::ipa_client::ipa_server:     "%{hiera('jana::infra::ipa::master')}"
+
+jana::os::puppet::puppet_server:  "%{hiera('jana::infra::puppet::master')}"
+
+jana::os::resolv::domainname: "%{::domain}"
+
+jana::os::time::ntp_servers:
+  - "%{hiera('jana::infra::ntp::server1')}"
+
+
+jana::svc::cassandra::cluster_name:                 'localTest'
+
+jana::svc::puppet::foreman::foreman_admin_username: admin
+jana::svc::puppet::foreman::foreman_admin_password: changeme
+jana::svc::puppet::foreman::foreman_db_host:        "%{hiera('jana::infra::pgsql::host')}"
+jana::svc::puppet::foreman::foreman_db_username:    foreman
+jana::svc::puppet::foreman::foreman_db_password:    MyWeakPassword
+
+jana::svc::ipa::master::ipa_adminpw:  "%{hiera('jana::infra::ipa::adminpw')}"
+jana::svc::ipa::master::ipa_domain:   "%{hiera('jana::infra::ipa::domain')}"
+jana::svc::ipa::master::ipa_dspw:     "%{hiera('jana::infra::ipa::dspw')}"
+jana::svc::ipa::master::ipa_forwarders:
+  - "%{hiera('jana::infra::dns::forwarder1')}"
+  - "%{hiera('jana::infra::dns::forwarder2')}"
+jana::svc::ipa::master::ipa_realm:    "%{hiera('jana::infra::ipa::realm')}"
+
+jana::svc::phppgadmin::pgsql_db_host: "%{hiera('jana::infra::pgsql::host')}"
+
+jana::svc::puppet::foreman_proxy::foreman_host: "%{hiera('jana::infra::puppet::foreman')}"
+
+# This should be a lookup for the puppetmaster except in a Vagrant env.
+jana::svc::puppet::master::puppet_ca_allow: 'puppetmaster.jana-net.local'
+
+jana::svc::salt::minion::salt_minion_master:    "%{hiera('jana::infra::salt:master')}"
+
