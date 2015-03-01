@@ -4,7 +4,7 @@
 # $ rake vagrant:init[<instance_name>]
 #
 # Arguments:
-# - role:     Name of role class under straycat::roles
+# - role:     Name of role class under jana::roles
 # - branch:   Branch Puppet should be on. Providing this will ensure that
 #             the clone id on the correct branch and that the correct
 #             modules are installed.
@@ -26,7 +26,7 @@ VAGRANTFILE      = '%s/Vagrantfile' % VG_ROOT
 INSTANCE_ROOT    = '%s/instance' % VG_ROOT
 DEFAULT_ROLE     = 'base'
 PLUGINS          = ['vagrant-vbguest', 'vagrant-hostmanager', 'vagrant-aws']
-ROLE_PREFIX      = 'straycat::roles'
+ROLE_PREFIX      = 'jana::roles'
 DEFAULT_PROVIDER = 'virtualbox'
 
 commands = {

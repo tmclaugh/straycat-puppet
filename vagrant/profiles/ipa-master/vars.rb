@@ -1,2 +1,2 @@
-$vg_role = 'straycat::roles::ipa::master'
+$vg_role = 'jana::roles::ipa::master'
 $hosmanager_manage_host = true

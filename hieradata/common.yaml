@@ -2,37 +2,37 @@
 # This is infrastructure information.  Many of these values will be reused.
 # elsewhere.  The hiera looklup function in YAML files cannot handle arrays
 # so hosts should be listed individually.
-straycat::infra::dns::ns1:        8.8.8.8
-straycat::infra::dns::ns2:        8.8.4.4
+jana::infra::dns::ns1:        8.8.8.8
+jana::infra::dns::ns2:        8.8.4.4
 # Used by DNS servers
-straycat::infra::dns::forwarder1: 8.8.8.8
-straycat::infra::dns::forwarder2: 8.8.4.4
+jana::infra::dns::forwarder1: 8.8.8.8
+jana::infra::dns::forwarder2: 8.8.4.4
 
-straycat::infra::git:             UNSET
+jana::infra::git:             UNSET
 
-straycat::infra::ipa::adminpw:    UNSET
+jana::infra::ipa::adminpw:    UNSET
 
-straycat::infra::ipa::domain:     UNSET
-straycat::infra::ipa::dspw:       UNSET
-straycat::infra::ipa::join_user:  UNSET
-straycat::infra::ipa::join_pass:  UNSET
-straycat::infra::ipa::master:     UNSET
-straycat::infra::ipa::realm:      UNSET
-straycat::infra::ipa::replica1:   UNSET
-straycat::infra::ipa::replica2:   UNSET
+jana::infra::ipa::domain:     UNSET
+jana::infra::ipa::dspw:       UNSET
+jana::infra::ipa::join_user:  UNSET
+jana::infra::ipa::join_pass:  UNSET
+jana::infra::ipa::master:     UNSET
+jana::infra::ipa::realm:      UNSET
+jana::infra::ipa::replica1:   UNSET
+jana::infra::ipa::replica2:   UNSET
 
-straycat::infra::ldap1:           UNSET
-straycat::infra::ldap2:           UNSET
+jana::infra::ldap1:           UNSET
+jana::infra::ldap2:           UNSET
 
-straycat::infra::pgsql:           UNSET
+jana::infra::pgsql:           UNSET
 
-straycat::infra::puppet::foreman: UNSET
-straycat::infra::puppet::master:  UNSET
-straycat::infra::puppet::db:      UNSET
-straycat::infra::ntp::server1:    UNSET
+jana::infra::puppet::foreman: UNSET
+jana::infra::puppet::master:  UNSET
+jana::infra::puppet::db:      UNSET
+jana::infra::ntp::server1:    UNSET
 
 
-# Namespaces below are classes used in the straycat module.
-straycat::os::resolv::nameservers:
-  - "%{hiera('straycat::infra::dns::ns1')}"
-  - "%{hiera('straycat::infra::dns::ns2')}"
+# Namespaces below are classes used in the jana module.
+jana::os::resolv::nameservers:
+  - "%{hiera('jana::infra::dns::ns1')}"
+  - "%{hiera('jana::infra::dns::ns2')}"
