@@ -7,9 +7,9 @@
 
 :hierarchy:
   - fqdn/%{::fqdn}
-  - service/cassandra/%{::sc_cassandra_cluster}
-  - sc_dc/%{::sc_dc}
-  - sc_domain/%{::sc_domain}
+  - service/cassandra/%{::jm_cassandra_cluster}
+  - jm_dc/%{::jm_dc}
+  - jm_domain/%{::jm_domain}
   - common
 
 :yaml:

@@ -1,4 +1,4 @@
 
 node 'default' {
-  include ::straycat::roles::base
+  include ::jana::roles::base
 }
