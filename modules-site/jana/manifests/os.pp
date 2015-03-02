@@ -34,7 +34,7 @@
 # Copyright 2014 Tom McLaughlin
 #
 class jana::os (
-  $ipa_setup    = true,
+  $ipa_setup    = false,
   $puppet_setup = true
 ) {
 
@@ -59,6 +59,7 @@ class jana::os (
     contain '::jana::os::puppet'
   }
 
+  # Not currently available at Jana
   if $real_ipa_setup {
     class { '::jana::os::ipa_client':
       require => Class['::jana::os::time']
