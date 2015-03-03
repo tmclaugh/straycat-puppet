@@ -11,7 +11,7 @@ $real_puppet_ver          = $puppet_ver
 $real_hiera_ver           = $hiera_ver
 $real_hiera_eyaml_ver     = $hiera_eyaml_ver
 $real_hiera_eyaml_gpg_ver = $hiera_eyaml_gpg_ver
-$highline_ver             = '1.6.21'  # Newest version does not work on CentOS
+#$highline_ver             = '1.6.21'  # Newest version does not work on CentOS
                                       # 6 with older ruby.
 
 $systemd_file = '/usr/lib/systemd/system/puppetmaster.service'
@@ -23,7 +23,7 @@ if $centos_major == '7' {
   exec {'Fix PUPPETMASTER_EXTRA_OPTS':
     command => "/usr/bin/sed -i 's/\${\\(.*\\)}/\$\\1/' ${systemd_file}",
     onlyif  => "/usr/bin/egrep '\\$\\{.*\\}' ${systemd_file}",
-    require => Package['puppet-server'],
+    require => Package['puppetmaster'],
     before  => Service['puppetmaster'],
     notify  => Exec['systemctl reload']
   }
@@ -50,13 +50,6 @@ file { '/etc/puppet/keys':
   recurse => true
 }
 
-file { '/etc/puppet/rainmaker.creds':
-  ensure => present,
-  owner  => 'root',
-  group  => 'root',
-  mode   => '0600',
-}
-
 file { '/etc/puppet/keys/localhost.gpg':
   ensure  => present,
   mode    => '0600',
@@ -71,11 +64,11 @@ exec { 'hiera_gpg_key':
   require => File['/etc/puppet/keys/localhost.gpg']
 }
 
-package { 'ruby-devel':
+package { 'ruby-dev':
   ensure => present
 }
 
-package { 'ncurses-devel':
+package { 'libncurses5-dev':
   ensure => present
 }
 
@@ -92,8 +85,8 @@ package { 'hiera-eyaml':
   ensure   => $real_hiera_eyaml_ver,
   provider => gem,
   require  => [ Package['hiera'],
-                Package['ruby-devel'],
-                Package['ncurses-devel'],
+                Package['ruby-dev'],
+                Package['libncurses5-dev'],
                 Package['highline'] ]
 }
 
@@ -103,22 +96,29 @@ package { 'hiera-eyaml-gpg':
   require  => [Package['hiera'], Package['hiera-eyaml'], Exec[hiera_gpg_key]]
 }
 
-package { 'puppet-server':
+package { 'puppetmaster':
   ensure  => $real_puppet_ver,
-  require => Package['hiera']
+  require => Package['hiera'],
+  notify  => Exec['delete_original_ssl_certs']
+}
+
+exec { 'delete_original_ssl_certs' :
+  command     => '/usr/bin/find /var/lib/puppet/ssl/ -type f -delete',
+  refreshonly => true
 }
 
 # NOTE: HOME needs to be defined or hiera-eyaml-gpg will fail.
-file { '/etc/sysconfig/puppetmaster':
+file { '/etc/default/puppetmaster':
   ensure  => present,
   owner   => 'root',
   group   => 'root',
   mode    => '0644',
-  content => "${sysconfig_home_string}\nPUPPETMASTER_EXTRA_OPTS='--config ${::puppetmaster_conf} --logdest /var/log/puppetmaster.log'\n",
-  require => Package['puppet-server']
+  content => "START=yes\n${sysconfig_home_string}\nDAEMON_OPTS='--config ${puppetmaster_conf} --logdest /var/log/puppetmaster.log'\nPORT=8140\n",
+  require => [Package['puppetmaster'], Exec['delete_original_ssl_certs']],
+  notify  => Service['puppetmaster']
 }
 
-file { $::puppetmaster_conf:
+file { $puppetmaster_conf:
   ensure  => present,
   content => "
 [main]
@@ -148,7 +148,7 @@ file { $::puppetmaster_conf:
     dns_alt_names             = ${::fqdn}
     user                      = root
 ",
-  require => Package['puppet-server'],
+  require => Package['puppetmaster'],
   before  => Service['puppetmaster'],
 }
 
@@ -159,7 +159,7 @@ file { $fileserver_conf:
   path ${master_conf_dir}/ssl/ca
   allow *
 ",
-  require => Package['puppet-server'],
+  require => Package['puppetmaster'],
   before  => Service['puppetmaster'],
 }
 
@@ -174,7 +174,7 @@ file { [$master_conf_dir,
 file { "${master_conf_dir}/autosign.conf":
   ensure  => present,
   content => '*',
-  require => Package['puppet-server'],
+  require => Package['puppetmaster'],
   before  => Service['puppetmaster'],
 }
 
@@ -212,7 +212,7 @@ file {'/var/lib/puppet/concat':
 
 service { 'puppetmaster':
   ensure  => running,
-  require => [Package['puppet-server'],
+  require => [Package['puppetmaster'],
               Package['hiera'],
               Package['hiera-eyaml'],
               Package['hiera-eyaml-gpg']],
