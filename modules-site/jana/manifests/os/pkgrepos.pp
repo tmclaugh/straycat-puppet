@@ -29,7 +29,7 @@ class jana::os::pkgrepos {
 
     class { '::apt':
       always_apt_update    => false,
-      apt_update_frequency => undef,
+      apt_update_frequency => 'always',
       disable_keys         => undef,
       proxy_host           => false,
       proxy_port           => '8080',
