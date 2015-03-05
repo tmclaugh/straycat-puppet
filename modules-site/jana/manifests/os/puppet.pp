@@ -26,8 +26,9 @@ class jana::os::puppet (
 
   validate_string($puppet_server)
 
-  $puppet_version = "3.7.3-1.${::centos_pkg_release}"
-  $facter_version = "2.3.0-1.${::centos_pkg_release}"
+  # We should move these values to Hiera.
+  $puppet_version = "3.7.4-1puppetlabs1"
+  $facter_version = "2.4.1-1puppetlabs1"
 
   package { 'facter':
     ensure => $facter_version
@@ -35,7 +36,6 @@ class jana::os::puppet (
 
   class { '::puppet::agent':
     puppet_server        => $puppet_server,
-    package_provider     => 'yum',
     version              => $puppet_version,
     puppet_agent_cron    => true,
     puppet_extra_configs => {
