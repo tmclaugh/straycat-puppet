@@ -9,7 +9,7 @@ BS_DIR=$(dirname $0)
 puppet apply \
     --verbose \
     --modulepath ${BS_DIR}/../modules:${BS_DIR}/../modules-site \
-    -e 'include ::straycat::roles::bootstrap'
+    -e 'include ::jana::roles::bootstrap'
 
 # deploy environment
 r10k deploy environment -p -v

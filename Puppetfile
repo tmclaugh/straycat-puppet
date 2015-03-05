@@ -3,7 +3,9 @@ forge "https://forgeapi.puppetlabs.com"
 
 mod 'puppetlabs/apache', '1.2.0'
 
-mod 'puppetlabs/apt', '1.7.0'
+mod 'puppetlabs/apt',
+    :git => 'https://github.com/tmclaugh-jana/puppetlabs-apt.git',
+    :ref => 'apt_update_single'
 
 mod 'msimonin/cassandra', '0.7.2'
 
