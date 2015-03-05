@@ -27,6 +27,7 @@
 class jana::os::resolv (
   $nameservers = undef,
   $domainname  = undef,
+  $flush_nscd  = false
 ) {
 
   validate_array($nameservers)
@@ -45,7 +46,6 @@ class jana::os::resolv (
     command => 'sed -i \'s/127\.0\.0\.1.*/127.0.0.1\tlocalhost localhost.localdomain localhost4 localhost4.localdomain4/\' /etc/hosts',
     unless  => 'egrep "^127.0.0.1\slocalhost localhost.localdomain localhost4 localhost4.localdomain4$" /etc/hosts',
     path    => ['/bin', '/usr/bin'],
-    notify  => Exec['nscd-flush-hosts']
   }
 
   if $::jm_dc =='local' and $::ipaddress_eth1 != undef {
@@ -67,12 +67,15 @@ class jana::os::resolv (
   }
   contain '::resolv_conf'
 
-  ### cleanup
-  exec { 'nscd-flush-hosts':
-    command     => 'nscd -i hosts',
-    path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
-    refreshonly => true,
-    require     => [Host[$::fqdn], Class['::resolv_conf']]
+  if $flush_nscd == true {
+    ### cleanup if we're using this.
+    exec { 'nscd-flush-hosts':
+      command     => 'nscd -i hosts',
+      path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+      refreshonly => true,
+      subscribe   => Exec['etc-hosts-localhost'],
+      require     => [Host[$::fqdn], Class['::resolv_conf']]
+    }
   }
 
 
