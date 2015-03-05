@@ -30,8 +30,25 @@ class jana::os::puppet (
   $puppet_version = "3.7.4-1puppetlabs1"
   $facter_version = "2.4.1-1puppetlabs1"
 
+  if $::osfamily == 'debian' {
+    apt::source { 'puppetlabs' :
+      comment  => "Puppet packages for ${::lsbdistcodename}",
+      location => 'http://apt.puppetlabs.com',
+      repos    => 'main',
+      before   => Package['facter']
+    }
+
+    $repo = Apt::Source[$::lsbdistcodename]
+
+  } elsif $::osfamily == 'redhat' {
+    # FIXME: Add and test.
+
+    $repo = undef
+  }
+
   package { 'facter':
-    ensure => $facter_version
+    ensure  => $facter_version,
+    require => $repo
   }
 
   class { '::puppet::agent':
