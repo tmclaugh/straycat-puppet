@@ -235,5 +235,5 @@ class puppetmaster {
   }
 }
 
-class puppetmaster
+class { 'puppetmaster': }
 
