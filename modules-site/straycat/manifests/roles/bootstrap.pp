@@ -23,7 +23,6 @@
 # Copyright 2014 Tom McLaughlin
 #
 class straycat::roles::bootstrap {
-  include stdlib
 
   # Not meant to be a fully functional host.
   #class { '::straycat::os':
