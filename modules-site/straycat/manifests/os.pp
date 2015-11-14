@@ -52,7 +52,6 @@ class straycat::os (
 
 
   Anchor['straycat::os::start'] ->
-  Class['::straycat::os::setup'] ->
   Anchor['straycat::os::end']
 
 }
