@@ -15,11 +15,9 @@
 # Copyright 2014 Tom McLaughlin
 #
 class straycat::roles::dc::master {
-  include stdlib
 
   class { '::straycat::os':
     ipa_setup => false,
-    stage     => setup
   }
 
   # FIXME: There's an error in service order.  Also an errent /etc/hosts

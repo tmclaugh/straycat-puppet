@@ -17,8 +17,6 @@
 #
 class straycat::roles::puppetmaster {
 
-  include stdlib
-
   $foreman_url = 'https://foreman.straycat.local'
 
   $puppet_psk = 'FoiWssfp1wOfbdQ4'
@@ -36,7 +34,6 @@ class straycat::roles::puppetmaster {
 
   class { 'straycat::os':
     puppet_setup => false, # Causes resource order issue due to puppetmaster
-    stage        => setup
   }
 
   class { '::straycat::os::puppet': }
