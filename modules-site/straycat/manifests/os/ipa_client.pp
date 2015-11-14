@@ -31,7 +31,7 @@
 #   ipa_realm     => 'DOMAIN.LAN'
 #   ipa_join_user => 'join_user'
 #   ipa_join_pass => 'joinPasswd'
-#   ipa_server    => 'ipa.domain.local'
+#   ipa_server    => 'ipa.domain.dev'
 # }
 #
 # === TODO

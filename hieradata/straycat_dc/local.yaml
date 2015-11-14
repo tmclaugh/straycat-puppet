@@ -2,29 +2,29 @@
 straycat::infra::git:             git.straycat.lan
 
 straycat::infra::ipa::adminpw:    InsecureAdminPW
-straycat::infra::ipa::domain:     straycat.local
+straycat::infra::ipa::domain:     straycat.dev
 straycat::infra::ipa::dspw:       InsecureDataStorePw
 straycat::infra::ipa::join_user:  ipa-join-user
 straycat::infra::ipa::join_pass:  InsecureJoinUser
-straycat::infra::ipa::master:     ipa-master.straycat.local
+straycat::infra::ipa::master:     ipa-master.straycat.dev
 straycat::infra::ipa::otp:        InsecureOTP
 straycat::infra::ipa::realm:      STRAYCAT.LOCAL
-straycat::infra::ipa::replica1:   ipa-slave-1.straycat.local
-straycat::infra::ipa::replica2:   ipa-slave-2.straycat.local
+straycat::infra::ipa::replica1:   ipa-slave-1.straycat.dev
+straycat::infra::ipa::replica2:   ipa-slave-2.straycat.dev
 
 straycat::infra::ldap1: "%{hiera('straycat::infra::ipa::master')}"
 #straycat::infra::ldap2: "%{hiera('straycat::infra::ipa::replica1')}"
 
-straycat::infra::pgsql::host:     pgsql.straycat.local
+straycat::infra::pgsql::host:     pgsql.straycat.dev
 straycat::infra::pgsql::port:     5432
 
-straycat::infra::puppet::db:      puppetdb.straycat.local
-straycat::infra::puppet::foreman: foreman.straycat.local
+straycat::infra::puppet::db:      puppetdb.straycat.dev
+straycat::infra::puppet::foreman: foreman.straycat.dev
 straycat::infra::puppet::master:  localhost
 
 straycat::infra::ntp::server1:    us.pool.ntp.org
 
-straycat::infra::salt:master:     salt-master.straycat.local
+straycat::infra::salt:master:     salt-master.straycat.dev
 
 
 straycat::os::ipa_setup:                  false
@@ -64,7 +64,7 @@ straycat::svc::phppgadmin::pgsql_db_host: "%{hiera('straycat::infra::pgsql::host
 straycat::svc::puppet::foreman_proxy::foreman_host: "%{hiera('straycat::infra::puppet::foreman')}"
 
 # This should be a lookup for the puppetmaster except in a Vagrant env.
-straycat::svc::puppet::master::puppet_ca_allow: 'puppetmaster.straycat.local'
+straycat::svc::puppet::master::puppet_ca_allow: 'puppetmaster.straycat.dev'
 
 straycat::svc::salt::minion::salt_minion_master:    "%{hiera('straycat::infra::salt:master')}"
 

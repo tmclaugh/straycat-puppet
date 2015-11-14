@@ -3,7 +3,7 @@ Vagrant.configure('2') do |config|
   config.hostmanager.manage_host = $hosmanager_manage_host
 
   config.vm.define "bootstrap", primary: true do |pm|
-    pm.vm.hostname = 'bootstrap.straycat.local'
+    pm.vm.hostname = 'bootstrap.straycat.dev'
     pm.hostmanager.aliases = 'bootstrap'
     pm.vm.network :private_network, type: "dhcp"
 
@@ -44,7 +44,7 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.define "pgsql" do |pgsql|
-    pgsql.vm.hostname = 'pgsql.straycat.local'
+    pgsql.vm.hostname = 'pgsql.straycat.dev'
     pgsql.hostmanager.aliases = 'pgsql'
     pgsql.vm.network :private_network, type: "dhcp"
 
@@ -54,14 +54,14 @@ Vagrant.configure('2') do |config|
     end
 
     pgsql.vm.provision 'default_puppet_server', type: 'puppet_server' do |p|
-      p.puppet_server = "bootstrap.straycat.local"
+      p.puppet_server = "bootstrap.straycat.dev"
       p.options       = "--verbose --waitforcert 1"
       p.facter        = { 'role' => 'straycat::roles::postgresql' }
     end
   end
 
   config.vm.define "foreman" do |foreman|
-    foreman.vm.hostname = 'foreman.straycat.local'
+    foreman.vm.hostname = 'foreman.straycat.dev'
     foreman.hostmanager.aliases = 'foreman'
     foreman.vm.network :private_network, type: "dhcp"
 
@@ -71,14 +71,14 @@ Vagrant.configure('2') do |config|
     end
 
     foreman.vm.provision 'default_puppet_server', type: 'puppet_server' do |p|
-      p.puppet_server = "bootstrap.straycat.local"
+      p.puppet_server = "bootstrap.straycat.dev"
       p.options       = "--verbose --waitforcert 1"
       p.facter        = { 'role' => 'straycat::roles::foreman' }
     end
   end
 
   config.vm.define "puppetmaster" do |puppet|
-    puppet.vm.hostname = 'puppetmaster.straycat.local'
+    puppet.vm.hostname = 'puppetmaster.straycat.dev'
     puppet.hostmanager.aliases = 'puppetmaster'
     puppet.vm.network :private_network, type: "dhcp"
 
@@ -88,13 +88,13 @@ Vagrant.configure('2') do |config|
     end
 
     puppet.vm.provision 'default_puppet_server', type: 'puppet_server' do |p|
-      p.puppet_server = "bootstrap.straycat.local"
+      p.puppet_server = "bootstrap.straycat.dev"
       p.options       = "--verbose --waitforcert 1"
       p.facter        = { 'role'                => 'straycat::roles::puppetmaster',
-                          'sc_foreman_server'   => 'foreman.straycat.local',
-                          'sc_puppet_ca_server' => 'puppetca.straycat.local',
+                          'sc_foreman_server'   => 'foreman.straycat.dev',
+                          'sc_puppet_ca_server' => 'puppetca.straycat.dev',
                           'sc_puppet_env'       => 'qa',
-                          'sc_puppet_altnames'  => "puppetmaster.straycat.local,#{$inst_name}" }
+                          'sc_puppet_altnames'  => "puppetmaster.straycat.dev,#{$inst_name}" }
     end
   end
 end
