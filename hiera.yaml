@@ -7,7 +7,8 @@
 
 :hierarchy:
   - fqdn/%{::fqdn}
-  - service/cassandra/%{::sc_cassandra_cluster}
+  - service/cassandra/%{::sc_cassandra_cluster}   # This should go away
+  - straycat_svc/%{::straycat_svc}
   - straycat_dc/%{::straycat_dc}
   - straycat_env/%{::straycat_env}
   - common
