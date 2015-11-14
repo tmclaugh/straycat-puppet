@@ -16,12 +16,7 @@
 #
 class straycat::roles::foreman {
 
-  include stdlib
-
-  class { 'straycat::os':
-    stage => setup
-  }
-
+  class { 'straycat::os': }
   class { '::straycat::svc::puppet::foreman': }
 
 }
