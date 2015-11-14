@@ -33,10 +33,18 @@ class straycat::os::puppet (
     ensure => $facter_version
   }
 
+  if $::straycat_env == 'dev' {
+    $puppet_agent_enabled = false
+  } else {
+    $puppet_agent_enabled = true
+  }
+
+
   class { '::puppet::agent':
     puppet_server        => $puppet_server,
     package_provider     => 'yum',
     version              => $puppet_version,
+    puppet_agent_enabled => $puppet_agent_enabled,
     puppet_agent_cron    => true,
     puppet_extra_configs => {
       agent => {
