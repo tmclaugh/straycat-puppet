@@ -48,7 +48,7 @@ class straycat::os::resolv (
     notify  => Exec['nscd-flush-hosts']
   }
 
-  if $::sc_dc =='local' and $::ipaddress_eth1 != undef {
+  if $::straycat_dc =='local' and $::ipaddress_eth1 != undef {
     $hosts_addr = $::ipaddress_eth1
   } else {
     $hosts_addr = $::ipaddress_eth0
