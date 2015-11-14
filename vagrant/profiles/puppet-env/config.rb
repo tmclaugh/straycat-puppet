@@ -12,22 +12,15 @@ Vagrant.configure('2') do |config|
       puppet.manifests_path = PUPPET_MANIFEST_PATH
       puppet.options        = "--templatedir #{VG_PUPPETMASTER_LOCAL}/vagrant/templates"
       puppet.facter = {
-        "sc_environment"         => "qa",
-        "environment"            => "production",
-        "data_center"            => "local",
         "sc_puppetmaster_server" => "localhost",
-        "os"                     => "centos6",
-        "provider"               => "virtualbox",
-        "security_group"         => "default",
         "vg_puppetmaster_dir"    => $vg_puppetmaster_dir,
         "vg_puppetmaster_local"  => VG_PUPPETMASTER_LOCAL,
-        "default_role"           => $vg_role,
-        "creator"                => USER,
-        "description"            => "Testing Puppet",
         "puppet_ver"             => $puppet_ver,
         "hiera_ver"              => $hiera_ver,
         "hiera_eyaml_ver"        => $hiera_eyaml_ver,
         "hiera_eyaml_gpg_ver"    => $hiera_eyaml_gpg_ver,
+        "straycat_env"           => 'dev',
+        "straycat_dc"            => 'local'
       }
     end
 

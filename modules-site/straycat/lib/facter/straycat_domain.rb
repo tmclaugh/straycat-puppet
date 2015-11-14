@@ -6,16 +6,17 @@
 #
 # Public infrastructure:
 # foo.straycat.dhs.org    CNAME to prod service
-# foo.straycat-qa.dhs.org CNAME to QA service
-# foo.<region/dc>.straycat-net.dhs.org
+# foo.straycat-test.dhs.org CNAME to test service
+# foo.<aws_region>.straycat-net.dhs.org
 #
 # Private infrastructure:
 # foo.straycat.lan        CNAME to prod service
-# foo.straycat-qa.lan     CNAME to QA service
+# foo.straycat-test.lan     CNAME to QA service
 # foo.straycat-net.lan
 #
 # Local dev:
 # foo.straycat.dev
+# foo.straycat-net.dev  <- should investigate this idea
 #
 require 'facter'
 

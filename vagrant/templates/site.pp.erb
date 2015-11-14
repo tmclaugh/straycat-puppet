@@ -1,10 +1,14 @@
-$sc_environment         = '<%= @sc_environment %>'
-$data_center            = '<%= @data_center %>'
 $sc_puppetmaster_server = '<%= @sc_puppetmaster_server %>'
-$provider               = '<%= @provider %>'
-$security_group         = '<%= @security_group %>'
-$creator                = '<%= @creator %>'
-$description            = '<%= @description %>'
+
+# These below are here so attempts to rerun puppet don't require someone
+# to pass in these facts.
+$straycat_env = '<%= @straycat_env %>'
+
+# We set this as a fact after the first run.  We need this when dealing with
+# a Vagrant setup that uses a single Puppetmaster.
+if $straycat_svc == undef {
+  $straycat_svc           = '<%= @straycat_svc %>'
+}
 
 <% if @facter_extra -%>
 # Extra facts from environment!
