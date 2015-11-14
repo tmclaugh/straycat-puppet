@@ -8,7 +8,7 @@
 # local host so that name resolution will work.  The master host can be
 # accessed using the following URL:
 #
-# https://<instance_name>.straycat.local
+# https://<instance_name>.straycat.dev
 #
 Vagrant.configure('2') do |config|
 
