@@ -2,15 +2,15 @@
 # in cloud config within the .box image at
 #
 class puppetmaster {
-  $master_conf_dir   = $vg_puppetmaster_dir
-  $master_local_dir  = $vg_puppetmaster_local
+  $master_conf_dir   = $::vg_puppetmaster_dir
+  $master_local_dir  = $::vg_puppetmaster_local
   $puppetmaster_conf = "${master_conf_dir}/puppet-vagrant.conf"
   $fileserver_conf   = "${master_conf_dir}/fileserver.conf"
 
-  $real_puppet_ver          = $puppet_ver
-  $real_hiera_ver           = $hiera_ver
-  $real_hiera_eyaml_ver     = $hiera_eyaml_ver
-  $real_hiera_eyaml_gpg_ver = $hiera_eyaml_gpg_ver
+  $real_puppet_ver          = $::puppet_ver
+  $real_hiera_ver           = $::hiera_ver
+  $real_hiera_eyaml_ver     = $::hiera_eyaml_ver
+  $real_hiera_eyaml_gpg_ver = $::hiera_eyaml_gpg_ver
   $highline_ver             = '1.6.21'  # Newest version does not work on CentOS
                                         # 6 with older ruby.
 
