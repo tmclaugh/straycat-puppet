@@ -54,6 +54,32 @@ class straycat::os::setup (
     contain '::straycat::os::ipa_client'
   }
 
+  # Since we have no ENC and have some Vagrant profiles that send the role as
+  # a fact. This ensures we don't have to remember to run puppet with the role
+  # fact set in the environment every time.  The straycat_svc fact is useful
+  # in multi-host environments with a single puppetmaster.
+  if $::straycat_env == 'dev' and $::role {
+    file { '/etc/facter/facts.d/role.txt':
+      ensure  => present,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      require => Class['::straycat::os::puppet']
+    } ->
+    file_line { 'facter_role':
+      path  => '/etc/facter/facts.d/role.txt',
+      match => 'role=.*',
+      line  => "role=${::role}"
+    }
+    file_line { 'facter_straycat_svc':
+      path  => '/etc/facter/facts.d/role.txt',
+      match => 'straycat_svc=.*',
+      line  => "straycat_svc=${::straycat_svc}"
+    }
+  }
+
+
+
   anchor { 'straycat::os::setup::end': }
 
 
