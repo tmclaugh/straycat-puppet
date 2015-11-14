@@ -194,7 +194,7 @@ After the host has finished provisioning SSH into the host
 
 <pre>
 [tmclaughlin@tomcat vagrant]$ rake vagrant:ssh[test-instance]
-Welcome to vagrant.straycat.local.
+Welcome to vagrant.straycat.dev.
 
 [vagrant@vagrant ~]$
 </pre>

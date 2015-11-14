@@ -179,7 +179,7 @@ file { "${master_conf_dir}/autosign.conf":
 }
 
 
-# FIXME: Maybe we should create a *.<domain>.local node in the real site.pp
+# FIXME: Maybe we should create a *.<domain>.dev node in the real site.pp
 # to handle Vagrant hosts.
 file { "${master_conf_dir}/manifests/site.pp":
   ensure  => present,
