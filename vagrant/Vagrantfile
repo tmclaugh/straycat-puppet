@@ -217,23 +217,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision 'default_puppet', type: 'puppet' do |puppet|
 
     puppet.facter = {
-      "sc_environment"         => "qa",
-      "environment"            => "production",
-      "data_center"            => "local",
       "sc_puppetmaster_server" => "localhost",
-      "os"                     => "centos6",
-      "provider"               => "virtualbox",
-      "security_group"         => "default",
       "vg_puppetmaster_dir"    => $vg_puppetmaster_dir,
       "vg_puppetmaster_local"  => VG_PUPPETMASTER_LOCAL,
       "default_role"           => $vg_role,
-      "creator"                => USER,
-      "description"            => "Test server for role " + $vg_role,
       "puppet_ver"             => $puppet_ver,
       "hiera_ver"              => $hiera_ver,
       "hiera_eyaml_ver"        => $hiera_eyaml_ver,
       "hiera_eyaml_gpg_ver"    => $hiera_eyaml_gpg_ver,
-      "centos_major"           => $centos_major
     }
 
     if defined? $facter_vars
