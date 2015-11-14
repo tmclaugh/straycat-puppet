@@ -9,7 +9,6 @@
   - fqdn/%{::fqdn}
   - service/cassandra/%{::sc_cassandra_cluster}
   - straycat_dc/%{::straycat_dc}
-  - straycat_domain/%{::straycat_domain}
   - common
 
 :yaml:
