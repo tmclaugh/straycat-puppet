@@ -107,11 +107,11 @@ class puppetmaster {
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => "${sysconfig_home_string}\nPUPPETMASTER_EXTRA_OPTS='--config ${::puppetmaster_conf} --logdest /var/log/puppetmaster.log'\n",
+    content => "${sysconfig_home_string}\nPUPPETMASTER_EXTRA_OPTS='--config ${puppetmaster_conf} --logdest /var/log/puppetmaster.log'\n",
     require => Package['puppet-server']
   }
 
-  file { $::puppetmaster_conf:
+  file { $puppetmaster_conf:
     ensure  => present,
     content => "
   [main]
