@@ -17,12 +17,12 @@
 #
 class straycat::roles::puppetmaster {
 
-  $foreman_url = 'https://foreman.straycat.local'
+  $foreman_url = 'https://foreman.straycat.dev'
 
   $puppet_psk = 'FoiWssfp1wOfbdQ4'
-  $puppet_puppetdb_host = 'puppetmaster.straycat.local'
+  $puppet_puppetdb_host = 'puppetmaster.straycat.dev'
 
-  $puppetdb_database_host     = 'pgsql.straycat.local'
+  $puppetdb_database_host     = 'pgsql.straycat.dev'
   $puppetdb_database_name     = 'puppetdb'
   $puppetdb_database_username = 'puppetdb'
   $puppetdb_database_password = 'MyWeakPassword' # Move to Hiera when in place
