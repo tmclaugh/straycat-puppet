@@ -50,13 +50,6 @@ class puppetmaster {
     recurse => true
   }
 
-  file { '/etc/puppet/rainmaker.creds':
-    ensure => present,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0600',
-  }
-
   file { '/etc/puppet/keys/localhost.gpg':
     ensure  => present,
     mode    => '0600',
