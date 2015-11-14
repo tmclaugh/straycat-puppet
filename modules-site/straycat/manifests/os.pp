@@ -34,7 +34,7 @@
 # Copyright 2014 Tom McLaughlin
 #
 class straycat::os (
-  $ipa_setup    = true,
+  $ipa_setup    = false,
   $puppet_setup = true
 ) {
 
