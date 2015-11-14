@@ -19,6 +19,8 @@ Vagrant.configure('2') do |config|
         "hiera_ver"              => $hiera_ver,
         "hiera_eyaml_ver"        => $hiera_eyaml_ver,
         "hiera_eyaml_gpg_ver"    => $hiera_eyaml_gpg_ver,
+        "straycat_env"           => 'dev',
+        "straycat_dc"            => 'local'
       }
     end
 
