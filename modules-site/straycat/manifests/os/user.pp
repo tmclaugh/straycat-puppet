@@ -30,4 +30,14 @@ class straycat::os::user {
     content => template('straycat/os/user/motd')
   }
 
+  # Set some facts as referenceable shell vars
+  # /etc/default is a more potable location than /etc/sysconfig
+  file { '/etc/default/straycat':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('straycat/os/user/straycat')
+  }
+
 }
