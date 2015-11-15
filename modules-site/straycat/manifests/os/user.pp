@@ -22,27 +22,12 @@
 #
 class straycat::os::user {
 
-  # The resources are chained to ensure they're added in the same order.
-  # FIXME: We should generate MOTD from a template but OS images creation
-  # doesn't leave image or kickstart info elsewhere.
-  file_line { 'motd_fqdn':
-    path => '/etc/motd',
-    line => " Hostname:\t\t${::fqdn}"
-  } ->
-  file_line { 'motd_straycat_dc':
-    path  => '/etc/motd',
-    match => "Straycat DC.*",
-    line  => " Straycat DC:\t\t${::straycat_dc}"
-  } ->
-  file_line { 'motd_straycat_env':
-    path  => '/etc/motd',
-    match => "Straycat Environment.*",
-    line  => " Straycat Environment:\t${::straycat_env}"
-  } ->
-  file_line { 'motd_straycat_svc':
-    path  => '/etc/motd',
-    match => "Straycat Service.*",
-    line  => " Straycat Service:\t${::straycat_svc}"
+  file { '/etc/motd':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('straycat/os/user/motd')
   }
 
 }
