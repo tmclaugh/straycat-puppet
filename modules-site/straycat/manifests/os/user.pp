@@ -14,11 +14,11 @@
 #
 # === Authors
 #
-# Tom McLaughlin <tom@jana.com>
+# Tom McLaughlin <tmclaugh@sdf.lonestar.org>
 #
 # === Copyright
 #
-# Copyright 2015 Jana Mobile, Inc.
+# Copyright 2015 Tom McLaughlin
 #
 class straycat::os::user {
 
