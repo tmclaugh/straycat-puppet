@@ -54,6 +54,8 @@ class straycat::os::setup (
     contain '::straycat::os::ipa_client'
   }
 
+  class { '::straycat::os::user': }
+
   # Since we have no ENC and have some Vagrant profiles that send the role as
   # a fact. This ensures we don't have to remember to run puppet with the role
   # fact set in the environment every time.  The straycat_svc fact is useful
@@ -96,6 +98,7 @@ class straycat::os::setup (
   Class['::straycat::os::resolv'] ->
   Class['::straycat::os::pkgrepos'] ->
   Class['::straycat::os::time'] ->
+  Class['::straycat::os::user'] ->
   Anchor['straycat::os::setup::end']
 
 }
