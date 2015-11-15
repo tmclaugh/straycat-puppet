@@ -54,6 +54,8 @@ class straycat::os::setup (
     contain '::straycat::os::ipa_client'
   }
 
+  class { '::logrotate::base': }
+
   class { '::straycat::os::user': }
 
   # Since we have no ENC and have some Vagrant profiles that send the role as
@@ -99,6 +101,7 @@ class straycat::os::setup (
   Class['::straycat::os::pkgrepos'] ->
   Class['::straycat::os::time'] ->
   Class['::straycat::os::user'] ->
+  Class['::logrotate::base'] ->
   Anchor['straycat::os::setup::end']
 
 }

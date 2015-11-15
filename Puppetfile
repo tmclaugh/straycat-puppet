@@ -31,6 +31,11 @@ mod 'ipa',
 
 mod 'puppetlabs/java', '1.2.0'
 
+mod 'rodjek/logrotate',
+    :git => 'https://github.com/tmclaugh/puppet-logrotate.git',
+    :ref => 'scmaster'
+
+
 mod 'puppetlabs/ntp', '3.3.0'
 
 mod 'puppetlabs/postgresql', '4.1.0'

@@ -34,6 +34,7 @@ modules/git
 modules/inifile
 modules/ipa
 modules/java
+modules/logrotate
 modules/ntp
 modules/passenger
 modules/php
