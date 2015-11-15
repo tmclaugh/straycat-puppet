@@ -1,0 +1,17 @@
+
+          __                              __
+    _____/ /__________ ___  ___________ _/ /_
+   / ___/ __/ ___/ __ `/ / / / ___/ __ `/ __/
+  (__  ) /_/ /  / /_/ / /_/ / /__/ /_/ / /_
+ /____/\__/_/   \__,_/\__, /\___/\__,_/\__/
+                     /____/
+
+     <%=  @straycat_base_image %>
+
+
+ Hostname:              <%= @fqdn %>
+
+ Straycat DC:           <%= @straycat_dc %>
+ Straycat Environment:  <%= @straycat_env %>
+ Straycat Service:      <%= @straycat_svc %>
+

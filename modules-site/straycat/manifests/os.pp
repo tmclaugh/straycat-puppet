@@ -38,6 +38,21 @@ class straycat::os (
   $puppet_setup = true
 ) {
 
+  # We need this in multiple spots so validate from this top class.
+  # NOTE: validate_string() doesn't seem to work with facts for some reason.
+  if $::straycat_dc == undef {
+    fail('$::straycat_dc is undefined')
+  }
+
+  if $::straycat_env == undef {
+    fail('$::straycat_env is undefined')
+  }
+
+  if $::straycat_svc == undef {
+    fail('$::straycat_svc is undefined')
+  }
+
+
   include stdlib
 
   anchor { 'straycat::os::start': }
