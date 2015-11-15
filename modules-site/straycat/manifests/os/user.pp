@@ -40,4 +40,12 @@ class straycat::os::user {
     content => template('straycat/os/user/straycat')
   }
 
+  file { '/etc/profile.d/straycat_prompt.sh':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('straycat/os/user/straycat_prompt.sh'),
+    require => File['/etc/default/straycat']
+  }
 }
