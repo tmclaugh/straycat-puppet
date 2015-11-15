@@ -34,17 +34,27 @@ class straycat::os::resolv (
 
   ### /etc/hosts
   #
-  #Vagrant likes to set the hostname ot 127.0.0.1 so we need to fix this.
-  #The resource below wwill not fix this.
+  # Vagrant likes to set the hostname to 127.0.0.1 so we need to fix this.
+  # The resource below wwill not fix this.
   #
   #host { 'localhost':
   #  ip           => '127.0.0.1',
   #  host_aliases => 'localhost.localdomain'
   #}
+  #
+  # The order of the host and exec rsources is actually important to prevent
+  # resource flap.
+  host { $::fqdn:
+    ip           => $hosts_addr,
+    host_aliases => $::hostname,
+    before      => Exec['etc-hosts-localhost']
+  }
+
   exec { 'etc-hosts-localhost':
     command => 'sed -i \'s/127\.0\.0\.1.*/127.0.0.1\tlocalhost localhost.localdomain localhost4 localhost4.localdomain4/\' /etc/hosts',
     unless  => 'egrep "^127.0.0.1\slocalhost localhost.localdomain localhost4 localhost4.localdomain4$" /etc/hosts',
     path    => ['/bin', '/usr/bin'],
+    require => Host[$::fqdn],
     notify  => Exec['nscd-flush-hosts']
   }
 
@@ -52,12 +62,6 @@ class straycat::os::resolv (
     $hosts_addr = $::ipaddress_eth1
   } else {
     $hosts_addr = $::ipaddress_eth0
-  }
-
-  host { $::fqdn:
-    ip           => $hosts_addr,
-    host_aliases => $::hostname,
-    require      => Exec['etc-hosts-localhost']
   }
 
   ### /etc/resolv.conf
