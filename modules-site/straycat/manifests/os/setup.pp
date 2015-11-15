@@ -58,23 +58,32 @@ class straycat::os::setup (
   # a fact. This ensures we don't have to remember to run puppet with the role
   # fact set in the environment every time.  The straycat_svc fact is useful
   # in multi-host environments with a single puppetmaster.
-  if $::straycat_env == 'dev' and $::role {
-    file { '/etc/facter/facts.d/role.txt':
+  if $::straycat_env == 'dev' or $::role {
+    $fact_file = '/etc/facter/facts.d/straycat.txt'
+    file { $fact_file:
       ensure  => present,
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
       require => Class['::straycat::os::puppet']
-    } ->
-    file_line { 'facter_role':
-      path  => '/etc/facter/facts.d/role.txt',
-      match => 'role=.*',
-      line  => "role=${::role}"
     }
-    file_line { 'facter_straycat_svc':
-      path  => '/etc/facter/facts.d/role.txt',
-      match => 'straycat_svc=.*',
-      line  => "straycat_svc=${::straycat_svc}"
+
+    if $::role {
+      file_line { 'facter_role':
+        path    => $fact_file,
+        match   => 'role=.*',
+        line    => "role=${::role}",
+        require => File[$fact_file]
+      }
+    }
+
+    if $::straycat_env == 'dev' {
+      file_line { 'facter_straycat_svc':
+        path    => $fact_file,
+        match   => 'straycat_svc=.*',
+        line    => "straycat_svc=${::straycat_svc}",
+        require => File[$fact_file]
+      }
     }
   }
 

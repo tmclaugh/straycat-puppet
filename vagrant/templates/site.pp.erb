@@ -7,7 +7,7 @@ $straycat_env = '<%= @straycat_env %>'
 # We set this as a fact after the first run.  We need this when dealing with
 # a Vagrant setup that uses a single Puppetmaster.
 if $straycat_svc == undef {
-  $straycat_svc           = '<%= @straycat_svc %>'
+  $straycat_svc = '<%= @straycat_svc %>'
 }
 
 <% if @facter_extra -%>
