@@ -1,4 +1,4 @@
-# === Fact: straycat_domain
+# === Fact: site_domain
 #
 # Network domain sans DC name.
 #
@@ -20,7 +20,7 @@
 #
 require 'facter'
 
-Facter.add('straycat_domain') do
+Facter.add('site_domain') do
   setcode do
     if Facter.value('domain') == 'straycat.dev'
       Facter.value('domain')
