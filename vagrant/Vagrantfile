@@ -24,7 +24,7 @@ $vm_box =  ENV['VG_VM_BOX']                       || 'CentOS-6.6-x86_64-20150127
 $vm_box_site = ENV['VG_VM_BOX_SITE']              || 'https://s3.amazonaws.com/straycat.dhs.org/os-images/vagrant'
 
 $aws_access_key = ENV['AWS_ACCESS_KEY']
-$aws_secret_key = ENV['AWS_SECRET_KEY']
+$aws_secret_key = ENV['AWS_SECRET_ACCESS_KEY']
 $aws_keypair_name = 'straycat'
 $aws_region = 'us-east-1'
 $aws_ami = 'ami-30df9858'
@@ -52,7 +52,7 @@ $puppet_ver          = '3.7.3-1.el6'
 $facter_ver          = '2.3.0-1.el6'
 $hiera_ver           = '1.3.4-1.el6'
 $hiera_eyaml_ver     = '2.0.6'
-$hiera_eyaml_gpg_ver = '0.4'
+$hiera_eyaml_gpg_ver = '0.6'
 
 # Used for minor differences when provisioning local pupeptmaster.
 $centos_major = '6'

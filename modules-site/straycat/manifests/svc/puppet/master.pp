@@ -37,7 +37,7 @@ class straycat::svc::puppet::master (
   $puppetdb_host             = undef,
   $hiera_version             = "1.3.4-1.${::centos_pkg_release}",
   $hiera_eyaml_version       = '2.0.6',
-  $hiera_eyaml_gpg_version   = '0.4',
+  $hiera_eyaml_gpg_version   = '0.6',
   $hiera_key_name            = "puppet.${::domain}"
 ) {
 
