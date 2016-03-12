@@ -10,7 +10,7 @@ $inst_home = ENV['VG_INST_HOME']                  || File.dirname(__FILE__)
 $inst_name = ENV['VG_INST_NAME']                  || $inst_home.split(File::SEPARATOR)[-1]
 $hostname = ENV['VG_HOSTNAME']                    || "%s.straycat.dev" % $inst_name
 $puppet_clone = ENV['VG_PUPPET_CLONE']            || $inst_home.split(File::SEPARATOR)[0..-2].join(File::SEPARATOR)
-$ssh_private_key = ENV['VG_SSH_PRIVATE_KEY']      || "%s/vagrant/straycat_vagrant_rsa" % $puppet_clone
+$ssh_private_key = ENV['VG_SSH_PRIVATE_KEY']      || "%s/vagrant/site_vagrant_rsa" % $puppet_clone
 $vg_puppetmaster_dir = ENV['VG_PUPPETMASTER_DIR'] || "/etc/puppetmaster"
 $facter_vars = ENV['VG_FACTER_VARS']              || '' # "key1=val1;key2=val2a,val2b;key3=val3"
 $vg_gui = ENV['VG_GUI']                           || false
@@ -225,14 +225,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       "hiera_ver"              => $hiera_ver,
       "hiera_eyaml_ver"        => $hiera_eyaml_ver,
       "hiera_eyaml_gpg_ver"    => $hiera_eyaml_gpg_ver,
-      "straycat_env"           => 'dev',
-      "straycat_dc"            => 'local'
+      "site_env"               => 'dev',
+      "site_dc"                => 'local'
     }
 
-    if defined? $straycat_svc
-      puppet.facter['straycat_svc'] = $straycat_svc
+    if defined? $site_svc
+      puppet.facter['site_svc'] = $site_svc
     else
-      puppet.facter['straycat_svc'] = 'vagrant'
+      puppet.facter['site_svc'] = 'vagrant'
     end
 
 

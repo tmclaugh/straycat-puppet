@@ -12,7 +12,7 @@
 #
 class straycat::roles::salt::master {
 
-  if $::straycat_dc == 'local' {
+  if $::site_dc == 'local' {
     $salt_master_auto_accept = true
   } else {
     $salt_master_auto_accept = false

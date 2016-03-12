@@ -1,4 +1,0 @@
-# /etc/default/straycat
-#
-STRAYCAT_ENV=<%= @straycat_env %>
-STRAYCAT_SVC=<%= @straycat_svc %>
