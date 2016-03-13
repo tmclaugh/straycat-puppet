@@ -24,13 +24,13 @@ class straycat::os::logging {
     rate_limit_burst    => '2500'
   }
 
-  class { '::logrotate::base': }
+  class { '::logrotate': }
 
   anchor { 'straycat::os::logging::end': }
 
 
   Anchor['straycat::os::logging::start'] ->
   Class['::rsyslog::client'] ->
-  Class['::logrotate::base'] ->
+  Class['::logrotate'] ->
   Anchor['straycat::os::logging::end']
 }
