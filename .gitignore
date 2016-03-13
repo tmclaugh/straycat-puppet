@@ -43,6 +43,7 @@ modules/postgresql
 modules/puppet
 modules/puppetdb
 modules/puppetdbquery
+modules/python
 modules/r10k
 modules/resolv_conf
 modules/rsyslog

@@ -56,6 +56,8 @@ mod 'puppetlabs/puppetdb', '4.1.0'
 
 mod 'dalen/puppetdbquery', '1.5.3'
 
+mod 'stankevich/python', '1.8.3'
+
 mod 'zack/r10k', '2.5.1'
 
 mod 'saz/resolv_conf', '3.0.3'
