@@ -56,8 +56,6 @@ class straycat::os::setup (
     contain '::straycat::os::ipa_client'
   }
 
-  class { '::logrotate::base': }
-
   class { '::straycat::os::user': }
 
   # Since we have no ENC and have some Vagrant profiles that send the role as
