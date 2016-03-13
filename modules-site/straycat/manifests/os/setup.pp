@@ -99,7 +99,6 @@ class straycat::os::setup (
   Class['::straycat::os::pkgrepos'] ->
   Class['::straycat::os::time'] ->
   Class['::straycat::os::user'] ->
-  Class['::logrotate::base'] ->
   Anchor['straycat::os::setup::end']
 
 }
