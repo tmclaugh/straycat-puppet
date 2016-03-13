@@ -40,6 +40,10 @@ class straycat::os::setup (
   # repositories
   class { '::straycat::os::pkgrepos': }
 
+  class { '::straycat::os::python': }
+
+  class { '::straycat::os::packages': }
+
   class { '::straycat::os::time': }
 
   if $puppet_setup {
@@ -97,6 +101,8 @@ class straycat::os::setup (
   Class['::straycat::os::logging'] ->
   Class['::straycat::os::resolv'] ->
   Class['::straycat::os::pkgrepos'] ->
+  Class['::straycat::os::python'] ->
+  Class['::straycat::os::packages'] ->
   Class['::straycat::os::time'] ->
   Class['::straycat::os::user'] ->
   Anchor['straycat::os::setup::end']
