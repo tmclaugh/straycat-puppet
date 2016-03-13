@@ -31,10 +31,7 @@ mod 'ipa',
 
 mod 'puppetlabs/java', '1.2.0'
 
-mod 'rodjek/logrotate',
-    :git => 'https://github.com/tmclaugh/puppet-logrotate.git',
-    :ref => 'scmaster'
-
+mod 'yo61/logrotate', '1.3.0'
 
 mod 'puppetlabs/ntp', '3.3.0'
 
@@ -62,6 +59,8 @@ mod 'dalen/puppetdbquery', '1.5.3'
 mod 'zack/r10k', '2.5.1'
 
 mod 'saz/resolv_conf', '3.0.3'
+
+mod 'saz/rsyslog', '3.5.1'
 
 mod 'puppetlabs/ruby', '0.4.0'
 

@@ -32,6 +32,8 @@ class straycat::os::setup (
 
   anchor { 'straycat::os::setup::start': }
 
+  class { '::straycat::os::logging': }
+
   $real_ipa_setup = pick($::sc_ipa_setup, $ipa_setup)
   class { '::straycat::os::resolv': }
 
@@ -53,8 +55,6 @@ class straycat::os::setup (
     }
     contain '::straycat::os::ipa_client'
   }
-
-  class { '::logrotate::base': }
 
   class { '::straycat::os::user': }
 
@@ -94,11 +94,11 @@ class straycat::os::setup (
   anchor { 'straycat::os::setup::end': }
 
   Anchor['straycat::os::setup::start'] ->
+  Class['::straycat::os::logging'] ->
   Class['::straycat::os::resolv'] ->
   Class['::straycat::os::pkgrepos'] ->
   Class['::straycat::os::time'] ->
   Class['::straycat::os::user'] ->
-  Class['::logrotate::base'] ->
   Anchor['straycat::os::setup::end']
 
 }
