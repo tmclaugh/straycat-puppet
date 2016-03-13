@@ -31,21 +31,21 @@ class straycat::os::user {
   }
 
   # Set some facts as referenceable shell vars
-  # /etc/default is a more potable location than /etc/sysconfig
-  file { '/etc/default/straycat':
+  # /etc/default is a more portable location than /etc/sysconfig
+  file { '/etc/default/site':
     ensure  => present,
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => template('straycat/os/user/straycat')
+    content => template('straycat/os/user/default_site')
   }
 
-  file { '/etc/profile.d/straycat_prompt.sh':
+  file { '/etc/profile.d/site_prompt.sh':
     ensure  => present,
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => template('straycat/os/user/straycat_prompt.sh'),
-    require => File['/etc/default/straycat']
+    content => template('straycat/os/user/site_prompt.sh'),
+    require => File['/etc/default/site']
   }
 }

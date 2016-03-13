@@ -60,9 +60,9 @@ class straycat::os::setup (
 
   # Since we have no ENC and have some Vagrant profiles that send the role as
   # a fact. This ensures we don't have to remember to run puppet with the role
-  # fact set in the environment every time.  The straycat_svc fact is useful
+  # fact set in the environment every time.  The site_svc fact is useful
   # in multi-host environments with a single puppetmaster.
-  if $::straycat_env == 'dev' or $::role {
+  if $::site_env == 'dev' or $::role {
     $fact_file = '/etc/facter/facts.d/straycat.txt'
     file { $fact_file:
       ensure  => present,
@@ -81,20 +81,17 @@ class straycat::os::setup (
       }
     }
 
-    if $::straycat_env == 'dev' {
-      file_line { 'facter_straycat_svc':
+    if $::site_env == 'dev' {
+      file_line { 'facter_site_svc':
         path    => $fact_file,
-        match   => 'straycat_svc=.*',
-        line    => "straycat_svc=${::straycat_svc}",
+        match   => 'site_svc=.*',
+        line    => "site_svc=${::site_svc}",
         require => File[$fact_file]
       }
     }
   }
 
-
-
   anchor { 'straycat::os::setup::end': }
-
 
   Anchor['straycat::os::setup::start'] ->
   Class['::straycat::os::resolv'] ->

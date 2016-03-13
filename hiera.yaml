@@ -8,9 +8,9 @@
 :hierarchy:
   - fqdn/%{::fqdn}
   - service/cassandra/%{::sc_cassandra_cluster}   # This should go away
-  - straycat_svc/%{::straycat_svc}
-  - straycat_dc/%{::straycat_dc}
-  - straycat_env/%{::straycat_env}
+  - site_svc/%{::site_svc}
+  - site_dc/%{::site_dc}
+  - site_env/%{::site_env}
   - common
 
 :yaml:

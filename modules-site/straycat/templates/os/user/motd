@@ -6,12 +6,12 @@
  /____/\__/_/   \__,_/\__, /\___/\__,_/\__/
                      /____/
 
-     <%=  @straycat_base_image %>
+     <%=  @site_base_image %>
 
 
  Hostname:              <%= @fqdn %>
 
- Straycat DC:           <%= @straycat_dc %>
- Straycat Environment:  <%= @straycat_env %>
- Straycat Service:      <%= @straycat_svc %>
+ Straycat DC:           <%= @site_dc %>
+ Straycat Environment:  <%= @site_env %>
+ Straycat Service:      <%= @site_svc %>
 

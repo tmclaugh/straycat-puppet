@@ -1,0 +1,4 @@
+# /etc/default/site
+#
+SITE_ENV=<%= @site_env %>
+SITE_SVC=<%= @site_svc %>

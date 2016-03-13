@@ -33,7 +33,7 @@ class straycat::os::puppet (
     ensure => $facter_version
   }
 
-  if $::straycat_env == 'dev' {
+  if $::site_env == 'dev' {
     $puppet_agent_enabled = false
   } else {
     $puppet_agent_enabled = true

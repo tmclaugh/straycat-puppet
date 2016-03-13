@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # Set our custom prompt
-. /etc/default/straycat
+. /etc/default/site
 
-if [ "${STRAYCAT_ENV}" = 'prod' ]; then
+if [ "${SITE_ENV}" = 'prod' ]; then
     if [ $(id -u) = '0' ]; then
         color_start='\e[0;31m'
         color_stop='\e[m'
@@ -17,5 +17,5 @@ else
 fi
 
 if [ "$PS1" ]; then
-    PS1="${color_start}[\u@\h ${STRAYCAT_SVC}:${STRAYCAT_ENV} \W]\\$ ${color_stop}"
+    PS1="${color_start}[\u@\h ${SITE_SVC}:${SITE_ENV} \W]\\$ ${color_stop}"
 fi
