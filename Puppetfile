@@ -63,6 +63,8 @@ mod 'zack/r10k', '2.5.1'
 
 mod 'saz/resolv_conf', '3.0.3'
 
+mod 'saz/rsyslog', '3.5.1'
+
 mod 'puppetlabs/ruby', '0.4.0'
 
 mod 'aboe/salt', '0.1.1'

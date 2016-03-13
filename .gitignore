@@ -45,6 +45,7 @@ modules/puppetdb
 modules/puppetdbquery
 modules/r10k
 modules/resolv_conf
+modules/rsyslog
 modules/ruby
 modules/salt
 modules/stdlib
