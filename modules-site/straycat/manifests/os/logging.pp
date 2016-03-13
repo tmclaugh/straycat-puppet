@@ -24,7 +24,15 @@ class straycat::os::logging {
     rate_limit_burst    => '2500'
   }
 
-  class { '::logrotate': }
+  class { '::logrotate':
+    config => {
+      compress => true,
+      create   => true,
+      dateext  => true,
+      rotate   => '4',
+      schedule => 'weekly',
+    }
+  }
 
   anchor { 'straycat::os::logging::end': }
 
