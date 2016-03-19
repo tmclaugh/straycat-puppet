@@ -44,7 +44,7 @@ class straycat::svc::puppet::foreman_proxy (
     realm               => false, # Would like to get freeipa later.
     register_in_foreman => false,
     tftp                => false,
-    trusted_hosts       => [${foreman_host}, ${::fqdn}],
+    trusted_hosts       => [$foreman_host, $::fqdn],
     use_sudoersd        => true,
     manage_sudoersd     => false
   }
