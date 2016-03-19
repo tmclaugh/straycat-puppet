@@ -67,7 +67,7 @@ class straycat::os::setup (
   # fact set in the environment every time.  The site_svc fact is useful
   # in multi-host environments with a single puppetmaster.
   if $::site_env == 'dev' or $::role {
-    $fact_file = '/etc/facter/facts.d/straycat.txt'
+    $fact_file = '/etc/facter/facts.d/site.txt'
     file { $fact_file:
       ensure  => present,
       owner   => 'root',
