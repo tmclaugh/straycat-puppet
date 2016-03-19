@@ -95,6 +95,15 @@ class straycat::os::setup (
     }
   }
 
+  # Really just needed by foreman_proxy but might as well make sure it's there
+  # everywhere.
+  file { '/etc/sudoers.d':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755'
+  }
+
   anchor { 'straycat::os::setup::end': }
 
   Anchor['straycat::os::setup::start'] ->
