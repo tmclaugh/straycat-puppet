@@ -62,6 +62,13 @@ class straycat::os::setup (
 
   class { '::straycat::os::user': }
 
+  file { ['/etc/facter', '/etc/facter/facts.d']:
+    ensure => directory,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+  }
+
   # Since we have no ENC and have some Vagrant profiles that send the role as
   # a fact. This ensures we don't have to remember to run puppet with the role
   # fact set in the environment every time.  The site_svc fact is useful
@@ -73,7 +80,7 @@ class straycat::os::setup (
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      require => Class['::straycat::os::puppet']
+      require => File['/etc/facter/facts.d/']
     }
 
     if $::role {
