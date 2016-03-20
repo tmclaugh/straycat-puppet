@@ -46,7 +46,9 @@ class straycat::svc::puppet::foreman_proxy (
     tftp                => false,
     trusted_hosts       => [$foreman_host, $::fqdn],
     use_sudoersd        => true,
-    manage_sudoersd     => false
+    manage_sudoersd     => false,
+    puppetca_cmd        => '/usr/bin/puppet cert',
+    puppetrun_cmd       => '/usr/bin/puppet kick',
   }
   contain ::foreman_proxy
 
