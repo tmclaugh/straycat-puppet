@@ -83,11 +83,7 @@ Vagrant.configure('2') do |config|
     puppet.vm.provision 'default_puppet_server', type: 'puppet_server' do |p|
       p.puppet_server = "bootstrap.straycat.dev"
       p.options       = "--verbose --waitforcert 1"
-      p.facter        = { 'role'                => 'straycat::roles::puppetmaster',
-                          'sc_foreman_server'   => 'foreman.straycat.dev',
-                          'sc_puppet_ca_server' => 'puppetca.straycat.dev',
-                          'sc_puppet_env'       => 'qa',
-                          'sc_puppet_altnames'  => "puppetmaster.straycat.dev,#{$inst_name}" }
+      p.facter        = { 'role' => 'straycat::roles::puppetmaster' }
     end
   end
 end

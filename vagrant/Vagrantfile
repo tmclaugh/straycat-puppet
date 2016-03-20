@@ -217,7 +217,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision 'default_puppet', type: 'puppet' do |puppet|
 
     puppet.facter = {
-      "sc_puppetmaster_server" => "localhost",
       "vg_puppetmaster_dir"    => $vg_puppetmaster_dir,
       "vg_puppetmaster_local"  => VG_PUPPETMASTER_LOCAL,
       "default_role"           => $vg_role,
