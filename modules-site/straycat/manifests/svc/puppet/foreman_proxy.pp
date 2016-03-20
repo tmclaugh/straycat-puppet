@@ -45,7 +45,7 @@ class straycat::svc::puppet::foreman_proxy (
     puppetdir           => '/etc/puppet',
     ssldir                => '/var/lib/puppet/ssl',   # Used by PuppetCA functionality
     realm               => false, # Would like to get freeipa later.
-    register_in_foreman => false,
+    register_in_foreman => true,
     tftp                => false,
     trusted_hosts       => [$foreman_host, $::fqdn],
     use_sudoersd        => true,
