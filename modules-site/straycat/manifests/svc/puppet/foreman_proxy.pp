@@ -49,6 +49,10 @@ class straycat::svc::puppet::foreman_proxy (
     manage_sudoersd     => false,
     puppetca_cmd        => '/usr/bin/puppet cert',
     puppetrun_cmd       => '/usr/bin/puppet kick',
+    ssl                   => true,
+    ssl_key               => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
+    ssl_cert              => "/var/lib/puppet/ssl/certs/${::fqdn}.pem",
+    ssl_ca                => "/var/lib/puppet/ssl/certs/ca.pem",
   }
   contain ::foreman_proxy
 
