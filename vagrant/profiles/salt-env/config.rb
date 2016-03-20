@@ -3,7 +3,8 @@ Vagrant.configure('2') do |config|
   # primary: designates this will be the default host when no hostname is
   # given to commands.
   config.vm.define "master", primary: true do |node|
-    node.vm.hostname = 'salt-master.straycat.dev'
+    node.vm.hostname = 'salt-master.straycat-net.dev'
+    node.hostmanager.aliases = ['salt-master', 'salt-master.straycat.dev']
     node.vm.network "private_network", type: "dhcp"
 
     node.vm.provision 'default_puppet_server', type: 'puppet_server' do |puppet|
@@ -14,7 +15,7 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.define "minion-1" do |node|
-    node.vm.hostname = 'salt-minion-1.straycat.dev'
+    node.vm.hostname = 'salt-minion-1.straycat-net.dev'
     node.vm.network "private_network", type: "dhcp"
     node.vm.provision 'default_puppet_server', type: 'puppet_server' do |puppet|
       puppet.options       = "--verbose --waitforcert 120"
@@ -23,7 +24,7 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.define "minion-2" do |node|
-    node.vm.hostname = 'salt-minion-2.straycat.dev'
+    node.vm.hostname = 'salt-minion-2.straycat-net.dev'
     node.vm.network "private_network", type: "dhcp"
     node.vm.provision 'default_puppet_server', type: 'puppet_server' do |puppet|
       puppet.options       = "--verbose --waitforcert 120"

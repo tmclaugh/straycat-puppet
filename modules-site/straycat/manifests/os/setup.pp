@@ -62,18 +62,25 @@ class straycat::os::setup (
 
   class { '::straycat::os::user': }
 
+  file { ['/etc/facter', '/etc/facter/facts.d']:
+    ensure => directory,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+  }
+
   # Since we have no ENC and have some Vagrant profiles that send the role as
   # a fact. This ensures we don't have to remember to run puppet with the role
   # fact set in the environment every time.  The site_svc fact is useful
   # in multi-host environments with a single puppetmaster.
   if $::site_env == 'dev' or $::role {
-    $fact_file = '/etc/facter/facts.d/straycat.txt'
+    $fact_file = '/etc/facter/facts.d/site.txt'
     file { $fact_file:
       ensure  => present,
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      require => Class['::straycat::os::puppet']
+      require => File['/etc/facter/facts.d/']
     }
 
     if $::role {
@@ -93,6 +100,15 @@ class straycat::os::setup (
         require => File[$fact_file]
       }
     }
+  }
+
+  # Really just needed by foreman_proxy but might as well make sure it's there
+  # everywhere.
+  file { '/etc/sudoers.d':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755'
   }
 
   anchor { 'straycat::os::setup::end': }

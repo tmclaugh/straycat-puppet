@@ -34,19 +34,36 @@ class straycat::svc::puppet::foreman_proxy (
 
   validate_string($foreman_host)
 
+  $foreman_proxy_version = '1.7.1-1.el6'
+
+  # We have issues with having no valid CA when local so just make it open to
+  # the world.
+  if $::site_dc == 'local' {
+    $trusted_hosts = []
+  } else {
+    $trusted_hosts = ["${foreman_host}", "${::fqdn}"]
+  }
+
   class { '::foreman_proxy':
+    version             => $foreman_proxy_version,
     custom_repo         => false,
     dhcp                => false,
     dns                 => false,
     foreman_base_url    => "https://${foreman_host}",
     puppetdir           => '/etc/puppet',
-#    puppet_home         => '/var/lib/puppet',
+    ssldir                => '/var/lib/puppet/ssl',   # Used by PuppetCA functionality
     realm               => false, # Would like to get freeipa later.
-    register_in_foreman => false,
+    register_in_foreman => true,
     tftp                => false,
-    trusted_hosts       => [${foreman_host}, ${::fqdn}],
+    trusted_hosts       => $trusted_hosts,
     use_sudoersd        => true,
-    manage_sudoersd     => false
+    manage_sudoersd     => false,
+    puppetca_cmd        => '/usr/bin/puppet cert',
+    puppetrun_cmd       => '/usr/bin/puppet kick',
+    ssl                   => true,
+    ssl_key               => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
+    ssl_cert              => "/var/lib/puppet/ssl/certs/${::fqdn}.pem",
+    ssl_ca                => "/var/lib/puppet/ssl/certs/ca.pem",
   }
   contain ::foreman_proxy
 

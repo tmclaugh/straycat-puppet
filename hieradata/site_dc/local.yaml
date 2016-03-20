@@ -65,6 +65,10 @@ straycat::svc::puppet::foreman_proxy::foreman_host: "%{hiera('straycat::infra::p
 
 # This should be a lookup for the puppetmaster except in a Vagrant env.
 straycat::svc::puppet::master::puppet_ca_allow: 'puppetmaster.straycat.dev'
+straycat::svc::puppet::master::dns_alt_names:
+  - "%{hiera('jana::infra::puppet::master')}"
+  - "%{::hostname}"
+  - puppetmaster.straycat.dev
 
 straycat::svc::salt::minion::salt_minion_master:    "%{hiera('straycat::infra::salt:master')}"
 

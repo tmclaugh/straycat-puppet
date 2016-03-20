@@ -57,10 +57,4 @@ class straycat::os::puppet (
   }
   contain '::puppet::agent'
 
-  file { ['/etc/facter', '/etc/facter/facts.d']:
-    ensure => directory,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-  }
 }
