@@ -38,7 +38,8 @@ class straycat::svc::puppet::master (
   $hiera_version             = "1.3.4-1.${::centos_pkg_release}",
   $hiera_eyaml_version       = '2.0.6',
   $hiera_eyaml_gpg_version   = '0.6',
-  $hiera_key_name            = "puppet.${::domain}"
+  $hiera_key_name            = "puppet.${::domain}",
+  $dns_alt_names             = undef,
 ) {
 
   validate_string($puppet_psk)
@@ -202,9 +203,9 @@ class straycat::svc::puppet::master (
       path    => ['/usr/bin'],
     }
 
-    # FIXME: Need to handle CNAMEs below.  Fine for now.
+    $dns_alt_name_str = join($dns_alt_names, ',')
     exec { 'puppet-create-ca':
-      command => "puppet cert generate ${::fqdn} --dns_alt_names=${::hostname}",
+      command => "puppet cert generate ${::fqdn} --dns_alt_names=${dns_alt_name_str}",
       path    => ['/usr/bin'],
       creates => '/var/lib/puppet/ssl/ca/ca_pub.pem',
       require => Exec['puppet-delete-temp-certs'],

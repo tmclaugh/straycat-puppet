@@ -138,7 +138,7 @@ class puppetmaster {
       certname                  = localhost
       report                    = true
       reports                   = store
-      dns_alt_names             = ${::fqdn}
+      dns_alt_names             = ${::fqdn},bootstrap.straycat.dev
       user                      = root
   ",
     require => Package['puppet-server'],
