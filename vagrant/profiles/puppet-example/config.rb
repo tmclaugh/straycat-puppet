@@ -1,6 +1,7 @@
 Vagrant.configure('2') do |config|
   config.vm.define "puppetmaster", primary: true do |pm|
-    pm.vm.hostname = 'puppet.straycat.dev'
+    pm.vm.hostname = 'puppet.straycat-net.dev'
+    pm.hostmanager.aliases = ['puppet', 'puppet.straycat.dev']
     pm.vm.network :private_network, type: "dhcp"
 
     # Prevent breakage caused by updating the package during a run.
@@ -38,7 +39,7 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.define "base" do |base|
-    base.vm.hostname = 'base.straycat.dev'
+    base.vm.hostname = 'base.straycat-net.dev'
     base.vm.network :private_network, type: "dhcp"
 
     base.vm.provision 'default_puppet', type: 'puppet' do |puppet|
