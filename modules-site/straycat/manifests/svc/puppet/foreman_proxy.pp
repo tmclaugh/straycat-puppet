@@ -34,7 +34,7 @@ class straycat::svc::puppet::foreman_proxy (
 
   validate_string($foreman_host)
 
-  $foreman_proxy_version = '1.7.5-1'
+  $foreman_proxy_version = '1.7.1-1.el6'
 
   class { '::foreman_proxy':
     version             => $foreman_proxy_version,
