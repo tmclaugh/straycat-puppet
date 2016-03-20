@@ -43,7 +43,7 @@ class straycat::svc::puppet::foreman_proxy (
     dns                 => false,
     foreman_base_url    => "https://${foreman_host}",
     puppetdir           => '/etc/puppet',
-#    puppet_home         => '/var/lib/puppet',
+    ssldir                => '/var/lib/puppet/ssl',   # Used by PuppetCA functionality
     realm               => false, # Would like to get freeipa later.
     register_in_foreman => false,
     tftp                => false,
