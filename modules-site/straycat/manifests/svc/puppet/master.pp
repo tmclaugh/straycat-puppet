@@ -126,6 +126,15 @@ class straycat::svc::puppet::master (
   ensure_resource('package', 'ncurses-devel')
   ensure_resource('package', 'gnupg2')
 
+  # FIXME: Can be removed
+  if $::centos_major == '6' {
+    package { 'highline':
+      ensure   => '1.6.21',
+      provider => gem,
+      before   => Package['hiera-eyaml']
+    }
+  }
+
   package { 'hiera-eyaml':
     ensure   => $hiera_eyaml_version,
     provider => gem,
