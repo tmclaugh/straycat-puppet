@@ -13,6 +13,8 @@ mod 'puppetlabs/concat', '1.1.2'
 
 mod 'theforeman/concat_native', '1.3.1'
 
+mod 'tohuwabohu/duplicity', '4.2.0'
+
 mod 'puppetlabs/firewall', '1.3.0'
 
 mod 'foreman',
