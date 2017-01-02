@@ -38,7 +38,7 @@ class straycat::svc::puppet::foreman_proxy (
 
   # We have issues with having no valid CA when local so just make it open to
   # the world.
-  if $::site_dc == 'local' {
+  if $::site_env == 'local' {
     $trusted_hosts = []
   } else {
     $trusted_hosts = ["${foreman_host}", "${::fqdn}"]

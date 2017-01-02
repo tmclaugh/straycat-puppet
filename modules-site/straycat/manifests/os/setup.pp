@@ -73,7 +73,7 @@ class straycat::os::setup (
   # a fact. This ensures we don't have to remember to run puppet with the role
   # fact set in the environment every time.  The site_svc fact is useful
   # in multi-host environments with a single puppetmaster.
-  if $::site_env == 'dev' or $::role {
+  if $::site_env == 'local' or $::role {
     $fact_file = '/etc/facter/facts.d/site.txt'
     file { $fact_file:
       ensure  => present,
@@ -92,7 +92,7 @@ class straycat::os::setup (
       }
     }
 
-    if $::site_env == 'dev' {
+    if $::site_env == 'local' {
       file_line { 'facter_site_svc':
         path    => $fact_file,
         match   => 'site_svc=.*',
