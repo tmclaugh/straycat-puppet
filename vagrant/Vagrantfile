@@ -224,7 +224,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       "hiera_ver"              => $hiera_ver,
       "hiera_eyaml_ver"        => $hiera_eyaml_ver,
       "hiera_eyaml_gpg_ver"    => $hiera_eyaml_gpg_ver,
-      "site_env"               => 'dev',
+      "site_env"               => 'local',
       "site_dc"                => 'local'
     }
 
