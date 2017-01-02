@@ -6,12 +6,12 @@
 #
 # Public infrastructure:
 # foo.straycat.dhs.org    CNAME to prod service
-# foo.straycat-test.dhs.org CNAME to test service
-# foo.<aws_region>.straycat-net.dhs.org
+# test-foo.straycat.dhs.org CNAME to test service
+# <ec2-id>.<ec2-az>.straycat-net.dhs.org
 #
 # Private infrastructure:
 # foo.straycat.lan        CNAME to prod service
-# foo.straycat-test.lan     CNAME to QA service
+# test-foo.straycat.lan   CNAME to test service
 # foo.straycat-net.lan
 #
 # Local dev:
